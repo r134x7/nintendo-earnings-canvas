@@ -1,6 +1,6 @@
 import { Txt, makeScene2D } from "@motion-canvas/2d";
 
-import { createRef, createSignal, DEFAULT, waitFor, all, tween, Thread, ThreadGenerator, SimpleSignal, delay, loop } from "@motion-canvas/core";
+import { createRef, createSignal, DEFAULT, waitFor, all, tween, Thread, ThreadGenerator, SimpleSignal, delay, loop, sequence, chain } from "@motion-canvas/core";
 
 export default makeScene2D(function* (view) {
 
@@ -9,22 +9,58 @@ export default makeScene2D(function* (view) {
 
     const openingText = "Hello World".split("");
 
+    const getText = createRef<Txt>();
+
     view.add(
         <Txt 
+            ref={getText}
             text={() => `${openingTextSignal()} and ${numberSignal()}`}
+            lineHeight={"150%"}
         />
     )
 
-    yield* delay(
-        2,
-        loop(
-            openingText.length,
-            i => {
-                openingTextSignal(openingTextSignal() + openingText[i])
-            }
-        )
+    yield* loop(
+        openingText.length,
+        i => singleMessage(openingText, openingTextSignal, numberSignal, 1)
     )
-    yield* waitFor(5)
+
+    // yield* delay(
+    //     2,
+    //     loop(
+    //         openingText.length,
+    //         i => {
+    //             openingTextSignal(openingTextSignal() + openingText[i])
+    //         }
+    //     )
+    // )
+    // yield* all(
+    //     waitFor(1),
+    //     loop(
+    //         openingText.length,
+    //         i => {
+    //             waitFor(100000)
+    //             openingTextSignal(openingTextSignal() + openingText[i])
+    //         } 
+    //     )
+    // ) 
+    // yield* loop(
+    //         openingText.length,
+    //         i => delay(5, getText().text(openingText[i]))
+    // )
+    // yield* waitFor(5)
+
+    // yield* waitFor(1)
+    // openingTextSignal(openingTextSignal() + openingText[numberSignal()])
+    // numberSignal(numberSignal() + 1)
+    // yield* waitFor(1)
+    // openingTextSignal(openingTextSignal() + openingText[numberSignal()])
+    // numberSignal(numberSignal() + 1)
+    // yield* waitFor(1)
+    // openingTextSignal(openingTextSignal() + openingText[numberSignal()])
+    // numberSignal(numberSignal() + 1)
+    // yield* waitFor(1)
+    // openingTextSignal(openingTextSignal() + openingText[numberSignal()])
+    // numberSignal(numberSignal() + 1)
 
     // yield* delay(0.7, numberSignal(3))
     // yield* waitFor(1)
@@ -49,8 +85,8 @@ export default makeScene2D(function* (view) {
 
 })
 
-// function* singleMessage(text: string, getSignal: SimpleSignal<string, void>): ThreadGenerator {
-//     waitFor(1)
-//     yield;
-
-// }
+function* singleMessage(text: string[], getSignal: SimpleSignal<string, void>, getIndex: SimpleSignal<number, void>, delay: number): ThreadGenerator {
+    yield* waitFor(delay)
+    getSignal(getSignal() + text[getIndex()])
+    getIndex(getIndex() + 1)
+}
