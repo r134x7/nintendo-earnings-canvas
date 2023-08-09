@@ -29,8 +29,8 @@ export default makeScene2D(function* (view) {
                 text={() => `${openingTextSignal()}`}
                 textWrap={"pre"}
                 fill={"white"}
-                marginLeft={8}
-                marginRight={8}
+                marginLeft={16}
+                marginRight={16}
             />
             </Rect>
         </Rect>
@@ -65,46 +65,37 @@ function* textBlock(text: string, lineLength: number, getSignal: SimpleSignal<st
 
     const charRange = text.slice(0, getIndex() + 1)
 
-    // const newLines = "\n".repeat(text.length / lineLength)
+    function makeTextBlock(getText: string, getLineLength: number): string {
 
-    function makeTextBlock(getText: string, newLines: number, getLineLength: number): string {
+        const numberMap = new Map<number, string>();
 
-        let newLineCheck = 0;
+        getText.split(" ").map((elem, index, array) => {
 
-        const wordSplit = getText.split(" ")
-            .reduce((acc, next, index, array) => {
+            let getSize = numberMap.size;
 
-                let nextCheck = acc + " " + next + " ";
-
-                if (nextCheck.length > getLineLength) {
-                    newLineCheck++
-                    return acc + " " + next + "\n"
-                } else if (array[index] === next) {
-
-                    // console.log(next);
-                    
-                    let lastLine = acc.length + next.length;
-                    
-                    let repeatValue = ((getText.length + newLineCheck) - lastLine >= 0)
-                        ? (getText.length + newLineCheck) - lastLine
-                        : 0
-
-                    // console.log(getText.length + newLineCheck - lastLine);
-                    
-
-                    // return acc + " " + next + " ".repeat((getText.length + newLineCheck) - lastLine)
-                    return acc + " " + next + " ".repeat(repeatValue)
-                } else {
-                    return acc + " " + next
-                }
-            }, "")
-
+            if (getSize === 0) {
+                numberMap.set(numberMap.size, elem)
+            } else if ((numberMap.get(numberMap.size-1) + " " + elem).length < getLineLength) {
+                numberMap.set(numberMap.size -1, numberMap.get(numberMap.size-1) + " " + elem)
+            } else {
+                numberMap.set(numberMap.size, elem)
+            }      
+        })
         
-        return wordSplit;
+        numberMap.forEach((value, key, map) => {
+
+            if (key === numberMap.size-1) {
+                map.set(key, value + " ".repeat(getLineLength - value.length))
+            } else {
+                map.set(key, value + " ".repeat(getLineLength - value.length) + "\n")
+            }
+        })
+
+        return [...numberMap.values()].join("")
     }
 
     // const stringResult = makeTextBlock(charRange, Math.floor(text.length / lineLength), lineLength)
-    const stringResult = makeTextBlock(charRange, Math.floor(text.length / lineLength), 30)
+    const stringResult = makeTextBlock(charRange, lineLength)
 
     // getSignal(charRange + " ".repeat(text.length - charRange.length) + newLines)
     getSignal(stringResult)
