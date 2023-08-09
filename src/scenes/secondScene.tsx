@@ -118,12 +118,47 @@ export default makeScene2D(function* (view) {
         i => textBlock(lines.get(1), 40, textSignal, numberSignal, 0.07, 2)
     )
 
+    view.add(
+        <>
+            <Txt 
+                ref={values[0]}
+                text={""}
+                fill={"white"}
+                x={-200}
+                textWrap={"pre"}
+            />
+        </> 
+    )
+    
+    yield* all (
+        values[0]().y(-340, 1),
+        values[0]().text("Cumulative Sales:     ¥8,310,917M", 1),
+    )
+
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
 
     yield* loop(
         lines.get(2).length,
-        i => textBlock(lines.get(2), lines.get(2).length + 1, textSignal, numberSignal, 0.07, 2)
+        i => textBlock(lines.get(2), 40, textSignal, numberSignal, 0.07, 2)
+    )
+
+    view.add(
+        <>
+            <Txt 
+                ref={values[1]}
+                text={""}
+                fill={"white"}
+                x={-200}
+                textWrap={"pre"}
+            />
+        </> 
+    )
+    
+    yield* all (
+        values[1]().y(-240, 1),
+        values[1]().x(-140, 1),
+        values[1]().text("Cumulative Hardware Units:    129.53M", 1),
     )
 
     textSignal(DEFAULT)
@@ -139,39 +174,23 @@ export default makeScene2D(function* (view) {
         i => textBlock(lines.get(3), 40, textSignal, numberSignal, 0.07, 2)
     )
 
-    const scale = 100;
-
     view.add(
         <>
-            <Rect 
-                ref={bars[0]}
-                width={100}
-                fill={"red"}
-                x={-500}
-            />
             <Txt 
-                ref={values[0]}
+                ref={values[2]}
                 text={""}
                 fill={"white"}
-                x={-500}
+                x={-200}
+                textWrap={"pre"}
             />
-            <Txt 
-                ref={labels[0]}
-                text={""}
-                fill={"white"}
-                x={-500}
-            />
-        </>
+        </> 
     )
     
     yield* all (
-        bars[0]().height(300, 1),
-        bars[0]().y(-150, 1),
-        values[0]().y(-340, 1),
-        values[0]().text("¥8,310,917M", 1),
-        labels[0]().y(40, 1),
-        labels[0]().text("Cumulative Sales", 1),
-    ) 
+        values[2]().y(-140, 1),
+        values[2]().x(-60, 1),
+        values[2]().text("Cumulative Sales Per Hardware Unit:   ¥64,162", 1),
+    )
 
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
@@ -211,7 +230,7 @@ export default makeScene2D(function* (view) {
         values[1]().y(-160, 1),
         values[1]().text("129.53M", 1),
         labels[1]().y(60, 1),
-        labels[1]().text("Cumulative Hardware Units", 1),
+        labels[1]().text("Cumulative Hardware Units:    129.53M", 1),
     ) 
 
     textSignal(DEFAULT)
@@ -260,7 +279,7 @@ export default makeScene2D(function* (view) {
         values[2]().y(-157, 1),
         values[2]().text("¥64,162", 1),
         labels[2]().y(57, 1),
-        labels[2]().text("Cumulative Sales Per Hardware Unit", 1),
+        labels[2]().text("Cumulative Sales Per Hardware Unit:   ¥64,162", 1),
     ) 
 
     yield* ref().x(-650,1)

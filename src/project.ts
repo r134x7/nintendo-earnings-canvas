@@ -6,7 +6,8 @@ import rectangle from './scenes/rectangle?scene';
 import ellipse from './scenes/ellipse?scene';
 import opening from './scenes/opening?scene';
 import firstSVG from './scenes/firstSVG?scene';
+import secondScene from './scenes/secondScene?scene';
 
 export default makeProject({
-  scenes: [opening, firstSVG],
+  scenes: [opening, firstSVG, secondScene],
 });
