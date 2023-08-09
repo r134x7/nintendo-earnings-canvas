@@ -15,10 +15,13 @@ export default makeScene2D(function* (view) {
 
     const bar1 = createRef<Rect>();
     const bar2 = createRef<Rect>();
+    const bar3 = createRef<Rect>();
     const value1 = createRef<Txt>();
     const xValue1 = createRef<Txt>();
     const value2 = createRef<Txt>();
     const xValue2 = createRef<Txt>();
+    const value3 = createRef<Txt>();
+    const xValue3 = createRef<Txt>();
 
     const textSignal = createSignal("");
     const numberSignal = createSignal(0);
@@ -30,6 +33,8 @@ export default makeScene2D(function* (view) {
     lines.set(lines.size, "Consolidated Operating Results.")
     lines.set(lines.size, "Nintendo's consolidated net sales for the first quarter was ¥461,341M. A +50.05 increase year-over-year.")
     lines.set(lines.size, "Nintendo's consolidated operating income for the first quarter was ¥185,441M. A +82.44% increase year-over-year.")
+    lines.set(lines.size, "Nintendo's operating margin for the first quarter was 40.2%.")
+    lines.set(lines.size, "Nintendo's consolidated net income for the first quarter was ¥181,019M. A +52.14% increase year-over-year.")
 
     view.add(
         <Img 
@@ -195,5 +200,54 @@ export default makeScene2D(function* (view) {
         xValue2().text("Operating\nIncome", 1),
     ) 
 
-    yield* waitFor(8)
+    textSignal(DEFAULT)
+    numberSignal(DEFAULT)
+
+    yield* loop(
+        lines.get(5).length,
+        i => textBlock(lines.get(5), 40, textSignal, numberSignal, 0.07, 2)
+    )
+
+    textSignal(DEFAULT)
+    numberSignal(DEFAULT)
+
+    yield* loop(
+        lines.get(6).length,
+        i => textBlock(lines.get(6), 40, textSignal, numberSignal, 0.07, 2)
+    )
+
+    view.add(
+        <>
+            <Rect 
+                ref={bar3}
+                height={0}
+                width={100}
+                fill={"green"}
+                x={100}
+            />
+            <Txt 
+                ref={value3}
+                text={""}
+                fill={"white"}
+                x={100}
+            />
+            <Txt 
+                ref={xValue3}
+                text={""}
+                fill={"white"}
+                x={100}
+            />
+        </>
+    )
+
+    yield* all (
+        bar3().height(117, 1),
+        bar3().y(-57,1),
+        value3().y(-157, 1),
+        xValue3().y(57, 1),
+        value3().text("¥181,019M", 1),
+        xValue3().text("Net\nIncome", 1),
+    ) 
+
+    yield* waitFor(4)
 })
