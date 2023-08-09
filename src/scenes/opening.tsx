@@ -24,7 +24,7 @@ export default makeScene2D(function* (view) {
         >
             <Rect fill={"black"}>
             <Txt
-                fontFamily={"monospace"}
+                fontFamily={"Consolas"}
                 ref={getText}
                 text={() => `${openingTextSignal()}`}
                 textWrap={"pre"}
