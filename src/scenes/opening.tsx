@@ -4,9 +4,7 @@ import { createRef, createSignal, DEFAULT, waitFor, all, tween, Thread, ThreadGe
 
 export default makeScene2D(function* (view) {
 
-    const openingText = "welcome to ggx2ac + archives and blah blah blah or other stuff";
-
-    // const textBoxFill: string = Array(openingText.length).fill("").join();
+    const openingText = "Welcome to the animation of ggx2ac + archives: Nintendo earnings data and other video game companies";
 
     const openingTextSignal = createSignal("");
     const numberSignal = createSignal(0);
@@ -42,6 +40,9 @@ export default makeScene2D(function* (view) {
         i => textBlock(openingText, 40, openingTextSignal, numberSignal, 0.07)
     )
 
+    openingTextSignal(DEFAULT) 
+
+    yield* waitFor(2)
 
 })
 
@@ -65,7 +66,9 @@ function* textBlock(text: string, lineLength: number, getSignal: SimpleSignal<st
 
     const charRange = text.slice(0, getIndex() + 1)
 
-    function makeTextBlock(getText: string, getLineLength: number): string {
+    const checkNewLines = Math.floor(text.length / lineLength);
+
+    function makeTextBlock(getText: string, getLineLength: number, blockSize: number): string {
 
         const numberMap = new Map<number, string>();
 
@@ -81,6 +84,12 @@ function* textBlock(text: string, lineLength: number, getSignal: SimpleSignal<st
                 numberMap.set(numberMap.size, elem)
             }      
         })
+
+        for (let index = 0; index < blockSize; index++) {
+            if (numberMap.size < blockSize + 1) {
+                numberMap.set(numberMap.size, "")
+            } 
+        }
         
         numberMap.forEach((value, key, map) => {
 
@@ -94,19 +103,9 @@ function* textBlock(text: string, lineLength: number, getSignal: SimpleSignal<st
         return [...numberMap.values()].join("")
     }
 
-    // const stringResult = makeTextBlock(charRange, Math.floor(text.length / lineLength), lineLength)
-    const stringResult = makeTextBlock(charRange, lineLength)
+    const stringResult = makeTextBlock(charRange, lineLength, checkNewLines)
 
-    // getSignal(charRange + " ".repeat(text.length - charRange.length) + newLines)
     getSignal(stringResult)
-
-    /*
-    ............          \n
-                          \n
-
-    ......................\n
-                          \n
-    */
 
     getIndex(getIndex() + 1)
 
