@@ -1,9 +1,8 @@
-import { makeScene2D, Img, Circle, Rect, Txt } from "@motion-canvas/2d";
+import { makeScene2D, Img, Rect, Txt } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT } from "@motion-canvas/core";
 
 import { textBlock } from "./opening";
 
-import robot from "../assets/episode1/firstDrawing.svg"
 import avatarA from "../assets/episode1/avatar1a.svg";
 import avatarB from "../assets/episode1/avatar1b.svg";
 
@@ -13,29 +12,45 @@ export default makeScene2D(function* (view) {
     const getText = createRef<Txt>();
     const textBox = createRef<Txt>();
 
-    const bar1 = createRef<Rect>();
-    const bar2 = createRef<Rect>();
-    const bar3 = createRef<Rect>();
-    const value1 = createRef<Txt>();
-    const xValue1 = createRef<Txt>();
-    const value2 = createRef<Txt>();
-    const xValue2 = createRef<Txt>();
-    const value3 = createRef<Txt>();
-    const xValue3 = createRef<Txt>();
+    const bars = [
+        createRef<Rect>(),
+        createRef<Rect>(),
+        createRef<Rect>(),
+        createRef<Rect>(),
+        createRef<Rect>(),
+    ];
+
+    const values = [
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+    ];
+
+    const labels = [
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+    ];
 
     const textSignal = createSignal("");
     const numberSignal = createSignal(0);
 
     const lines = new Map<number, string>();
 
-    lines.set(lines.size, "This, is an avatar and I am bad at drawing.")
-    lines.set(lines.size, "The following data from my webpage (link in the description) covers the 1st Quarter earnings release of Nintendo for the fiscal year ending March 2024 (FY3/2024).")
-    lines.set(lines.size, "Consolidated Operating Results.")
-    lines.set(lines.size, "Nintendo's consolidated net sales for the first quarter was ¥461,341M. A +50.05 increase year-over-year.")
-    lines.set(lines.size, "Nintendo's consolidated operating income for the first quarter was ¥185,441M. A +82.44% increase year-over-year.")
-    lines.set(lines.size, "Nintendo's operating margin for the first quarter was 40.2%.")
-    lines.set(lines.size, "Nintendo's consolidated net income for the first quarter was ¥181,019M. A +52.14% increase year-over-year.")
-    lines.set(lines.size, "Nintendo's net sales, operating income and net income all broke historical records leading to them having the most profitable first quarter ever.")
+    lines.set(lines.size, "Global Hardware/Software Units.")
+    lines.set(lines.size, "The Nintendo Switch platform had cumulative (life-to-date) sales of ¥8,310,917M in the first quarter")
+    lines.set(lines.size, "The cumulative (life-to-date) Nintendo Switch Hardware Total Units reached 129.53M units in the first quarter")
+    lines.set(lines.size, "The cumulative (life-to-date) sales per hardware unit calculation results in ¥64,162 per hardware unit")
+    lines.set(lines.size, "The shipments of the Nintendo Switch Hardware Total for the first quarter was 3.91M units. A +13.99% increase year-over-year. Life-To-Date: 129.53M units")
+    lines.set(lines.size, "The shipments of the Nintendo Switch (model) for the first quarter was 0.64M units. A -51.52% decrease year-over-year. Life-To-Date: 90.23M units")
+    lines.set(lines.size, "The shipments of the Nintendo Switch OLED Model for the first quarter was 2.83M units. A +86.18% increase year-over-year. Life-To-Date: 17.85M units")
+    lines.set(lines.size, "The shipments of the Nintendo Switch Lite for the first quarter was 0.43M units. A -27.12% decrease year-over-year. Life-To-Date: 21.45M units")
+    lines.set(lines.size, "The Nintendo Switch Software Total for the first quarter was 52.21M units. A +26.08% increase year-over-year. Life-To-Date: 1088.35M units")
+    lines.set(lines.size, "Software sales units include both packaged and downloadable versions of software, and do not include download-only software or add-on  content.")
 
     view.add(
         <Img 
@@ -44,7 +59,7 @@ export default makeScene2D(function* (view) {
         />
     )
 
-    yield* slideTransition(Direction.Right);
+    yield* slideTransition(Direction.Top);
 
     yield* all(
         ref().x(-800, 1),
@@ -52,7 +67,7 @@ export default makeScene2D(function* (view) {
     )
     yield* waitFor(1)
 
-    yield* slideTransition(Direction.Right);
+    yield* slideTransition(Direction.Top);
 
     ref().fill("white")
     yield* waitFor(2)
@@ -129,20 +144,19 @@ export default makeScene2D(function* (view) {
     view.add(
         <>
             <Rect 
-                ref={bar1}
-                minHeight={0}
+                ref={bars[0]}
                 width={100}
                 fill={"red"}
                 x={-500}
             />
             <Txt 
-                ref={value1}
+                ref={values[0]}
                 text={""}
                 fill={"white"}
                 x={-500}
             />
             <Txt 
-                ref={xValue1}
+                ref={labels[0]}
                 text={""}
                 fill={"white"}
                 x={-500}
@@ -151,13 +165,12 @@ export default makeScene2D(function* (view) {
     )
     
     yield* all (
-        bar1().height(300, 1),
-        bar1().y(-150, 1),
-        value1().y(-340, 1),
-        xValue1().y(40, 1),
-        value1().text("¥461,341M", 1),
-        xValue1().text("Net Sales", 1),
-        // textBox().y(350, 1)
+        bars[0]().height(300, 1),
+        bars[0]().y(-150, 1),
+        values[0]().y(-340, 1),
+        values[0]().text("¥8,310,917M", 1),
+        labels[0]().y(40, 1),
+        labels[0]().text("Cumulative Sales", 1),
     ) 
 
     textSignal(DEFAULT)
@@ -171,20 +184,20 @@ export default makeScene2D(function* (view) {
     view.add(
         <>
             <Rect 
-                ref={bar2}
+                ref={bars[1]}
                 height={0}
                 width={100}
                 fill={"yellow"}
                 x={-200}
             />
             <Txt 
-                ref={value2}
+                ref={values[1]}
                 text={""}
                 fill={"white"}
                 x={-200}
             />
             <Txt 
-                ref={xValue2}
+                ref={labels[1]}
                 text={""}
                 fill={"white"}
                 x={-200}
@@ -193,12 +206,12 @@ export default makeScene2D(function* (view) {
     )
 
     yield* all (
-        bar2().height(120, 1),
-        bar2().y(-60,1),
-        value2().y(-160, 1),
-        xValue2().y(60, 1),
-        value2().text("¥185,441M", 1),
-        xValue2().text("Operating\nIncome", 1),
+        bars[1]().height(120, 1),
+        bars[1]().y(-60,1),
+        values[1]().y(-160, 1),
+        values[1]().text("129.53M", 1),
+        labels[1]().y(60, 1),
+        labels[1]().text("Cumulative Hardware Units", 1),
     ) 
 
     textSignal(DEFAULT)
@@ -220,20 +233,20 @@ export default makeScene2D(function* (view) {
     view.add(
         <>
             <Rect 
-                ref={bar3}
+                ref={bars[2]}
                 height={0}
                 width={100}
                 fill={"green"}
                 x={100}
             />
             <Txt 
-                ref={value3}
+                ref={values[2]}
                 text={""}
                 fill={"white"}
                 x={100}
             />
             <Txt 
-                ref={xValue3}
+                ref={labels[2]}
                 text={""}
                 fill={"white"}
                 x={100}
@@ -242,12 +255,12 @@ export default makeScene2D(function* (view) {
     )
 
     yield* all (
-        bar3().height(117, 1),
-        bar3().y(-57,1),
-        value3().y(-157, 1),
-        xValue3().y(57, 1),
-        value3().text("¥181,019M", 1),
-        xValue3().text("Net\nIncome", 1),
+        bars[2]().height(117, 1),
+        bars[2]().y(-57,1),
+        values[2]().y(-157, 1),
+        values[2]().text("¥64,162", 1),
+        labels[2]().y(57, 1),
+        labels[2]().text("Cumulative Sales Per Hardware Unit", 1),
     ) 
 
     yield* ref().x(-650,1)
