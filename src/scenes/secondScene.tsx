@@ -192,6 +192,11 @@ export default makeScene2D(function* (view) {
         values[2]().text("Cumulative Sales Per Hardware Unit:   ¥64,162", 1),
     )
 
+    yield* waitFor(2)
+    values[0]().remove()
+    values[1]().remove()
+    values[2]().remove()
+
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
 
