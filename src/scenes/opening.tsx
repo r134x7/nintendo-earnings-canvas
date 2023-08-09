@@ -18,15 +18,17 @@ export default makeScene2D(function* (view) {
     view.add(
         <Rect 
             padding={10}
-            radius={20}
+            radius={15}
             fill={"white"}
             layout
         >
             <Rect fill={"black"}>
-            <Txt 
+            <Txt
+                fontFamily={"monospace"}
                 ref={getText}
                 text={() => `${openingTextSignal()}`}
-                lineHeight={"150%"}
+                textWrap={"pre"}
+                // lineHeight={"150%"}
                 fill={"white"}
             />
             </Rect>
