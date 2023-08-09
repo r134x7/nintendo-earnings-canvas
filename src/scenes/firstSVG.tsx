@@ -124,7 +124,6 @@ export default makeScene2D(function* (view) {
         <>
             <Rect 
                 ref={bar1}
-                height={0}
                 minHeight={0}
                 width={100}
                 fill={"red"}
@@ -145,14 +144,14 @@ export default makeScene2D(function* (view) {
         </>
     )
     
-    // yield* bar1().height(50, 1)
     yield* all (
         bar1().height(300, 1),
-        value1().y(-180, 1),
-        xValue1().y(200, 1),
+        bar1().y(-150, 1),
+        value1().y(-340, 1),
+        xValue1().y(40, 1),
         value1().text("¥461,341M", 1),
         xValue1().text("Net Sales", 1),
-        textBox().y(350, 1)
+        // textBox().y(350, 1)
     ) 
 
     textSignal(DEFAULT)
@@ -169,7 +168,7 @@ export default makeScene2D(function* (view) {
                 ref={bar2}
                 height={0}
                 width={100}
-                fill={"red"}
+                fill={"yellow"}
                 x={-200}
             />
             <Txt 
@@ -188,13 +187,12 @@ export default makeScene2D(function* (view) {
     )
 
     yield* all (
-        bar2().height(300 * .40, 1),
-        bar2().y(90,1),
-        value2().y(-180, 1),
-        xValue2().y(200 * .40, 1),
+        bar2().height(120, 1),
+        bar2().y(-60,1),
+        value2().y(-160, 1),
+        xValue2().y(60, 1),
         value2().text("¥185,441M", 1),
         xValue2().text("Operating\nIncome", 1),
-        textBox().y(350, 1)
     ) 
 
     yield* waitFor(8)
