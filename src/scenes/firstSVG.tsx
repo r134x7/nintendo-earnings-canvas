@@ -1,5 +1,5 @@
 import { makeScene2D, Img, Circle, Rect, Txt } from "@motion-canvas/2d";
-import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop } from "@motion-canvas/core";
+import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT } from "@motion-canvas/core";
 
 import { textBlock } from "./opening";
 
@@ -17,7 +17,8 @@ export default makeScene2D(function* (view) {
 
     const lines = new Map<number, string>();
 
-    lines.set(lines.size, "This is just a random avatar.")
+    lines.set(lines.size, "This is just an avatar.")
+    lines.set(lines.size, "The following data covers the 1st Quarter earnings release of Nintendo for the fiscal year ending March 2024 (FY3/2024).")
 
     view.add(
         <Img 
@@ -50,7 +51,7 @@ export default makeScene2D(function* (view) {
             radius={15}
             fill={"white"}
             layout
-            y={200}
+            y={250}
         >
             <Rect fill={"black"}>
             <Txt
@@ -66,7 +67,6 @@ export default makeScene2D(function* (view) {
         </Rect>
     )
 
-
     yield* loop(
         lines.get(0).length,
         i => textBlock(lines.get(0), 40, textSignal, numberSignal, 0.07, 2)
@@ -76,4 +76,12 @@ export default makeScene2D(function* (view) {
     ref().src(avatarB)
     yield* ref().x(-800,1)
     ref().src(avatarA)
+
+    textSignal(DEFAULT)
+    numberSignal(DEFAULT)
+
+    yield* loop(
+        lines.get(1).length,
+        i => textBlock(lines.get(1), 40, textSignal, numberSignal, 0.07, 2)
+    )
 })

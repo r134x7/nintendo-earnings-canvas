@@ -80,7 +80,11 @@ export function* textBlock(text: string, lineLength: number, getSignal: SimpleSi
 
     const charRange = text.slice(0, getIndex() + 1)
 
-    const checkNewLines = Math.floor(text.length / (lineLength + 1));
+    // const checkNewLines = Math.floor(text.length / (lineLength + 1));
+    const checkNewLines = (text.length % lineLength === 0 && text.length > lineLength) 
+        ? Math.floor(text.length / (lineLength))
+        : Math.floor(text.length / (lineLength + 1));
+    
 
     function makeTextBlock(getText: string, getLineLength: number, blockSize: number): string {
 
