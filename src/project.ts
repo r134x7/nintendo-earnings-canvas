@@ -8,5 +8,5 @@ import opening from './scenes/opening?scene';
 import firstSVG from './scenes/firstSVG?scene';
 
 export default makeProject({
-  scenes: [opening, pieChart, firstSVG],
+  scenes: [opening, firstSVG],
 });

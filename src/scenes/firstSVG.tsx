@@ -1,8 +1,9 @@
-import { makeScene2D, Img } from "@motion-canvas/2d";
+import { makeScene2D, Img, Circle } from "@motion-canvas/2d";
 import { Direction, all, createRef, slideTransition, waitFor } from "@motion-canvas/core";
 
-import something from "../assets/episode1/rect3.svg"
-import something2 from "../assets/episode1/firstDrawing.svg"
+import robot from "../assets/episode1/firstDrawing.svg"
+import avatarA from "../assets/episode1/avatar1a.svg";
+import avatarB from "../assets/episode1/avatar1b.svg";
 
 export default makeScene2D(function* (view) {
 
@@ -11,7 +12,7 @@ export default makeScene2D(function* (view) {
     view.add(
         <Img 
             ref={ref}
-            src={something2}
+            src={avatarA}
         />
     )
 
@@ -19,11 +20,18 @@ export default makeScene2D(function* (view) {
 
     // yield* ref().x(-200, 1)
     yield* all(
-        ref().x(-200, 1),
-        ref().y(200, 1)
+        ref().x(-800, 1),
+        ref().y(300, 1)
     )
+    yield* waitFor(1)
 
     yield* slideTransition(Direction.Right);
 
-    yield* waitFor(4)
+    ref().fill("white")
+    yield* waitFor(2)
+    ref().src(avatarB)
+    yield* ref().scale(2, 1)
+    yield* waitFor(2)
+    ref().src(avatarA)
+    yield* waitFor(2)
 })
