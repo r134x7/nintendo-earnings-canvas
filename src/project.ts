@@ -7,5 +7,5 @@ import ellipse from './scenes/ellipse?scene';
 import opening from './scenes/opening?scene';
 
 export default makeProject({
-  scenes: [opening],
+  scenes: [opening, pieChart],
 });

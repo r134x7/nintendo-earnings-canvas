@@ -4,6 +4,8 @@ import { createRef, createSignal, DEFAULT, waitFor, all, tween, Thread, ThreadGe
 
 export default makeScene2D(function* (view) {
 
+    const loading = "Loading...";
+
     const openingText = "Welcome to the animation of ggx2ac + archives: Nintendo earnings data and other video game companies";
 
     const openingTextSignal = createSignal("");
@@ -35,14 +37,26 @@ export default makeScene2D(function* (view) {
     )
 
     yield* loop(
-        openingText.length,
-        // i => singleLineMessage(openingText, openingTextSignal, numberSignal, 0.17)
-        i => textBlock(openingText, 40, openingTextSignal, numberSignal, 0.07)
+        loading.length,
+        i => textBlock(loading, 10, openingTextSignal, numberSignal, 0.07, 0.5)
     )
 
-    openingTextSignal(DEFAULT) 
+    openingTextSignal(DEFAULT)
+    numberSignal(DEFAULT)
 
-    yield* waitFor(2)
+    yield* loop(
+        loading.length,
+        i => textBlock(loading, 10, openingTextSignal, numberSignal, 0.07, 0.5)
+    )
+    yield* waitFor(0.5)
+
+    openingTextSignal(DEFAULT)
+    numberSignal(DEFAULT)
+
+    yield* loop(
+        openingText.length,
+        i => textBlock(openingText, 40, openingTextSignal, numberSignal, 0.07, 2)
+    )
 
 })
 
@@ -60,13 +74,13 @@ function* singleLineMessage(text: string, getSignal: SimpleSignal<string, void>,
     }
 }
 
-function* textBlock(text: string, lineLength: number, getSignal: SimpleSignal<string, void>, getIndex: SimpleSignal<number, void>, delay: number): ThreadGenerator {
+export function* textBlock(text: string, lineLength: number, getSignal: SimpleSignal<string, void>, getIndex: SimpleSignal<number, void>, delay: number, endDelay: number): ThreadGenerator {
 
     yield* waitFor(delay)
 
     const charRange = text.slice(0, getIndex() + 1)
 
-    const checkNewLines = Math.floor(text.length / lineLength);
+    const checkNewLines = Math.floor(text.length / (lineLength + 1));
 
     function makeTextBlock(getText: string, getLineLength: number, blockSize: number): string {
 
@@ -110,6 +124,6 @@ function* textBlock(text: string, lineLength: number, getSignal: SimpleSignal<st
     getIndex(getIndex() + 1)
 
     if (text.length === getIndex()) {
-        yield* waitFor(2)
+        yield* waitFor(endDelay)
     }
 }
