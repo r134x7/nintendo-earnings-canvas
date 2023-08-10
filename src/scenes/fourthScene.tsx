@@ -75,7 +75,7 @@ export default makeScene2D(function* (view) {
         />
     )
 
-    yield* slideTransition(Direction.Left);
+    yield* slideTransition(Direction.Bottom);
 
     yield* all(
         ref().x(-800, 1),
@@ -83,7 +83,7 @@ export default makeScene2D(function* (view) {
     )
     yield* waitFor(1)
 
-    yield* slideTransition(Direction.Left);
+    yield* slideTransition(Direction.Bottom);
 
     ref().fill("white")
     yield* waitFor(2)
@@ -141,19 +141,19 @@ export default makeScene2D(function* (view) {
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
-                x={-700}
+                x={-800}
             />
             <Txt 
                 ref={values[0]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={-800}
             />
             <Txt 
                 ref={labels[0]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={-800}
             />
         </>
     )
@@ -164,7 +164,7 @@ export default makeScene2D(function* (view) {
         values[0]().y(-330, 1),
         values[0]().text("55.46M", 1),
         labels[0]().y(60, 1),
-        labels[0]().text("Mario Kart 8 Deluxe", 1),
+        labels[0]().text("Mario Kart\n8 Deluxe", 1),
     ) 
 
     textSignal(DEFAULT)
@@ -182,27 +182,27 @@ export default makeScene2D(function* (view) {
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
-                x={-500}
+                x={-400}
             />
             <Txt 
                 ref={values[1]}
                 text={""}
                 fill={"white"}
-                x={-500}
+                x={-400}
             />
             <Txt 
                 ref={labels[1]}
                 text={""}
                 fill={"white"}
-                x={-500}
+                x={-400}
             />
         </>
     )
 
     yield* all (
         bars[1]().height(300 * .77, 1),
-        bars[1]().y(-150,1),
-        values[1]().y(-330, 1),
+        bars[1]().y(-150 * .77,1),
+        values[1]().y(-330 * .77, 1),
         values[1]().text("42.79M", 1),
         labels[1]().y(60, 1),
         labels[1]().text("Animal Crossing:\nNew Horizons", 1),
@@ -223,30 +223,30 @@ export default makeScene2D(function* (view) {
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
-                x={-300}
+                x={0}
             />
             <Txt 
                 ref={values[2]}
                 text={""}
                 fill={"white"}
-                x={-300}
+                x={0}
             />
             <Txt 
                 ref={labels[2]}
                 text={""}
                 fill={"white"}
-                x={-300}
+                x={0}
             />
         </>
     )
 
     yield* all (
         bars[2]().height(300 * .57, 1),
-        bars[2]().y(-150,1),
-        values[2]().y(-330, 1),
+        bars[2]().y(-150 * .57,1),
+        values[2]().y(-330 * .6, 1),
         values[2]().text("31.77M", 1),
         labels[2]().y(60, 1),
-        labels[2]().text("Super Smash Bros. Ultimate", 1),
+        labels[2]().text("Super Smash\nBros. Ultimate", 1),
     ) 
 
     textSignal(DEFAULT)
@@ -264,30 +264,30 @@ export default makeScene2D(function* (view) {
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
-                x={-100}
+                x={400}
             />
             <Txt 
                 ref={values[3]}
                 text={""}
                 fill={"white"}
-                x={-100}
+                x={400}
             />
             <Txt 
                 ref={labels[3]}
                 text={""}
                 fill={"white"}
-                x={-100}
+                x={400}
             />
         </>
     )
 
     yield* all (
         bars[3]().height(300 * .55, 1),
-        bars[3]().y(-150,1),
-        values[3]().y(-330, 1),
+        bars[3]().y(-150 * .55,1),
+        values[3]().y(-330 * .57, 1),
         values[3]().text("30.65M", 1),
         labels[3]().y(60, 1),
-        labels[3]().text("The Legend of Zelda: Breath of the Wild", 1),
+        labels[3]().text("The Legend of Zelda:\nBreath of the Wild", 1),
     ) 
 
     textSignal(DEFAULT)
@@ -305,34 +305,52 @@ export default makeScene2D(function* (view) {
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
-                x={-700}
+                x={800}
             />
             <Txt 
                 ref={values[4]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={800}
             />
             <Txt 
                 ref={labels[4]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={800}
             />
         </>
     )
 
     yield* all (
         bars[4]().height(300 * .48, 1),
-        bars[4]().y(-150,1),
-        values[4]().y(-330, 1),
+        bars[4]().y(-150 * .48,1),
+        values[4]().y(-330 * .50, 1),
         values[4]().text("26.44M", 1),
         labels[4]().y(60, 1),
-        labels[4]().text("Super Mario Odyssey", 1),
+        labels[4]().text("Super Mario\nOdyssey", 1),
     ) 
+
+    yield* waitFor(4)
 
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
+
+    bars[0]().remove()
+    bars[1]().remove()
+    bars[2]().remove()
+    bars[3]().remove()
+    bars[4]().remove()
+    values[0]().remove()
+    values[1]().remove()
+    values[2]().remove()
+    values[3]().remove()
+    values[4]().remove()
+    labels[0]().remove()
+    labels[1]().remove()
+    labels[2]().remove()
+    labels[3]().remove()
+    labels[4]().remove()
 
     yield* loop(
         lines.get(6).length,
@@ -346,30 +364,30 @@ export default makeScene2D(function* (view) {
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
-                x={-700}
+                x={-800}
             />
             <Txt 
                 ref={values[5]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={-800}
             />
             <Txt 
                 ref={labels[5]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={-750}
             />
         </>
     )
 
     yield* all (
         bars[5]().height(300 * .47, 1),
-        bars[5]().y(-150,1),
-        values[5]().y(-330, 1),
+        bars[5]().y(-150 * .47,1),
+        values[5]().y(-330 * .5, 1),
         values[5]().text("25.92M", 1),
-        labels[5]().y(60, 1),
-        labels[5]().text("Pokémon Sword/Pokémon Shield", 1),
+        labels[5]().y(-250, 1),
+        labels[5]().text("Pokémon Sword/\nPokémon Shield", 1),
     ) 
 
     textSignal(DEFAULT)
@@ -386,30 +404,30 @@ export default makeScene2D(function* (view) {
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
-                x={-700}
+                x={-400}
             />
             <Txt 
                 ref={values[6]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={-400}
             />
             <Txt 
                 ref={labels[6]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={-400}
             />
         </>
     )
 
     yield* all (
         bars[6]().height(300 * .41, 1),
-        bars[6]().y(-150,1),
-        values[6]().y(-330, 1),
+        bars[6]().y(-150 * .41,1),
+        values[6]().y(-330 * .45, 1),
         values[6]().text("22.66M", 1),
         labels[6]().y(60, 1),
-        labels[6]().text("Pokémon Scarlet/Pokémon Violet", 1),
+        labels[6]().text("Pokémon Scarlet/\nPokémon Violet", 1),
     ) 
 
     textSignal(DEFAULT)
@@ -427,30 +445,30 @@ export default makeScene2D(function* (view) {
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
-                x={-700}
+                x={0}
             />
             <Txt 
                 ref={values[7]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={0}
             />
             <Txt 
                 ref={labels[7]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={0}
             />
         </>
     )
 
     yield* all (
         bars[7]().height(300 * .35, 1),
-        bars[7]().y(-150,1),
-        values[7]().y(-330, 1),
+        bars[7]().y(-150 * .35,1),
+        values[7]().y(-330 * .4, 1),
         values[7]().text("19.39M", 1),
         labels[7]().y(60, 1),
-        labels[7]().text("Super Mario Party", 1),
+        labels[7]().text("Super Mario\nParty", 1),
     ) 
 
     textSignal(DEFAULT)
@@ -468,30 +486,30 @@ export default makeScene2D(function* (view) {
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
-                x={-700}
+                x={400}
             />
             <Txt 
                 ref={values[8]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={400}
             />
             <Txt 
                 ref={labels[8]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={400}
             />
         </>
     )
 
     yield* all (
         bars[8]().height(300 * .33, 1),
-        bars[8]().y(-150,1),
-        values[8]().y(-330, 1),
+        bars[8]().y(-150 * .33,1),
+        values[8]().y(-330 * .35, 1),
         values[8]().text("18.51M", 1),
-        labels[8]().y(60, 1),
-        labels[8]().text("The Legend of Zelda: Tears of the Kingdom", 1),
+        labels[8]().y(-200, 1),
+        labels[8]().text("The Legend of Zelda:\nTears of the Kingdom", 1),
     ) 
 
     textSignal(DEFAULT)
@@ -508,34 +526,31 @@ export default makeScene2D(function* (view) {
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
-                x={-700}
+                x={800}
             />
             <Txt 
                 ref={values[9]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={800}
             />
             <Txt 
                 ref={labels[9]}
                 text={""}
                 fill={"white"}
-                x={-700}
+                x={750}
             />
         </>
     )
 
     yield* all (
         bars[9]().height(300 * .29, 1),
-        bars[9]().y(-150,1),
-        values[9]().y(-330, 1),
+        bars[9]().y(-150 * .29,1),
+        values[9]().y(-330 * .32, 1),
         values[9]().text("16.17M", 1),
         labels[9]().y(60, 1),
-        labels[9]().text("New Super Mario Bros. U Deluxe", 1),
+        labels[9]().text("New Super Mario\nBros. U Deluxe", 1),
     ) 
-
-    textSignal(DEFAULT)
-    numberSignal(DEFAULT)
 
     yield* waitFor(4)
 })

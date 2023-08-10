@@ -8,7 +8,8 @@ import opening from './scenes/opening?scene';
 import firstSVG from './scenes/firstSVG?scene';
 import secondScene from './scenes/secondScene?scene';
 import thirdScene from './scenes/thirdScene?scene';
+import fourthScene from './scenes/fourthScene?scene';
 
 export default makeProject({
-  scenes: [opening, firstSVG, secondScene, thirdScene],
+  scenes: [opening, firstSVG, secondScene, thirdScene, fourthScene],
 });
