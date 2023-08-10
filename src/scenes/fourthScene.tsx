@@ -404,38 +404,39 @@ export default makeScene2D(function* (view) {
     )
 
     yield* all (
-        bars[0]().height(300, 1),
-        bars[0]().y(-150,1),
-        values[0]().y(-330, 1),
-        values[0]().text("55.46M", 1),
-        labels[0]().y(60, 1),
-        labels[0]().text("Mario Kart 8 Deluxe", 1),
+        bars[6]().height(300 * .41, 1),
+        bars[6]().y(-150,1),
+        values[6]().y(-330, 1),
+        values[6]().text("22.66M", 1),
+        labels[6]().y(60, 1),
+        labels[6]().text("Pokémon Scarlet/Pokémon Violet", 1),
     ) 
 
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
+
     yield* loop(
-        lines.get(1).length,
-        i => textBlock(lines.get(1), 40, textSignal, numberSignal, 0.07, 2)
+        lines.get(8).length,
+        i => textBlock(lines.get(8), 40, textSignal, numberSignal, 0.07, 2)
     )
 
     view.add(
         <>
             <Rect 
-                ref={bars[0]}
+                ref={bars[7]}
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
                 x={-700}
             />
             <Txt 
-                ref={values[0]}
+                ref={values[7]}
                 text={""}
                 fill={"white"}
                 x={-700}
             />
             <Txt 
-                ref={labels[0]}
+                ref={labels[7]}
                 text={""}
                 fill={"white"}
                 x={-700}
@@ -444,38 +445,39 @@ export default makeScene2D(function* (view) {
     )
 
     yield* all (
-        bars[0]().height(300, 1),
-        bars[0]().y(-150,1),
-        values[0]().y(-330, 1),
-        values[0]().text("55.46M", 1),
-        labels[0]().y(60, 1),
-        labels[0]().text("Mario Kart 8 Deluxe", 1),
+        bars[7]().height(300 * .35, 1),
+        bars[7]().y(-150,1),
+        values[7]().y(-330, 1),
+        values[7]().text("19.39M", 1),
+        labels[7]().y(60, 1),
+        labels[7]().text("Super Mario Party", 1),
     ) 
 
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
+
     yield* loop(
-        lines.get(1).length,
-        i => textBlock(lines.get(1), 40, textSignal, numberSignal, 0.07, 2)
+        lines.get(9).length,
+        i => textBlock(lines.get(9), 40, textSignal, numberSignal, 0.07, 2)
     )
 
     view.add(
         <>
             <Rect 
-                ref={bars[0]}
+                ref={bars[8]}
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
                 x={-700}
             />
             <Txt 
-                ref={values[0]}
+                ref={values[8]}
                 text={""}
                 fill={"white"}
                 x={-700}
             />
             <Txt 
-                ref={labels[0]}
+                ref={labels[8]}
                 text={""}
                 fill={"white"}
                 x={-700}
@@ -484,38 +486,38 @@ export default makeScene2D(function* (view) {
     )
 
     yield* all (
-        bars[0]().height(300, 1),
-        bars[0]().y(-150,1),
-        values[0]().y(-330, 1),
-        values[0]().text("55.46M", 1),
-        labels[0]().y(60, 1),
-        labels[0]().text("Mario Kart 8 Deluxe", 1),
+        bars[8]().height(300 * .33, 1),
+        bars[8]().y(-150,1),
+        values[8]().y(-330, 1),
+        values[8]().text("18.51M", 1),
+        labels[8]().y(60, 1),
+        labels[8]().text("The Legend of Zelda: Tears of the Kingdom", 1),
     ) 
 
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
     yield* loop(
-        lines.get(1).length,
-        i => textBlock(lines.get(1), 40, textSignal, numberSignal, 0.07, 2)
+        lines.get(10).length,
+        i => textBlock(lines.get(10), 40, textSignal, numberSignal, 0.07, 2)
     )
 
     view.add(
         <>
             <Rect 
-                ref={bars[0]}
+                ref={bars[9]}
                 height={0}
                 width={100}
                 fill={"rgba(0, 255, 255, .80)"}
                 x={-700}
             />
             <Txt 
-                ref={values[0]}
+                ref={values[9]}
                 text={""}
                 fill={"white"}
                 x={-700}
             />
             <Txt 
-                ref={labels[0]}
+                ref={labels[9]}
                 text={""}
                 fill={"white"}
                 x={-700}
@@ -524,12 +526,12 @@ export default makeScene2D(function* (view) {
     )
 
     yield* all (
-        bars[0]().height(300, 1),
-        bars[0]().y(-150,1),
-        values[0]().y(-330, 1),
-        values[0]().text("55.46M", 1),
-        labels[0]().y(60, 1),
-        labels[0]().text("Mario Kart 8 Deluxe", 1),
+        bars[9]().height(300 * .29, 1),
+        bars[9]().y(-150,1),
+        values[9]().y(-330, 1),
+        values[9]().text("16.17M", 1),
+        labels[9]().y(60, 1),
+        labels[9]().text("New Super Mario Bros. U Deluxe", 1),
     ) 
 
     textSignal(DEFAULT)
