@@ -18,9 +18,15 @@ export default makeScene2D(function* (view) {
         createRef<Rect>(),
         createRef<Rect>(),
         createRef<Rect>(),
+        createRef<Rect>(),
+        createRef<Rect>(),
+        createRef<Rect>(),
     ];
 
     const values = [
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
         createRef<Txt>(),
         createRef<Txt>(),
         createRef<Txt>(),
@@ -34,6 +40,9 @@ export default makeScene2D(function* (view) {
         createRef<Txt>(),
         createRef<Txt>(),
         createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
     ];
 
     const textSignal = createSignal("");
@@ -42,15 +51,15 @@ export default makeScene2D(function* (view) {
     const lines = new Map<number, string>();
 
     lines.set(lines.size, "Global Hardware/Software Units.")
-    lines.set(lines.size, "The Nintendo Switch platform had cumulative (life-to-date) sales of ¥8,310,917M in the first quarter")
-    lines.set(lines.size, "The cumulative (life-to-date) Nintendo Switch Hardware Total Units reached 129.53M units in the first quarter")
-    lines.set(lines.size, "The cumulative (life-to-date) sales per hardware unit calculation results in ¥64,162 per hardware unit")
-    lines.set(lines.size, "The shipments of the Nintendo Switch Hardware Total for the first quarter was 3.91M units. A +13.99% increase year-over-year. Life-To-Date: 129.53M units")
-    lines.set(lines.size, "The shipments of the Nintendo Switch (model) for the first quarter was 0.64M units. A -51.52% decrease year-over-year. Life-To-Date: 90.23M units")
-    lines.set(lines.size, "The shipments of the Nintendo Switch OLED Model for the first quarter was 2.83M units. A +86.18% increase year-over-year. Life-To-Date: 17.85M units")
-    lines.set(lines.size, "The shipments of the Nintendo Switch Lite for the first quarter was 0.43M units. A -27.12% decrease year-over-year. Life-To-Date: 21.45M units")
-    lines.set(lines.size, "The Nintendo Switch Software Total for the first quarter was 52.21M units. A +26.08% increase year-over-year. Life-To-Date: 1088.35M units")
-    lines.set(lines.size, "Software sales units include both packaged and downloadable versions of software, and do not include download-only software or add-on  content.")
+    lines.set(lines.size, "The Nintendo Switch platform had cumulative (life-to-date) sales of ¥8,310,917M in the first quarter.")
+    lines.set(lines.size, "The cumulative (life-to-date) Nintendo Switch Hardware Total Units reached 129.53M units in the first quarter.")
+    lines.set(lines.size, "The cumulative (life-to-date) sales per hardware unit calculation results in ¥64,162 per hardware unit.")
+    lines.set(lines.size, "The shipments of the Nintendo Switch Hardware Total for the first quarter was 3.91M units. A +13.99% increase year-over-year. Life-To-Date: 129.53M units.")
+    lines.set(lines.size, "The shipments of the Nintendo Switch (model) for the first quarter was 0.64M units. A -51.52% decrease year-over-year. Life-To-Date: 90.23M units.")
+    lines.set(lines.size, "The shipments of the Nintendo Switch OLED Model for the first quarter was 2.83M units. A +86.18% increase year-over-year. Life-To-Date: 17.85M units.")
+    lines.set(lines.size, "The shipments of the Nintendo Switch Lite for the first quarter was 0.43M units. A -27.12% decrease year-over-year. Life-To-Date: 21.45M units.")
+    lines.set(lines.size, "The Nintendo Switch Software Total for the first quarter was 52.21M units. A +26.08% increase year-over-year. Life-To-Date: 1088.35M units.")
+    lines.set(lines.size, "Software sales units include both packaged and downloadable versions of software, and do not include download-only software or add-on content.")
 
     view.add(
         <Img 
@@ -208,34 +217,34 @@ export default makeScene2D(function* (view) {
     view.add(
         <>
             <Rect 
-                ref={bars[1]}
+                ref={bars[3]}
                 height={0}
                 width={100}
-                fill={"yellow"}
-                x={-200}
+                fill={"rgba(0, 255, 255, .80)"}
+                x={-700}
             />
             <Txt 
-                ref={values[1]}
+                ref={values[3]}
                 text={""}
                 fill={"white"}
-                x={-200}
+                x={-700}
             />
             <Txt 
-                ref={labels[1]}
+                ref={labels[3]}
                 text={""}
                 fill={"white"}
-                x={-200}
+                x={-700}
             />
         </>
     )
 
     yield* all (
-        bars[1]().height(120, 1),
-        bars[1]().y(-60,1),
-        values[1]().y(-160, 1),
-        values[1]().text("129.53M", 1),
-        labels[1]().y(60, 1),
-        labels[1]().text("Cumulative Hardware Units:    129.53M", 1),
+        bars[3]().height(300, 1),
+        bars[3]().y(-150,1),
+        values[3]().y(-330, 1),
+        values[3]().text("3.91M", 1),
+        labels[3]().y(60, 1),
+        labels[3]().text("Switch Hardware\nTotal", 1),
     ) 
 
     textSignal(DEFAULT)
@@ -245,6 +254,39 @@ export default makeScene2D(function* (view) {
         lines.get(5).length,
         i => textBlock(lines.get(5), 40, textSignal, numberSignal, 0.07, 2)
     )
+
+    view.add(
+        <>
+            <Rect 
+                ref={bars[4]}
+                height={0}
+                width={100}
+                fill={"rgba(0, 255, 255, .80)"}
+                x={-400}
+            />
+            <Txt 
+                ref={values[4]}
+                text={""}
+                fill={"white"}
+                x={-400}
+            />
+            <Txt 
+                ref={labels[4]}
+                text={""}
+                fill={"white"}
+                x={-400}
+            />
+        </>
+    )
+
+    yield* all (
+        bars[4]().height(300 * 0.16, 1),
+        bars[4]().y(-150 * 0.16,1),
+        values[4]().y(-330 * 0.25, 1),
+        values[4]().text("0.64M", 1),
+        labels[4]().y(60, 1),
+        labels[4]().text("Switch", 1),
+    ) 
 
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
@@ -257,34 +299,34 @@ export default makeScene2D(function* (view) {
     view.add(
         <>
             <Rect 
-                ref={bars[2]}
+                ref={bars[5]}
                 height={0}
                 width={100}
-                fill={"green"}
-                x={100}
+                fill={"rgba(0, 255, 255, .80)"}
+                x={-100}
             />
             <Txt 
-                ref={values[2]}
+                ref={values[5]}
                 text={""}
                 fill={"white"}
-                x={100}
+                x={-100}
             />
             <Txt 
-                ref={labels[2]}
+                ref={labels[5]}
                 text={""}
                 fill={"white"}
-                x={100}
+                x={-100}
             />
         </>
     )
 
     yield* all (
-        bars[2]().height(117, 1),
-        bars[2]().y(-57,1),
-        values[2]().y(-157, 1),
-        values[2]().text("¥64,162", 1),
-        labels[2]().y(57, 1),
-        labels[2]().text("Cumulative Sales Per Hardware Unit:   ¥64,162", 1),
+        bars[5]().height(300 * 0.72, 1),
+        bars[5]().y(-150 * 0.72,1),
+        values[5]().y(-330 * 0.72, 1),
+        values[5]().text("2.83M", 1),
+        labels[5]().y(60, 1),
+        labels[5]().text("Switch OLED\nModel", 1),
     ) 
 
     yield* ref().x(-650,1)
@@ -295,9 +337,58 @@ export default makeScene2D(function* (view) {
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
 
+    view.add(
+        <>
+            <Rect 
+                ref={bars[6]}
+                height={0}
+                width={100}
+                fill={"rgba(0, 255, 255, .80)"}
+                x={200}
+            />
+            <Txt 
+                ref={values[6]}
+                text={""}
+                fill={"white"}
+                x={200}
+            />
+            <Txt 
+                ref={labels[6]}
+                text={""}
+                fill={"white"}
+                x={200}
+            />
+        </>
+    )
+
+    yield* all (
+        bars[6]().height(300 * 0.11, 1),
+        bars[6]().y(-150 * 0.11,1),
+        values[6]().y(-330 * 0.18, 1),
+        values[6]().text("0.43M", 1),
+        labels[6]().y(60, 1),
+        labels[6]().text("Switch Lite", 1),
+    ) 
+
     yield* loop(
         lines.get(7).length,
         i => textBlock(lines.get(7), 40, textSignal, numberSignal, 0.07, 2)
+    )
+
+    textSignal(DEFAULT)
+    numberSignal(DEFAULT)
+
+    yield* loop(
+        lines.get(8).length,
+        i => textBlock(lines.get(8), 40, textSignal, numberSignal, 0.07, 2)
+    )
+
+    textSignal(DEFAULT)
+    numberSignal(DEFAULT)
+
+    yield* loop(
+        lines.get(9).length,
+        i => textBlock(lines.get(9), 40, textSignal, numberSignal, 0.07, 2)
     )
 
     yield* waitFor(4)
