@@ -28,8 +28,8 @@ export default makeScene2D(function* (view) {
 
     const lines = new Map<number, string>();
 
-    lines.set(lines.size, "This, is an avatar and I am bad at drawing.")
-    lines.set(lines.size, "The following data from my webpage (link in the description) covers the 1st Quarter earnings release of Nintendo for the fiscal year ending March 2024 (FY3/2024).")
+    lines.set(lines.size, "Note: M = Million (or rather 10^6). Data sources are linked in the description. This animation was produced using Motion Canvas (link in the description).")
+    lines.set(lines.size, "The following data comes from my webpage (link in the description) and may contain errors. This video covers the 1st Quarter earnings release of Nintendo for the fiscal year ending March 2024 (FY3/2024).")
     lines.set(lines.size, "Consolidated Operating Results.")
     lines.set(lines.size, "Nintendo's consolidated net sales for the first quarter was ¥461,341M. A +50.05 increase year-over-year.")
     lines.set(lines.size, "Nintendo's consolidated operating income for the first quarter was ¥185,441M. A +82.44% increase year-over-year.")
