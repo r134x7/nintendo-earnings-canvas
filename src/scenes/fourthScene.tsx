@@ -57,16 +57,16 @@ export default makeScene2D(function* (view) {
     const lines = new Map<number, string>();
     
     lines.set(lines.size, "Top Selling Titles: Nintendo Switch")
-    lines.set(lines.size, "Mario Kart 8 Deluxe shipped/downloads was 1.67M units in the first quarter. Life-to-date was at 55.46M units.")
-    lines.set(lines.size, "Animal Crossing: New Horizons shipped/downloads was 0.58M units in the first quarter. Life-to-date was at 42.79M units.")
-    lines.set(lines.size, "Super Smash Bros. Ultimate shipped/downloads was 0.68M units in the first quarter. Life-to-date was at 31.77M units.")
-    lines.set(lines.size, "The Legend of Zelda: Breath of the Wild shipped/downloads was 0.84M units in the first quarter. Life-to-date was at 30.65M units.")
-    lines.set(lines.size, "Super Mario Odyssey shipped/downloads was 0.68M units in the first quarter. Life-to-date was at 26.44M units.")
-    lines.set(lines.size, "Pokémon Sword/Pokémon Shield shipped/downloads was 0.1M units in the first quarter. Life-to-date was at 25.92M units.")
-    lines.set(lines.size, "Pokémon Scarlet/Pokémon Violet shipped/downloads was 0.56M units in the first quarter. Life-to-date was at 22.66M units.")
-    lines.set(lines.size, "Super Mario Party shipped/downloads was 0.25M units in the first quarter. Life-to-date was at 19.39M units.")
-    lines.set(lines.size, "The Legend of Zelda: Tears of the Kingdom shipped/downloads was 18.51M units in the first quarter. Life-to-date was at 18.51M units.")
-    lines.set(lines.size, "New Super Mario Bros. U Deluxe shipped/downloads was 0.76M units in the first quarter. Life-to-date was at 16.17M units.")
+    lines.set(lines.size, "Mario Kart 8 Deluxe shipped units/downloads was 1.67M units in the first quarter. Life-to-date: 55.46M units.")
+    lines.set(lines.size, "Animal Crossing: New Horizons shipped units/downloads was 0.58M units in the first quarter. Life-to-date: 42.79M units.")
+    lines.set(lines.size, "Super Smash Bros. Ultimate shipped units/downloads was 0.68M units in the first quarter. Life-to-date: 31.77M units.")
+    lines.set(lines.size, "The Legend of Zelda: Breath of the Wild shipped units/downloads was 0.84M units in the first quarter. Life-to-date: 30.65M units.")
+    lines.set(lines.size, "Super Mario Odyssey shipped units/downloads was 0.68M units in the first quarter. Life-to-date: 26.44M units.")
+    lines.set(lines.size, "Pokémon Sword/Pokémon Shield shipped units/downloads was 0.1M units in the first quarter. Life-to-date: 25.92M units.")
+    lines.set(lines.size, "Pokémon Scarlet/Pokémon Violet shipped units/downloads was 0.56M units in the first quarter. Life-to-date: 22.66M units.")
+    lines.set(lines.size, "Super Mario Party shipped units/downloads was 0.25M units in the first quarter. Life-to-date: 19.39M units.")
+    lines.set(lines.size, "The Legend of Zelda: Tears of the Kingdom shipped units/downloads was 18.51M units in the first quarter. Life-to-date: 18.51M units.")
+    lines.set(lines.size, "New Super Mario Bros. U Deluxe shipped units/downloads was 0.76M units in the first quarter. Life-to-date: 16.17M units.")
 
     view.add(
         <Img 

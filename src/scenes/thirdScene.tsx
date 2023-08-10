@@ -58,10 +58,10 @@ export default makeScene2D(function* (view) {
     const lines = new Map<number, string>();
     
     lines.set(lines.size, "Consolidated Sales Information")
-    lines.set(lines.size, "The Mobile, IP related income, etc. sales information for the first quarter was ¥31,857M. A +190.11% increase year-over-year. (Includes income from smart-device content and royalty income). The Super Mario Bros. Movie is cited as a reason for the increase.")
+    lines.set(lines.size, "The sales information for Mobile, IP related income, etc. in the first quarter was ¥31,857M (+190.11% increase year-over-year), (Includes income from smart-device content and royalty income). The Super Mario Bros. Movie is cited as a reason for the increase.")
     lines.set(lines.size, "Fiscal Year Million-Seller Titles")
-    lines.set(lines.size, "The Legend of Zelda: Tears of the Kingdom for the first quarter had 3.26M units in Japan and 15.26M units Overseas. The Global fiscal year and life-to-date figure is 18.51M units")
-    lines.set(lines.size, "Mario Kart 8 Deluxe for the first quarter had 0.19M units in Japan and 1.48M units Overseas. The Global fiscal year figure is 1.67M units and the global life-to-date figure is 55.46M units")
+    lines.set(lines.size, "The Legend of Zelda: Tears of the Kingdom for the first quarter had shipped units/downloads of 3.26M units in Japan and 15.26M units Overseas. The Global fiscal year and life-to-date figure is 18.51M units.")
+    lines.set(lines.size, "Mario Kart 8 Deluxe for the first quarter had shipped units/downloads of 0.19M units in Japan and 1.48M units Overseas. The Global fiscal year figure is 1.67M units and the Global life-to-date figure is 55.46M units.")
 
     view.add(
         <Img 
@@ -126,7 +126,7 @@ export default makeScene2D(function* (view) {
 
     yield* loop(
         lines.get(1).length,
-        i => textBlock(lines.get(1), 40, textSignal, numberSignal, 0.07, 2)
+        i => textBlock(lines.get(1), 40, textSignal, numberSignal, 0.07, 4)
     )
 
     textSignal(DEFAULT)
@@ -216,7 +216,7 @@ export default makeScene2D(function* (view) {
         textBox().y(300, 1),
     ) 
 
-    yield* waitFor(2)
+    yield* waitFor(4)
 
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
