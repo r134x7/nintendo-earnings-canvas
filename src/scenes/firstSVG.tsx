@@ -132,7 +132,7 @@ export default makeScene2D(function* (view) {
                 ref={bar1}
                 minHeight={0}
                 width={100}
-                fill={"red"}
+                fill={"rgba(0, 255, 255, .80)"}
                 x={-500}
             />
             <Txt 
@@ -174,7 +174,7 @@ export default makeScene2D(function* (view) {
                 ref={bar2}
                 height={0}
                 width={100}
-                fill={"yellow"}
+                fill={"rgba(0, 255, 255, .80)"}
                 x={-200}
             />
             <Txt 
@@ -223,7 +223,7 @@ export default makeScene2D(function* (view) {
                 ref={bar3}
                 height={0}
                 width={100}
-                fill={"green"}
+                fill={"rgba(0, 255, 255, .80)"}
                 x={100}
             />
             <Txt 
