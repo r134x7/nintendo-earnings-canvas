@@ -28,13 +28,13 @@ export default makeScene2D(function* (view) {
 
     const lines = new Map<number, string>();
 
-    lines.set(lines.size, "Note: M = Million (or rather 10^6). Data sources are linked in the description. This animation was produced using Motion Canvas (link in the description).")
-    lines.set(lines.size, "The following data comes from my webpage (link in the description) and may contain errors. This video covers the 1st Quarter earnings release of Nintendo for the fiscal year ending March 2024 (FY3/2024).")
+    lines.set(lines.size, "This video contains no audio. Note: M = Million (or rather 10^6). Data sources are linked in the description. This animation was produced using Motion Canvas (link in the description).")
+    lines.set(lines.size, "The following data comes from my webpage (link in the description) and may contain errors. This video covers the 1st Quarter (Apr-Jun) earnings release of Nintendo for the fiscal year ending March 2024 (FY3/2024).")
     lines.set(lines.size, "Consolidated Operating Results.")
-    lines.set(lines.size, "Nintendo's consolidated net sales for the first quarter was ¥461,341M. A +50.05 increase year-over-year.")
-    lines.set(lines.size, "Nintendo's consolidated operating income for the first quarter was ¥185,441M. A +82.44% increase year-over-year.")
+    lines.set(lines.size, "Nintendo's consolidated net sales for the first quarter was ¥461,341M (+50.05 increase year-over-year).")
+    lines.set(lines.size, "Nintendo's consolidated operating income for the first quarter was ¥185,441M (+82.44% increase year-over-year).")
     lines.set(lines.size, "Nintendo's operating margin for the first quarter was 40.2%.")
-    lines.set(lines.size, "Nintendo's consolidated net income for the first quarter was ¥181,019M. A +52.14% increase year-over-year.")
+    lines.set(lines.size, "Nintendo's consolidated net income for the first quarter was ¥181,019M (+52.14% increase year-over-year).")
     lines.set(lines.size, "Nintendo's net sales, operating income and net income all broke historical records leading to them having the most profitable first quarter ever.")
 
     view.add(
@@ -263,5 +263,5 @@ export default makeScene2D(function* (view) {
         i => textBlock(lines.get(7), 40, textSignal, numberSignal, 0.07, 2)
     )
 
-    yield* waitFor(4)
+    // yield* waitFor(2)
 })

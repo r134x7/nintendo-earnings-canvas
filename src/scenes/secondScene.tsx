@@ -45,6 +45,10 @@ export default makeScene2D(function* (view) {
         createRef<Txt>(),
     ];
 
+    const titles = [
+        createRef<Txt>(),
+    ]
+
     const textSignal = createSignal("");
     const numberSignal = createSignal(0);
 
@@ -54,11 +58,11 @@ export default makeScene2D(function* (view) {
     lines.set(lines.size, "The Nintendo Switch platform had cumulative (life-to-date) sales of ¥8,310,917M in the first quarter.")
     lines.set(lines.size, "The cumulative (life-to-date) Nintendo Switch Hardware Total Units reached 129.53M units in the first quarter.")
     lines.set(lines.size, "The cumulative (life-to-date) sales per hardware unit calculation results in ¥64,162 per hardware unit.")
-    lines.set(lines.size, "The shipments of the Nintendo Switch Hardware Total for the first quarter was 3.91M units. A +13.99% increase year-over-year. Life-To-Date: 129.53M units.")
-    lines.set(lines.size, "The shipments of the Nintendo Switch (model) for the first quarter was 0.64M units. A -51.52% decrease year-over-year. Life-To-Date: 90.23M units.")
-    lines.set(lines.size, "The shipments of the Nintendo Switch OLED Model for the first quarter was 2.83M units. A +86.18% increase year-over-year. Life-To-Date: 17.85M units.")
-    lines.set(lines.size, "The shipments of the Nintendo Switch Lite for the first quarter was 0.43M units. A -27.12% decrease year-over-year. Life-To-Date: 21.45M units.")
-    lines.set(lines.size, "The Nintendo Switch Software Total for the first quarter was 52.21M units. A +26.08% increase year-over-year. Life-To-Date: 1088.35M units.")
+    lines.set(lines.size, "The shipments of the Nintendo Switch Hardware Total for the first quarter was 3.91M units (+13.99% increase year-over-year). Life-To-Date: 129.53M units.")
+    lines.set(lines.size, "The shipments of the Nintendo Switch (model) for the first quarter was 0.64M units (-51.52% decrease year-over-year). Life-To-Date: 90.23M units.")
+    lines.set(lines.size, "The shipments of the Nintendo Switch OLED Model for the first quarter was 2.83M units (+86.18% increase year-over-year). Life-To-Date: 17.85M units.")
+    lines.set(lines.size, "The shipments of the Nintendo Switch Lite for the first quarter was 0.43M units (-27.12% decrease year-over-year). Life-To-Date: 21.45M units.")
+    lines.set(lines.size, "The Nintendo Switch Software Total for the first quarter was 52.21M units (+26.08% increase year-over-year). Life-To-Date: 1088.35M units.")
     lines.set(lines.size, "Software sales units include both packaged and downloadable versions of software, and do not include download-only software or add-on content.")
 
     view.add(
@@ -136,12 +140,21 @@ export default makeScene2D(function* (view) {
                 x={-200}
                 textWrap={"pre"}
             />
+            <Txt 
+                ref={titles[0]}
+                text={""}
+                fill={"white"}
+                x={-200}
+                textWrap={"pre"}
+            />
         </> 
     )
     
     yield* all (
         values[0]().y(-340, 1),
         values[0]().text("Cumulative Sales:     ¥8,310,917M", 1),
+        titles[0]().y(-440, 1),
+        titles[0]().text("Nintendo Switch Platform", 1),
     )
 
     textSignal(DEFAULT)
@@ -205,6 +218,7 @@ export default makeScene2D(function* (view) {
     values[0]().remove()
     values[1]().remove()
     values[2]().remove()
+    titles[0]().remove()
 
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
@@ -327,6 +341,7 @@ export default makeScene2D(function* (view) {
         values[5]().text("2.83M", 1),
         labels[5]().y(60, 1),
         labels[5]().text("Switch OLED\nModel", 1),
+        textBox().y(300, 1)
     ) 
 
     yield* ref().x(-650,1)
@@ -336,6 +351,13 @@ export default makeScene2D(function* (view) {
 
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
+
+    textBox().y(250, 1)
+
+    yield* loop(
+        lines.get(7).length,
+        i => textBlock(lines.get(7), 40, textSignal, numberSignal, 0.07, 2)
+    )
 
     view.add(
         <>
@@ -370,17 +392,12 @@ export default makeScene2D(function* (view) {
         labels[6]().text("Switch Lite", 1),
     ) 
 
-    yield* loop(
-        lines.get(7).length,
-        i => textBlock(lines.get(7), 40, textSignal, numberSignal, 0.07, 2)
-    )
-
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
 
     yield* loop(
         lines.get(8).length,
-        i => textBlock(lines.get(8), 40, textSignal, numberSignal, 0.07, 2)
+        i => textBlock(lines.get(8), 40, textSignal, numberSignal, 0.07, 4)
     )
 
     textSignal(DEFAULT)
@@ -388,8 +405,7 @@ export default makeScene2D(function* (view) {
 
     yield* loop(
         lines.get(9).length,
-        i => textBlock(lines.get(9), 40, textSignal, numberSignal, 0.07, 2)
+        i => textBlock(lines.get(9), 40, textSignal, numberSignal, 0.07, 4)
     )
 
-    yield* waitFor(4)
 })
