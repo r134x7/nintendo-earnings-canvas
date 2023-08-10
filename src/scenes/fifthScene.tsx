@@ -100,10 +100,20 @@ export default makeScene2D(function* (view) {
 
     yield* loop(
         lines.get(3).length,
-        i => textBlock(lines.get(3), 40, textSignal, numberSignal, 0.07, 2)
+        i => textBlock(lines.get(3), 40, textSignal, numberSignal, 0.07, 4)
     )
-    textSignal(DEFAULT)
-    numberSignal(DEFAULT)
 
-    yield* waitFor(4)
+    ref().src(avatarB)
+
+    yield* waitFor(1) 
+
+    textBox().remove()
+
+    yield* all(
+        ref().x(1200, 3),
+        ref().y(-350, 3),
+        ref().fill("black", 1),
+    )
+
+    yield* waitFor(1) 
 })
