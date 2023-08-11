@@ -2,7 +2,7 @@ import { waitFor, ThreadGenerator, SimpleSignal } from "@motion-canvas/core";
 
 export function* textBlock(text: string, lineLength: number, getSignal: SimpleSignal<string, void>, getIndex: SimpleSignal<number, void>, delay: number, endDelay: number): ThreadGenerator {
 
-    yield* waitFor(delay)
+    // yield* waitFor(delay)
 
     const charRange = text.slice(0, getIndex() + 1)
 
@@ -53,7 +53,7 @@ export function* textBlock(text: string, lineLength: number, getSignal: SimpleSi
 
     getIndex(getIndex() + 1)
 
-    if (text.length === getIndex()) {
-        yield* waitFor(endDelay)
-    }
+    // if (text.length === getIndex()) {
+    //     yield* waitFor(endDelay)
+    // }
 }
