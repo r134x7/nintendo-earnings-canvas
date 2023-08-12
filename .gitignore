@@ -3,6 +3,8 @@ node_modules
 output
 dist
 audio
+src/newAssets
+data
 
 # Editor directories and files
 .vscode/*
