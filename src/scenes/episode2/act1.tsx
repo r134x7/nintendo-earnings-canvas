@@ -100,6 +100,16 @@ export default makeScene2D(function* (view) {
         createRef<Txt>(),
     ]
 
+    const colourRefs = [
+        createRef<Txt>(),
+        createRef<Txt>(),
+    ]
+
+    const colourBoxRefs = [
+        createRef<Rect>(),
+        createRef<Rect>(),
+    ]
+
     const textSignal = createSignal("");
     const numberSignal = createSignal(0);
 
@@ -290,6 +300,28 @@ export default makeScene2D(function* (view) {
                 fill={"white"}
                 x={-700}
             />
+            <Rect 
+                ref={colourBoxRefs[0]}
+                height={40}
+                width={80}
+                fill={"rgba(0, 255, 255, .80)"}
+            />
+            <Txt 
+                ref={colourRefs[0]}
+                text={""}
+                fill={"white"}
+            />
+            <Rect 
+                ref={colourBoxRefs[1]}
+                height={40}
+                width={80}
+                fill={"rgba(75, 0, 130, .80)"}
+            />
+            <Txt 
+                ref={colourRefs[1]}
+                text={""}
+                fill={"white"}
+            />
         </>
     )
 
@@ -314,6 +346,16 @@ export default makeScene2D(function* (view) {
         barRefs[1]().y(lastFYBarY, 1),
         valueRefs[1]().y(lastFYValueHeight, 1),
         valueRefs[1]().text(printLastFYValues.netSales, 1),
+        colourBoxRefs[0]().x(-600, 1),
+        colourBoxRefs[0]().y(-500, 1),
+        colourBoxRefs[1]().x(100, 1),
+        colourBoxRefs[1]().y(-500, 1),
+        colourRefs[0]().text("1st Quarter FY3/2024", 1),
+        colourRefs[1]().text("1st Quarter FY3/2023", 1),
+        colourRefs[0]().x(-300, 1),
+        colourRefs[0]().y(-500, 1),
+        colourRefs[1]().x(400, 1),
+        colourRefs[1]().y(-500, 1),
     ) 
 
     textSignal(DEFAULT)
