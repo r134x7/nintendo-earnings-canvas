@@ -1,5 +1,5 @@
 import { makeScene2D, Img, Circle, Line, Rect, Txt } from "@motion-canvas/2d";
-import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT } from "@motion-canvas/core";
+import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2 } from "@motion-canvas/core";
 
 import { textBlock, contextYoY, quarterLabel } from "../../utils/designs";
 import {
@@ -102,42 +102,39 @@ export default makeScene2D(function* (view) {
 
     view.add(
         <>
-            {/* <Img 
-                ref={imageRefs[1]}
-                src={spider}
-                x={-500}
-                y={-800}
-            /> */}
             <Line 
                 ref={webLine}
                 stroke={"white"}
                 lineWidth={8}
-                points={[-1800, -1000]}
-                rotation={45}
+                points={[
+                    Vector2.zero,
+                    Vector2.up.scale(1)
+                ]}
+                // rotation={45}
                 x={-500}
-                y={600}
-                layout
-            >
+                y={-1000}
+            />
             <Img 
                 ref={imageRefs[1]}
                 src={spider}
-                rotation={-45}
-                // x={-500}
-                // y={0}
+                x={-500}
+                y={-1000}
 
             /> 
-            </Line>
         </>
     )
     
-    yield* imageRefs[1]().y(800, 1)
+    // yield* imageRefs[1]().y(-400, 1)
+    yield* all(
+        imageRefs[1]().y(-400, 1),
+        webLine().y(-400, 1),
+    ) 
     yield* waitFor(3)
     // yield* imageRefs[1]().y(300, 1)
     yield* all(
-        // imageRefs[1]().y(300, 1),
-        // webLine().x(-530, 1),
-        webLine().y(1550, 1),
-        // webLine().y(imageRefs[1]().y(), 1),
+        imageRefs[1]().y(300, 1),
+        webLine().y(-800, 1),
+        webLine().points([Vector2.zero, Vector2.up.scale(1000)], 1)
     )
     yield* waitFor(3)
 
