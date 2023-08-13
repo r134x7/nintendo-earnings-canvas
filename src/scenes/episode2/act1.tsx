@@ -102,30 +102,42 @@ export default makeScene2D(function* (view) {
 
     view.add(
         <>
-            <Img 
+            {/* <Img 
                 ref={imageRefs[1]}
                 src={spider}
                 x={-500}
                 y={-800}
-            />
+            /> */}
             <Line 
                 ref={webLine}
                 stroke={"white"}
                 lineWidth={8}
-                points={[-530, -1000]}
+                points={[-1800, -1000]}
                 rotation={45}
-            />
+                x={-500}
+                y={600}
+                layout
+            >
+            <Img 
+                ref={imageRefs[1]}
+                src={spider}
+                rotation={-45}
+                // x={-500}
+                // y={0}
+
+            /> 
+            </Line>
         </>
     )
     
-    yield* imageRefs[1]().y(-400, 1)
+    yield* imageRefs[1]().y(800, 1)
     yield* waitFor(3)
     // yield* imageRefs[1]().y(300, 1)
     yield* all(
-        imageRefs[1]().y(300, 1),
-        // webLine().points([-800, 300], 1),
-        webLine().x(-530, 1),
-        webLine().y(-300, 1),
+        // imageRefs[1]().y(300, 1),
+        // webLine().x(-530, 1),
+        webLine().y(1550, 1),
+        // webLine().y(imageRefs[1]().y(), 1),
     )
     yield* waitFor(3)
 
