@@ -2,6 +2,13 @@ import { makeScene2D, Img, Circle, Rect, Txt } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT } from "@motion-canvas/core";
 
 import { textBlock } from "../../utils/designs";
+import {
+   date,
+   dataLastFY,
+   dataThisFY,
+   header, 
+   opMargin
+} from "../../../data/capcom_fy3_2024";
 
 import avatarA from "../../newAssets/avatar1a.svg";
 import avatarB from "../../newAssets/avatar1b.svg";
@@ -13,24 +20,49 @@ export default makeScene2D(function* (view) {
     const getText = createRef<Txt>();
     const textBox = createRef<Txt>();
 
-    const bar1 = createRef<Rect>();
-    const bar2 = createRef<Rect>();
-    const bar3 = createRef<Rect>();
-    const value1 = createRef<Txt>();
-    const xValue1 = createRef<Txt>();
-    const value2 = createRef<Txt>();
-    const xValue2 = createRef<Txt>();
-    const value3 = createRef<Txt>();
-    const xValue3 = createRef<Txt>();
+    const imageRefs = [
+        createRef<Img>(),
+        createRef<Img>(),
+    ];
+
+    const barRefs = [
+        createRef<Rect>(),
+        createRef<Rect>(),
+        createRef<Rect>(),
+        createRef<Rect>(),
+        createRef<Rect>(),
+        createRef<Rect>(),
+        createRef<Rect>(),
+    ];
+
+    const valueRefs = [
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+    ]
+
+    const labelRefs = [
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+        createRef<Txt>(),
+    ]
 
     const textSignal = createSignal("");
     const numberSignal = createSignal(0);
 
     const lines = new Map<number, string>();
 
-    lines.set(lines.size, "This video contains no audio. Note: M = Million (or rather 10^6). Data sources are linked in the description. This animation was produced using Motion Canvas (link in the description).")
-    lines.set(lines.size, "The following data comes from my webpage (link in the description) and may contain errors. This video covers the 1st Quarter (Apr-Jun) earnings release of Nintendo for the fiscal year ending March 2024 (FY3/2024).")
-    lines.set(lines.size, "Consolidated Operating Results.")
+    lines.set(lines.size, "Note: M = Million (or rather 10^6). The following are linked in the description: Data sources, Motion Canvas, soundtracks, Install Base Forum, ggx2ac + archives (webpage).")
+    lines.set(lines.size, `The following data comes from my webpage and may contain errors. This video covers the 1st Quarter (Apr-Jun) earnings release of ${header.companyName} for the fiscal year ending March 2024 (${header.fiscalYear}) and, the Capcom Platinum Titles ${date}`)
+    lines.set(lines.size, `${header.title}`)
     lines.set(lines.size, "Nintendo's consolidated net sales for the first quarter was ¥461,341M (+50.05 increase year-over-year).")
     lines.set(lines.size, "Nintendo's consolidated operating income for the first quarter was ¥185,441M (+82.44% increase year-over-year).")
     lines.set(lines.size, "Nintendo's operating margin for the first quarter was 40.2%.")

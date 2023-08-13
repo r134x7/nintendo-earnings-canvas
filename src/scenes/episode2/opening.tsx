@@ -19,6 +19,7 @@ export default makeScene2D(function* (view) {
 
     view.add(
         <Rect 
+            ref={textBox}
             padding={10}
             radius={15}
             fill={"white"}
@@ -57,7 +58,7 @@ export default makeScene2D(function* (view) {
 
     yield* loop(
         lines.get(1).length,
-        i => textBlock(lines.get(1), 17, textSignal, numberSignal, 0.07, 2)
+        i => textBlock(lines.get(1), 18, textSignal, numberSignal, 0.07, 2)
     )
 
 })
