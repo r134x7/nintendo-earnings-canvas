@@ -21,7 +21,9 @@ import spider from "../../newAssets/spider3Final.svg"
 
 export default makeScene2D(function* (view) {
 
-    const ref = createRef<Img>();
+    console.log(header);
+    
+
     const getText = createRef<Txt>();
     const textBox = createRef<Txt>();
 
@@ -76,229 +78,229 @@ export default makeScene2D(function* (view) {
 
     view.add(
         <Img 
-            ref={ref}
-            src={spider}
+            ref={imageRefs[0]}
+            src={avatarA}
         />
     )
 
     yield* slideTransition(Direction.Right);
 
     yield* all(
-        ref().x(-800, 1),
-        ref().y(300, 1)
+        imageRefs[0]().x(-800, 1),
+        imageRefs[0]().y(300, 1)
     )
     yield* waitFor(1)
 
     yield* slideTransition(Direction.Right);
 
-    ref().fill("white")
+    imageRefs[0]().fill("white")
     yield* waitFor(2)
-    ref().src(spider)
-    yield* ref().scale(2, 1)
+    imageRefs[0]().src(avatarB)
+    yield* imageRefs[0]().scale(2, 1)
     yield* waitFor(2)
-    ref().src(avatarA)
+    imageRefs[0]().src(avatarA)
     yield* waitFor(2)
 
-    view.add(
-        <Rect 
-            ref={textBox}
-            padding={10}
-            radius={15}
-            fill={"white"}
-            layout
-            y={250}
-        >
-            <Rect fill={"black"}>
-            <Txt
-                fontFamily={"Consolas"}
-                ref={getText}
-                text={() => `${textSignal()}`}
-                textWrap={"pre"}
-                fill={"white"}
-                marginLeft={16}
-                marginRight={16}
-            />
-            </Rect>
-        </Rect>
-    )
+    // view.add(
+    //     <Rect 
+    //         ref={textBox}
+    //         padding={10}
+    //         radius={15}
+    //         fill={"white"}
+    //         layout
+    //         y={250}
+    //     >
+    //         <Rect fill={"black"}>
+    //         <Txt
+    //             fontFamily={"Consolas"}
+    //             ref={getText}
+    //             text={() => `${textSignal()}`}
+    //             textWrap={"pre"}
+    //             fill={"white"}
+    //             marginLeft={16}
+    //             marginRight={16}
+    //         />
+    //         </Rect>
+    //     </Rect>
+    // )
 
-    yield* loop(
-        lines.get(0).length,
-        i => textBlock(lines.get(0), 40, textSignal, numberSignal, 0.07, 2)
-    )
+    // yield* loop(
+    //     lines.get(0).length,
+    //     i => textBlock(lines.get(0), 40, textSignal, numberSignal, 0.07, 2)
+    // )
 
-    yield* ref().x(-650,1)
-    ref().src(spider)
-    yield* ref().x(-800,1)
-    ref().src(avatarA)
+    // yield* ref().x(-650,1)
+    // ref().src(spider)
+    // yield* ref().x(-800,1)
+    // ref().src(avatarA)
 
-    textSignal(DEFAULT)
-    numberSignal(DEFAULT)
+    // textSignal(DEFAULT)
+    // numberSignal(DEFAULT)
 
-    yield* loop(
-        lines.get(1).length,
-        i => textBlock(lines.get(1), 40, textSignal, numberSignal, 0.07, 2)
-    )
+    // yield* loop(
+    //     lines.get(1).length,
+    //     i => textBlock(lines.get(1), 40, textSignal, numberSignal, 0.07, 2)
+    // )
 
-    textSignal(DEFAULT)
-    numberSignal(DEFAULT)
+    // textSignal(DEFAULT)
+    // numberSignal(DEFAULT)
 
-    yield* loop(
-        lines.get(2).length,
-        i => textBlock(lines.get(2), lines.get(2).length + 1, textSignal, numberSignal, 0.07, 2)
-    )
+    // yield* loop(
+    //     lines.get(2).length,
+    //     i => textBlock(lines.get(2), lines.get(2).length + 1, textSignal, numberSignal, 0.07, 2)
+    // )
 
-    textSignal(DEFAULT)
-    numberSignal(DEFAULT)
+    // textSignal(DEFAULT)
+    // numberSignal(DEFAULT)
 
-    yield* ref().x(-650,1)
-    ref().src(spider)
-    yield* ref().x(-800,1)
-    ref().src(avatarA)
+    // yield* ref().x(-650,1)
+    // ref().src(spider)
+    // yield* ref().x(-800,1)
+    // ref().src(avatarA)
 
-    yield* loop(
-        lines.get(3).length,
-        i => textBlock(lines.get(3), 40, textSignal, numberSignal, 0.07, 2)
-    )
+    // yield* loop(
+    //     lines.get(3).length,
+    //     i => textBlock(lines.get(3), 40, textSignal, numberSignal, 0.07, 2)
+    // )
 
-    const scale = 100;
+    // const scale = 100;
 
-    view.add(
-        <>
-            <Rect 
-                ref={bar1}
-                minHeight={0}
-                width={100}
-                fill={"rgba(0, 255, 255, .80)"}
-                x={-500}
-            />
-            <Txt 
-                ref={value1}
-                text={""}
-                fill={"white"}
-                x={-500}
-            />
-            <Txt 
-                ref={xValue1}
-                text={""}
-                fill={"white"}
-                x={-500}
-            />
-        </>
-    )
+    // view.add(
+    //     <>
+    //         <Rect 
+    //             ref={bar1}
+    //             minHeight={0}
+    //             width={100}
+    //             fill={"rgba(0, 255, 255, .80)"}
+    //             x={-500}
+    //         />
+    //         <Txt 
+    //             ref={value1}
+    //             text={""}
+    //             fill={"white"}
+    //             x={-500}
+    //         />
+    //         <Txt 
+    //             ref={xValue1}
+    //             text={""}
+    //             fill={"white"}
+    //             x={-500}
+    //         />
+    //     </>
+    // )
     
-    yield* all (
-        bar1().height(300, 1),
-        bar1().y(-150, 1),
-        value1().y(-340, 1),
-        xValue1().y(40, 1),
-        value1().text("¥461,341M", 1),
-        xValue1().text("Net Sales", 1),
-        // textBox().y(350, 1)
-    ) 
+    // yield* all (
+    //     bar1().height(300, 1),
+    //     bar1().y(-150, 1),
+    //     value1().y(-340, 1),
+    //     xValue1().y(40, 1),
+    //     value1().text("¥461,341M", 1),
+    //     xValue1().text("Net Sales", 1),
+    //     // textBox().y(350, 1)
+    // ) 
 
-    textSignal(DEFAULT)
-    numberSignal(DEFAULT)
+    // textSignal(DEFAULT)
+    // numberSignal(DEFAULT)
 
-    yield* loop(
-        lines.get(4).length,
-        i => textBlock(lines.get(4), 40, textSignal, numberSignal, 0.07, 2)
-    )
+    // yield* loop(
+    //     lines.get(4).length,
+    //     i => textBlock(lines.get(4), 40, textSignal, numberSignal, 0.07, 2)
+    // )
 
-    view.add(
-        <>
-            <Rect 
-                ref={bar2}
-                height={0}
-                width={100}
-                fill={"rgba(0, 255, 255, .80)"}
-                x={-200}
-            />
-            <Txt 
-                ref={value2}
-                text={""}
-                fill={"white"}
-                x={-200}
-            />
-            <Txt 
-                ref={xValue2}
-                text={""}
-                fill={"white"}
-                x={-200}
-            />
-        </>
-    )
+    // view.add(
+    //     <>
+    //         <Rect 
+    //             ref={bar2}
+    //             height={0}
+    //             width={100}
+    //             fill={"rgba(0, 255, 255, .80)"}
+    //             x={-200}
+    //         />
+    //         <Txt 
+    //             ref={value2}
+    //             text={""}
+    //             fill={"white"}
+    //             x={-200}
+    //         />
+    //         <Txt 
+    //             ref={xValue2}
+    //             text={""}
+    //             fill={"white"}
+    //             x={-200}
+    //         />
+    //     </>
+    // )
 
-    yield* all (
-        bar2().height(120, 1),
-        bar2().y(-60,1),
-        value2().y(-160, 1),
-        xValue2().y(60, 1),
-        value2().text("¥185,441M", 1),
-        xValue2().text("Operating\nIncome", 1),
-    ) 
+    // yield* all (
+    //     bar2().height(120, 1),
+    //     bar2().y(-60,1),
+    //     value2().y(-160, 1),
+    //     xValue2().y(60, 1),
+    //     value2().text("¥185,441M", 1),
+    //     xValue2().text("Operating\nIncome", 1),
+    // ) 
 
-    textSignal(DEFAULT)
-    numberSignal(DEFAULT)
+    // textSignal(DEFAULT)
+    // numberSignal(DEFAULT)
 
-    yield* loop(
-        lines.get(5).length,
-        i => textBlock(lines.get(5), 40, textSignal, numberSignal, 0.07, 2)
-    )
+    // yield* loop(
+    //     lines.get(5).length,
+    //     i => textBlock(lines.get(5), 40, textSignal, numberSignal, 0.07, 2)
+    // )
 
-    textSignal(DEFAULT)
-    numberSignal(DEFAULT)
+    // textSignal(DEFAULT)
+    // numberSignal(DEFAULT)
 
-    yield* loop(
-        lines.get(6).length,
-        i => textBlock(lines.get(6), 40, textSignal, numberSignal, 0.07, 2)
-    )
+    // yield* loop(
+    //     lines.get(6).length,
+    //     i => textBlock(lines.get(6), 40, textSignal, numberSignal, 0.07, 2)
+    // )
 
-    view.add(
-        <>
-            <Rect 
-                ref={bar3}
-                height={0}
-                width={100}
-                fill={"rgba(0, 255, 255, .80)"}
-                x={100}
-            />
-            <Txt 
-                ref={value3}
-                text={""}
-                fill={"white"}
-                x={100}
-            />
-            <Txt 
-                ref={xValue3}
-                text={""}
-                fill={"white"}
-                x={100}
-            />
-        </>
-    )
+    // view.add(
+    //     <>
+    //         <Rect 
+    //             ref={bar3}
+    //             height={0}
+    //             width={100}
+    //             fill={"rgba(0, 255, 255, .80)"}
+    //             x={100}
+    //         />
+    //         <Txt 
+    //             ref={value3}
+    //             text={""}
+    //             fill={"white"}
+    //             x={100}
+    //         />
+    //         <Txt 
+    //             ref={xValue3}
+    //             text={""}
+    //             fill={"white"}
+    //             x={100}
+    //         />
+    //     </>
+    // )
 
-    yield* all (
-        bar3().height(117, 1),
-        bar3().y(-57,1),
-        value3().y(-157, 1),
-        xValue3().y(57, 1),
-        value3().text("¥181,019M", 1),
-        xValue3().text("Net\nIncome", 1),
-    ) 
+    // yield* all (
+    //     bar3().height(117, 1),
+    //     bar3().y(-57,1),
+    //     value3().y(-157, 1),
+    //     xValue3().y(57, 1),
+    //     value3().text("¥181,019M", 1),
+    //     xValue3().text("Net\nIncome", 1),
+    // ) 
 
-    yield* ref().x(-650,1)
-    ref().src(spider)
-    yield* ref().x(-800,1)
-    ref().src(avatarA)
+    // yield* ref().x(-650,1)
+    // ref().src(spider)
+    // yield* ref().x(-800,1)
+    // ref().src(avatarA)
 
-    textSignal(DEFAULT)
-    numberSignal(DEFAULT)
+    // textSignal(DEFAULT)
+    // numberSignal(DEFAULT)
 
-    yield* loop(
-        lines.get(7).length,
-        i => textBlock(lines.get(7), 40, textSignal, numberSignal, 0.07, 2)
-    )
+    // yield* loop(
+    //     lines.get(7).length,
+    //     i => textBlock(lines.get(7), 40, textSignal, numberSignal, 0.07, 2)
+    // )
 
     // yield* waitFor(2)
 })

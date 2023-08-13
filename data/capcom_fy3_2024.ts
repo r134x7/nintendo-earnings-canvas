@@ -5,4 +5,6 @@ import {
     type EarningsJSONV2,
 } from "../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/data/generalTables/consolidated_earnings_general"
 
+console.log(collectionCapcomV2);
+
 export const { date, header, dataThisFY, dataLastFY, opMargin, percentagesThisFY } = consolidatedEarningsMapDataForAnimation(collectionCapcomV2.get(0) as EarningsJSONV2, collectionCapcomV2.get(1))
