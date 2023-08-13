@@ -59,7 +59,7 @@ export function* textBlock(text: string, lineLength: number, getSignal: SimpleSi
 }
 
 export function contextYoY(value: number | never[]): string {
-    if (!Number.isNaN(value)) {
+    if (Number.isNaN(value)) {
         return "ERROR"
     }
 
