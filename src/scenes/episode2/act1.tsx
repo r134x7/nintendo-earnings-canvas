@@ -325,9 +325,23 @@ export default makeScene2D(function* (view) {
         </>
     )
 
-    const defaultBarHeight = 300;
-    const defaultBarY= -150;
-    const defaultValueHeight = -defaultBarHeight -40;
+    const defaultBarHeight = {
+        netSales: 300,
+        operatingIncome: 300 * (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(1).Q1QtrValue) as number), 0) / 100),
+        netIncome: 300 * (quickYoYCalculate((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(2).Q1QtrValue) as number), 0) / 100),
+    };
+    const defaultBarY= {
+        netSales: -150,
+        operatingIncome: -150 * (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(1).Q1QtrValue) as number), 0) / 100),
+        netIncome: 150 * (quickYoYCalculate((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(2).Q1QtrValue) as number), 0) / 100),
+
+    };
+
+    const defaultValueHeight = {
+        netSales: -defaultBarHeight.netSales -40,
+        operatingIncome: -defaultBarHeight.operatingIncome -40,
+        netIncome: -defaultBarHeight.netIncome -40,
+    };
 
     const calculatePercentages = {
         netSales: (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataLastFY.get(0).Q1QtrValue) as number), 0) / 100),
@@ -338,15 +352,15 @@ export default makeScene2D(function* (view) {
     const quickMultiply = (measurement: number, percentage: number) => measurement * percentage;
 
     yield* all (
-        barRefs[0]().height(defaultBarHeight, 1),
-        barRefs[0]().y(defaultBarY, 1),
-        valueRefs[0]().y(defaultValueHeight, 1),
+        barRefs[0]().height(defaultBarHeight.netSales, 1),
+        barRefs[0]().y(defaultBarY.netSales, 1),
+        valueRefs[0]().y(defaultValueHeight.netSales, 1),
         valueRefs[0]().text(printValues.netSales, 1),
         labelRefs[0]().y(40, 1),
         labelRefs[0]().text("Net Sales", 1),
-        barRefs[1]().height(quickMultiply(defaultBarHeight, calculatePercentages.netSales), 1),
-        barRefs[1]().y(quickMultiply(defaultBarY, calculatePercentages.netSales), 1),
-        valueRefs[1]().y(quickMultiply(defaultValueHeight, calculatePercentages.netSales), 1),
+        barRefs[1]().height(quickMultiply(defaultBarHeight.netSales, calculatePercentages.netSales), 1),
+        barRefs[1]().y(quickMultiply(defaultBarY.netSales, calculatePercentages.netSales), 1),
+        valueRefs[1]().y(quickMultiply(defaultValueHeight.netSales, calculatePercentages.netSales), 1),
         valueRefs[1]().text(printLastFYValues.netSales, 1),
         colourBoxRefs[0]().x(-600, 1),
         colourBoxRefs[0]().y(-500, 1),
@@ -406,15 +420,15 @@ export default makeScene2D(function* (view) {
     )
 
     yield* all (
-        barRefs[2]().height(defaultBarHeight, 1),
-        barRefs[2]().y(defaultBarY, 1),
-        valueRefs[2]().y(defaultValueHeight, 1),
+        barRefs[2]().height(defaultBarHeight.operatingIncome, 1),
+        barRefs[2]().y(defaultBarY.operatingIncome, 1),
+        valueRefs[2]().y(defaultValueHeight.operatingIncome, 1),
         valueRefs[2]().text(printValues.operatingIncome, 1),
         labelRefs[1]().y(40, 1),
         labelRefs[1]().text("Operating Income", 1),
-        barRefs[3]().height(quickMultiply(defaultBarHeight, calculatePercentages.netSales), 1),
-        barRefs[3]().y(quickMultiply(defaultBarY, calculatePercentages.netSales), 1),
-        valueRefs[3]().y(quickMultiply(defaultValueHeight, calculatePercentages.netSales), 1),
+        barRefs[3]().height(quickMultiply(defaultBarHeight.operatingIncome, calculatePercentages.netSales), 1),
+        barRefs[3]().y(quickMultiply(defaultBarY.operatingIncome, calculatePercentages.netSales), 1),
+        valueRefs[3]().y(quickMultiply(defaultValueHeight.operatingIncome, calculatePercentages.netSales), 1),
         valueRefs[3]().text(printLastFYValues.operatingIncome, 1),
     ) 
 
