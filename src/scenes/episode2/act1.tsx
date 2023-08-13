@@ -275,13 +275,13 @@ export default makeScene2D(function* (view) {
                 ref={labelRefs[0]}
                 text={""}
                 fill={"white"}
-                x={-500}
+                x={-600}
             />
             <Rect 
                 ref={barRefs[1]}
                 minHeight={0}
                 width={100}
-                fill={"rgba(0, 255, 255, .80)"}
+                fill={"rgba(75, 0, 130, .80)"}
                 x={-700}
             />
             <Txt 
@@ -298,7 +298,10 @@ export default makeScene2D(function* (view) {
     const defaultValueHeight = -defaultBarHeight -40;
 
     const lastFYBarHeight = defaultBarHeight * (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataLastFY.get(0).Q1QtrValue) as number), 0) / 100) 
+
     const lastFYBarY = defaultBarY * (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataLastFY.get(0).Q1QtrValue) as number), 0) / 100);
+
+    const lastFYValueHeight = defaultValueHeight * (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataLastFY.get(0).Q1QtrValue) as number), 0) / 100);
     
     yield* all (
         barRefs[0]().height(defaultBarHeight, 1),
@@ -307,10 +310,9 @@ export default makeScene2D(function* (view) {
         valueRefs[0]().text(printValues.netSales, 1),
         labelRefs[0]().y(40, 1),
         labelRefs[0]().text("Net Sales", 1),
-        // textBox().y(350, 1)
         barRefs[1]().height(lastFYBarHeight, 1),
         barRefs[1]().y(lastFYBarY, 1),
-        valueRefs[1]().y(defaultValueHeight, 1),
+        valueRefs[1]().y(lastFYValueHeight, 1),
         valueRefs[1]().text(printLastFYValues.netSales, 1),
     ) 
 
