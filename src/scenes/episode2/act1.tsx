@@ -110,7 +110,6 @@ export default makeScene2D(function* (view) {
                     Vector2.zero,
                     Vector2.up.scale(1)
                 ]}
-                // rotation={45}
                 x={-500}
                 y={-1000}
             />
@@ -124,19 +123,27 @@ export default makeScene2D(function* (view) {
         </>
     )
     
-    // yield* imageRefs[1]().y(-400, 1)
     yield* all(
         imageRefs[1]().y(-400, 1),
         webLine().y(-400, 1),
     ) 
+
     yield* waitFor(3)
-    // yield* imageRefs[1]().y(300, 1)
+
     yield* all(
         imageRefs[1]().y(300, 1),
         webLine().y(-800, 1),
         webLine().points([Vector2.zero, Vector2.up.scale(1000)], 1)
     )
-    yield* waitFor(3)
+
+    yield* all(
+        imageRefs[0]().x(0, 0.5).to(500, 0.5),
+        imageRefs[0]().y(0, 0.5).to(800, 0.5),
+        imageRefs[0]().rotation(1080, 1).to(-1080, 1),
+    )
+
+    yield* waitFor(2)
+
 
     // view.add(
     //     <Rect 
