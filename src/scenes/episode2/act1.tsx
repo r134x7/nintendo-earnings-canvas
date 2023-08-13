@@ -21,6 +21,12 @@ import spider from "../../newAssets/spider3Final.svg"
 
 export default makeScene2D(function* (view) {
 
+    const textAnimate = {
+        textBoxLength: 54,
+        textSpeed: 0.07,
+        endDelay: 2
+    }
+
     const getText = createRef<Txt>();
     const textBox = createRef<Txt>();
     const webLine = createRef<Line>();
@@ -68,7 +74,14 @@ export default makeScene2D(function* (view) {
     lines.set(lines.size, "Note: M = Million (or rather 10^6). The following are linked in the description: Data sources, Motion Canvas, soundtracks, Install Base Forum, ggx2ac + archives (webpage).")
     lines.set(lines.size, `The following data comes from my webpage and may contain errors. This video covers the 1st Quarter (Apr-Jun) earnings release of ${header.companyName} for the fiscal year ending March 2024 (${header.fiscalYear}) and, the Capcom Platinum Titles ${date}.`)
     lines.set(lines.size, `${header.title}`)
-    lines.set(lines.size, `${header.companyName}'s consolidated net sales for the ${quarterLabel("1")} was ${extractValue(dataThisFY.get(0).Q1QtrValue)} (${extractValue(percentagesThisFY.get(0).Q1QtrValue)} ${contextYoY(extractValue(percentagesThisFY.get(0).Q1QtrValue))})`)
+    lines.set(lines.size, `${header.companyName}'s consolidated net sales for the ${quarterLabel("1")} was ${printValuePrimitive(
+        extractValue(dataThisFY.get(0).Q1QtrValue) as number,
+        numberType("Million"),
+        "¥")} (${printValuePrimitive(
+            extractValue(percentagesThisFY.get(0).Q1QtrValue) as number,
+            numberType("None"),
+            "+%"
+            )} ${contextYoY(extractValue(percentagesThisFY.get(0).Q1QtrValue))})`)
     lines.set(lines.size, `${header.companyName}'s consolidated operating income for the ${quarterLabel("1")} was ${extractValue(dataThisFY.get(1).Q1QtrValue)} (${extractValue(percentagesThisFY.get(1).Q1QtrValue)} ${contextYoY(extractValue(percentagesThisFY.get(1).Q1QtrValue))})`)
     lines.set(lines.size, `${header.companyName}'s operating margin for the ${quarterLabel("1")} was ${extractValue(opMargin.get(0).Q1QtrValue)}`)
     lines.set(lines.size, `${header.companyName}'s consolidated net income for the ${quarterLabel("1")} was ${extractValue(dataThisFY.get(2).Q1QtrValue)} (${extractValue(percentagesThisFY.get(2).Q1QtrValue)} ${contextYoY(extractValue(percentagesThisFY.get(2).Q1QtrValue))})`)
@@ -161,7 +174,7 @@ export default makeScene2D(function* (view) {
             fill={"white"}
             layout
             y={250}
-            x={50}
+            x={200}
         >
             <Rect fill={"black"}>
             <Txt
@@ -179,7 +192,7 @@ export default makeScene2D(function* (view) {
 
     yield* loop(
         lines.get(0).length,
-        i => textBlock(lines.get(0), 40, textSignal, numberSignal, 0.07, 2)
+        i => textBlock(lines.get(0), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
     )
 
     yield* imageRefs[1]().rotation(0, 1).to(720, 1)
@@ -189,7 +202,7 @@ export default makeScene2D(function* (view) {
 
     yield* loop(
         lines.get(1).length,
-        i => textBlock(lines.get(1), 40, textSignal, numberSignal, 0.07, 2)
+        i => textBlock(lines.get(1), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
     )
 
     textSignal(DEFAULT)
@@ -197,7 +210,7 @@ export default makeScene2D(function* (view) {
 
     yield* loop(
         lines.get(2).length,
-        i => textBlock(lines.get(2), lines.get(2).length + 1, textSignal, numberSignal, 0.07, 2)
+        i => textBlock(lines.get(2), lines.get(2).length + 1, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
     )
 
     textSignal(DEFAULT)
@@ -207,7 +220,7 @@ export default makeScene2D(function* (view) {
 
     yield* loop(
         lines.get(3).length,
-        i => textBlock(lines.get(3), 40, textSignal, numberSignal, 0.07, 2)
+        i => textBlock(lines.get(3), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
     )
 
     // const scale = 100;
@@ -253,7 +266,7 @@ export default makeScene2D(function* (view) {
 
     // yield* loop(
     //     lines.get(4).length,
-    //     i => textBlock(lines.get(4), 40, textSignal, numberSignal, 0.07, 2)
+    //     i => textBlock(lines.get(4), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
     // )
 
     // view.add(
@@ -294,7 +307,7 @@ export default makeScene2D(function* (view) {
 
     // yield* loop(
     //     lines.get(5).length,
-    //     i => textBlock(lines.get(5), 40, textSignal, numberSignal, 0.07, 2)
+    //     i => textBlock(lines.get(5), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
     // )
 
     // textSignal(DEFAULT)
@@ -302,7 +315,7 @@ export default makeScene2D(function* (view) {
 
     // yield* loop(
     //     lines.get(6).length,
-    //     i => textBlock(lines.get(6), 40, textSignal, numberSignal, 0.07, 2)
+    //     i => textBlock(lines.get(6), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
     // )
 
     // view.add(
@@ -348,7 +361,7 @@ export default makeScene2D(function* (view) {
 
     // yield* loop(
     //     lines.get(7).length,
-    //     i => textBlock(lines.get(7), 40, textSignal, numberSignal, 0.07, 2)
+    //     i => textBlock(lines.get(7), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
     // )
 
     // yield* waitFor(2)
