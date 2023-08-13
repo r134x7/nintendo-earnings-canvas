@@ -11,7 +11,7 @@ import {
    percentagesThisFY,
 } from "../../../data/capcom_fy3_2024";
 
-import { printValuePrimitive, numberType } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/utils/general_earnings_logic";
+import { printValuePrimitive, numberType, quickYoYCalculate } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/utils/general_earnings_logic";
 import { extractValue } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/data/generalTables/sales_per_software_unit_cml"
 
 
@@ -25,6 +25,40 @@ export default makeScene2D(function* (view) {
         textBoxLength: 54,
         textSpeed: 0.07,
         endDelay: 2
+    }
+
+    const printValues = {
+        netSales: printValuePrimitive(
+        extractValue(dataThisFY.get(0).Q1QtrValue) as number,
+        numberType("Million"),
+        "¥"),
+        operatingIncome: printValuePrimitive(
+        extractValue(dataThisFY.get(1).Q1QtrValue) as number,
+        numberType("Million"),
+        "¥"),
+        opMargin: printValuePrimitive(
+        extractValue(opMargin.get(0).Q1QtrValue) as number,
+        numberType("None"),
+        "%"),
+        netIncome: printValuePrimitive(
+        extractValue(dataThisFY.get(2).Q1QtrValue) as number,
+        numberType("Million"),
+        "¥"),
+    }
+
+    const printLastFYValues = {
+        netSales: printValuePrimitive(
+        extractValue(dataLastFY.get(0).Q1QtrValue) as number,
+        numberType("Million"),
+        "¥"),
+        operatingIncome: printValuePrimitive(
+        extractValue(dataLastFY.get(1).Q1QtrValue) as number,
+        numberType("Million"),
+        "¥"),
+        netIncome: printValuePrimitive(
+        extractValue(dataLastFY.get(2).Q1QtrValue) as number,
+        numberType("Million"),
+        "¥"),
     }
 
     const getText = createRef<Txt>();
@@ -74,10 +108,7 @@ export default makeScene2D(function* (view) {
     lines.set(lines.size, "Note: M = Million (or rather 10^6). The following are linked in the description: Data sources, Motion Canvas, soundtracks, Install Base Forum, ggx2ac + archives (webpage).")
     lines.set(lines.size, `The following data comes from my webpage and may contain errors. This video covers the 1st Quarter (Apr-Jun) earnings release of ${header.companyName} for the fiscal year ending March 2024 (${header.fiscalYear}) and, the Capcom Platinum Titles ${date}.`)
     lines.set(lines.size, `${header.title}`)
-    lines.set(lines.size, `${header.companyName}'s consolidated net sales for the ${quarterLabel("1")} was ${printValuePrimitive(
-        extractValue(dataThisFY.get(0).Q1QtrValue) as number,
-        numberType("Million"),
-        "¥")} (${printValuePrimitive(
+    lines.set(lines.size, `${header.companyName}'s consolidated net sales for the ${quarterLabel("1")} was ${printValues.netSales} (${printValuePrimitive(
             extractValue(percentagesThisFY.get(0).Q1QtrValue) as number,
             numberType("None"),
             "+%"
@@ -246,17 +277,39 @@ export default makeScene2D(function* (view) {
                 fill={"white"}
                 x={-500}
             />
+            <Rect 
+                ref={barRefs[1]}
+                minHeight={0}
+                width={100}
+                fill={"rgba(0, 255, 255, .80)"}
+                x={-700}
+            />
+            <Txt 
+                ref={valueRefs[1]}
+                text={""}
+                fill={"white"}
+                x={-700}
+            />
         </>
     )
+
+    const defaultBarHeight = 300;
+    const defaultBarY= -150;
+    const defaultValueHeight = -defaultBarHeight -40;
+    const lastFYBarHeight = defaultBarHeight * (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataLastFY.get(0).Q1QtrValue) as number), 0) / 100) 
     
     yield* all (
-        barRefs[0]().height(300, 1),
-        barRefs[0]().y(-150, 1),
-        valueRefs[0]().y(-340, 1),
-        valueRefs[0]().text("¥461,341M", 1),
+        barRefs[0]().height(defaultBarHeight, 1),
+        barRefs[0]().y(defaultBarY, 1),
+        valueRefs[0]().y(defaultValueHeight, 1),
+        valueRefs[0]().text(printValues.netSales, 1),
         labelRefs[0]().y(40, 1),
         labelRefs[0]().text("Net Sales", 1),
         // textBox().y(350, 1)
+        barRefs[1]().height(lastFYBarHeight, 1),
+        barRefs[1]().y(defaultBarY, 1),
+        valueRefs[1]().y(defaultValueHeight, 1),
+        valueRefs[1]().text(printLastFYValues.netSales, 1),
     ) 
 
     textSignal(DEFAULT)
