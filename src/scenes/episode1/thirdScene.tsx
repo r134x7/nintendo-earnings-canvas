@@ -3,8 +3,8 @@ import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop
 
 import { textBlock } from "./opening";
 
-import avatarA from "../assets/episode1/avatar1a.svg";
-import avatarB from "../assets/episode1/avatar1b.svg";
+import avatarA from "../../newAssets/avatar1a.svg";
+import avatarB from "../../newAssets/avatar1b.svg";
 
 export default makeScene2D(function* (view) {
 

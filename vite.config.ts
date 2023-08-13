@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [
     motionCanvas({
       project: [
-        "./src/project.ts",
-        "./src/videoShort.ts",
+        "./src/projectsIndex/project.ts",
+        "./src/projectsIndex/videoShort.ts",
       ]
     }),
     ffmpeg(),
