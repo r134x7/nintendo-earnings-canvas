@@ -1,4 +1,4 @@
-import { makeScene2D, Img, Circle, Rect, Txt } from "@motion-canvas/2d";
+import { makeScene2D, Img, Circle, Line, Rect, Txt } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT } from "@motion-canvas/core";
 
 import { textBlock, contextYoY, quarterLabel } from "../../utils/designs";
@@ -21,11 +21,9 @@ import spider from "../../newAssets/spider3Final.svg"
 
 export default makeScene2D(function* (view) {
 
-    console.log(header);
-    
-
     const getText = createRef<Txt>();
     const textBox = createRef<Txt>();
+    const webLine = createRef<Line>();
 
     const imageRefs = [
         createRef<Img>(),
@@ -99,7 +97,37 @@ export default makeScene2D(function* (view) {
     yield* imageRefs[0]().scale(2, 1)
     yield* waitFor(2)
     imageRefs[0]().src(avatarA)
+    yield* imageRefs[0]().x(-500, 1)
     yield* waitFor(2)
+
+    view.add(
+        <>
+            <Img 
+                ref={imageRefs[1]}
+                src={spider}
+                x={-500}
+                y={-800}
+            />
+            <Line 
+                ref={webLine}
+                stroke={"white"}
+                lineWidth={8}
+                points={[-530, -1000]}
+                rotation={45}
+            />
+        </>
+    )
+    
+    yield* imageRefs[1]().y(-400, 1)
+    yield* waitFor(3)
+    // yield* imageRefs[1]().y(300, 1)
+    yield* all(
+        imageRefs[1]().y(300, 1),
+        // webLine().points([-800, 300], 1),
+        webLine().x(-530, 1),
+        webLine().y(-300, 1),
+    )
+    yield* waitFor(3)
 
     // view.add(
     //     <Rect 
