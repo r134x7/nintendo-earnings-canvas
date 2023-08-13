@@ -8,6 +8,7 @@ export default defineConfig({
       project: [
         "./src/projectsIndex/project.ts",
         "./src/projectsIndex/videoShort.ts",
+        "./src/projectsIndex/episode2.ts",
       ]
     }),
     ffmpeg(),
