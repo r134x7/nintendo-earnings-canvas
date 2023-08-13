@@ -11,7 +11,7 @@ import {
    percentagesThisFY,
 } from "../../../data/capcom_fy3_2024";
 
-import { printValuePrimitive, numberType, quickYoYCalculate } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/utils/general_earnings_logic";
+import { printValuePrimitive, numberType, quickYoYCalculate, quickRatio } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/utils/general_earnings_logic";
 import { extractValue } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/data/generalTables/sales_per_software_unit_cml"
 
 
@@ -327,15 +327,27 @@ export default makeScene2D(function* (view) {
 
     const defaultBarHeight = {
         netSales: 300,
-        operatingIncome: 300 * (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(1).Q1QtrValue) as number), 0) / 100),
-        netIncome: 300 * (quickYoYCalculate((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(2).Q1QtrValue) as number), 0) / 100),
+        operatingIncome: 300 * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        netIncome: 300 * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
     };
+
+    const lastFYBarHeight = {
+        netSales: defaultBarHeight.netSales * (quickRatio((extractValue(dataLastFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        operatingIncome: defaultBarHeight.operatingIncome * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        netIncome: defaultBarHeight.netIncome * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+    }
+    
     const defaultBarY= {
         netSales: -150,
-        operatingIncome: -150 * (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(1).Q1QtrValue) as number), 0) / 100),
-        netIncome: 150 * (quickYoYCalculate((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(2).Q1QtrValue) as number), 0) / 100),
-
+        operatingIncome: -150 * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        netIncome: -150 * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
     };
+
+    const lastFYBarY = {
+        netSales: defaultBarY.netSales * (quickRatio((extractValue(dataLastFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        operatingIncome: defaultBarY.operatingIncome * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        netIncome: defaultBarY.netIncome * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+    }
 
     const defaultValueHeight = {
         netSales: -defaultBarHeight.netSales -40,
@@ -343,13 +355,18 @@ export default makeScene2D(function* (view) {
         netIncome: -defaultBarHeight.netIncome -40,
     };
 
-    const calculatePercentages = {
-        netSales: (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataLastFY.get(0).Q1QtrValue) as number), 0) / 100),
-        operatingIncome: (quickYoYCalculate((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataLastFY.get(1).Q1QtrValue) as number), 0) / 100),  
-        netIncome: (quickYoYCalculate((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataLastFY.get(2).Q1QtrValue) as number), 0) / 100),
-    };
+    const lastFYValueHeight = {
+        netSales: defaultValueHeight.netSales * (quickRatio((extractValue(dataLastFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        operatingIncome: defaultValueHeight.operatingIncome * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        netIncome: defaultValueHeight.netIncome * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+    }
 
-    const quickMultiply = (measurement: number, percentage: number) => measurement * percentage;
+
+    const calculatePercentages = {
+        netSales: (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataLastFY.get(0).Q1QtrValue) as number), 2) / 100),
+        operatingIncome: (quickYoYCalculate((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataLastFY.get(1).Q1QtrValue) as number), 2) / 100),  
+        netIncome: (quickYoYCalculate((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataLastFY.get(2).Q1QtrValue) as number), 2) / 100),
+    };
 
     yield* all (
         barRefs[0]().height(defaultBarHeight.netSales, 1),
@@ -358,9 +375,9 @@ export default makeScene2D(function* (view) {
         valueRefs[0]().text(printValues.netSales, 1),
         labelRefs[0]().y(40, 1),
         labelRefs[0]().text("Net Sales", 1),
-        barRefs[1]().height(quickMultiply(defaultBarHeight.netSales, calculatePercentages.netSales), 1),
-        barRefs[1]().y(quickMultiply(defaultBarY.netSales, calculatePercentages.netSales), 1),
-        valueRefs[1]().y(quickMultiply(defaultValueHeight.netSales, calculatePercentages.netSales), 1),
+        barRefs[1]().height(lastFYBarHeight.netSales, 1),
+        barRefs[1]().y(lastFYBarY.netSales, 1),
+        valueRefs[1]().y(lastFYValueHeight.netSales, 1),
         valueRefs[1]().text(printLastFYValues.netSales, 1),
         colourBoxRefs[0]().x(-600, 1),
         colourBoxRefs[0]().y(-500, 1),
@@ -426,9 +443,9 @@ export default makeScene2D(function* (view) {
         valueRefs[2]().text(printValues.operatingIncome, 1),
         labelRefs[1]().y(40, 1),
         labelRefs[1]().text("Operating Income", 1),
-        barRefs[3]().height(quickMultiply(defaultBarHeight.operatingIncome, calculatePercentages.netSales), 1),
-        barRefs[3]().y(quickMultiply(defaultBarY.operatingIncome, calculatePercentages.netSales), 1),
-        valueRefs[3]().y(quickMultiply(defaultValueHeight.operatingIncome, calculatePercentages.netSales), 1),
+        barRefs[3]().height(lastFYBarHeight.operatingIncome, 1),
+        barRefs[3]().y(lastFYBarY.operatingIncome, 1),
+        valueRefs[3]().y(lastFYValueHeight.operatingIncome, 1),
         valueRefs[3]().text(printLastFYValues.operatingIncome, 1),
     ) 
 
