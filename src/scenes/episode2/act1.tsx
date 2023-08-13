@@ -1,14 +1,19 @@
 import { makeScene2D, Img, Circle, Rect, Txt } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT } from "@motion-canvas/core";
 
-import { textBlock } from "../../utils/designs";
+import { textBlock, contextYoY, quarterLabel } from "../../utils/designs";
 import {
    date,
    dataLastFY,
    dataThisFY,
    header, 
-   opMargin
+   opMargin,
+   percentagesThisFY,
 } from "../../../data/capcom_fy3_2024";
+
+import { printValuePrimitive, numberType } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/utils/general_earnings_logic";
+import { extractValue } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/data/generalTables/sales_per_software_unit_cml"
+
 
 import avatarA from "../../newAssets/avatar1a.svg";
 import avatarB from "../../newAssets/avatar1b.svg";
@@ -63,6 +68,7 @@ export default makeScene2D(function* (view) {
     lines.set(lines.size, "Note: M = Million (or rather 10^6). The following are linked in the description: Data sources, Motion Canvas, soundtracks, Install Base Forum, ggx2ac + archives (webpage).")
     lines.set(lines.size, `The following data comes from my webpage and may contain errors. This video covers the 1st Quarter (Apr-Jun) earnings release of ${header.companyName} for the fiscal year ending March 2024 (${header.fiscalYear}) and, the Capcom Platinum Titles ${date}`)
     lines.set(lines.size, `${header.title}`)
+    lines.set(lines.size, `${header.companyName}'s consolidated net sales for the ${quarterLabel("1")} was ${extractValue(dataThisFY.get(0).Q1QtrValue)} (${extractValue(percentagesThisFY.get(0).Q1QtrValue)} ${contextYoY(extractValue(percentagesThisFY.get(0).Q1QtrValue))})`)
     lines.set(lines.size, "Nintendo's consolidated net sales for the first quarter was ¥461,341M (+50.05 increase year-over-year).")
     lines.set(lines.size, "Nintendo's consolidated operating income for the first quarter was ¥185,441M (+82.44% increase year-over-year).")
     lines.set(lines.size, "Nintendo's operating margin for the first quarter was 40.2%.")

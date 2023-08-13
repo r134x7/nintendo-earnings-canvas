@@ -58,9 +58,12 @@ export function* textBlock(text: string, lineLength: number, getSignal: SimpleSi
     }
 }
 
-export function contextYoY(value: number): string {
+export function contextYoY(value: number | never[]): string {
+    if (!Number.isNaN(value)) {
+        return "ERROR"
+    }
 
-    return (value > 0)
+    return (value as number > 0)
         ? "increase year-over-year"
         : "decrease year-over-year"
 }
