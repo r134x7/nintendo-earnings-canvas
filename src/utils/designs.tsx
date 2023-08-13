@@ -57,3 +57,30 @@ export function* textBlock(text: string, lineLength: number, getSignal: SimpleSi
         yield* waitFor(endDelay)
     }
 }
+
+export function contextYoY(value: number): string {
+
+    return (value > 0)
+        ? "increase year-over-year"
+        : "decrease year-over-year"
+}
+
+export function quarterLabel(value: "1" | "2" | "3" | "4"): string {
+
+    switch (value) {
+        case "1":
+            return "first quarter";
+
+        case "2":
+            return "second quarter";
+
+        case "3":
+            return "third quarter";
+
+        case "4":
+            return "fourth quarter";
+    
+        default:
+            return "ERROR";
+    }
+}

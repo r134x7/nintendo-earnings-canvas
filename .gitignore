@@ -4,7 +4,7 @@ output
 dist
 audio
 src/newAssets
-data
+#data
 
 # Editor directories and files
 .vscode/*
