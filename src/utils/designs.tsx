@@ -137,3 +137,22 @@ export function* setBar(view: View2D, bar: Reference<Rect>, value: Reference<Txt
         value().text(textValue, timing),
     ) 
 }
+
+export function* setLabel(view: View2D, label: Reference<Txt>, xTextPosition: number, yTextPosition: number, textValue: string, timing: number) {
+
+    view.add(
+        <>
+            <Txt 
+                ref={label}
+                text={""}
+                fill={"white"}
+                x={xTextPosition}
+            />
+        </>
+    )
+
+    yield* all (
+        label().y(yTextPosition, timing),
+        label().text(textValue, timing),
+    ) 
+}
