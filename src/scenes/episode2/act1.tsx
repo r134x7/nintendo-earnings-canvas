@@ -59,6 +59,9 @@ export default makeScene2D(function* (view) {
         extractValue(dataLastFY.get(2).Q1QtrValue) as number,
         numberType("Million"),
         "¥"),
+        opMargin: printValuePrimitive(quickRatio(extractValue(dataLastFY.get(1).Q1QtrValue) as number, extractValue(dataLastFY.get(0).Q1QtrValue) as number, 2)
+        , numberType("None"), "%"
+        ),
     }
 
     const getText = createRef<Txt>();
@@ -337,36 +340,42 @@ export default makeScene2D(function* (view) {
         netSales: 300,
         operatingIncome: 300 * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
         netIncome: 300 * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        opMargin: 300 * ((extractValue(opMargin.get(0).Q1QtrValue)  as number) / 100)
     };
 
     const lastFYBarHeight = {
         netSales: defaultBarHeight.netSales * (quickRatio((extractValue(dataLastFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
         operatingIncome: defaultBarHeight.operatingIncome * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
         netIncome: defaultBarHeight.netIncome * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        opMargin: 300 * (quickRatio(extractValue(dataLastFY.get(1).Q1QtrValue) as number, extractValue(dataLastFY.get(0).Q1QtrValue) as number, 2) / 100)
     }
     
     const defaultBarY= {
         netSales: -150,
         operatingIncome: -150 * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
         netIncome: -150 * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        opMargin: -150 * ((extractValue(opMargin.get(0).Q1QtrValue)  as number) / 100)
     };
 
     const lastFYBarY = {
         netSales: defaultBarY.netSales * (quickRatio((extractValue(dataLastFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
         operatingIncome: defaultBarY.operatingIncome * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
         netIncome: defaultBarY.netIncome * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        opMargin: -150 * (quickRatio(extractValue(dataLastFY.get(1).Q1QtrValue) as number, extractValue(dataLastFY.get(0).Q1QtrValue) as number, 2) / 100)
     }
 
     const defaultValueHeight = {
         netSales: -defaultBarHeight.netSales -40,
         operatingIncome: -defaultBarHeight.operatingIncome -40,
         netIncome: -defaultBarHeight.netIncome -40,
+        opMargin: -defaultBarHeight.opMargin -40,
     };
 
     const lastFYValueHeight = {
         netSales: defaultValueHeight.netSales * (quickRatio((extractValue(dataLastFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
         operatingIncome: defaultValueHeight.operatingIncome * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
         netIncome: defaultValueHeight.netIncome * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        opMargin: defaultValueHeight.netSales * (quickRatio(extractValue(dataLastFY.get(1).Q1QtrValue) as number, extractValue(dataLastFY.get(0).Q1QtrValue) as number, 2) / 100)
     }
 
     yield* all (
@@ -453,15 +462,65 @@ export default makeScene2D(function* (view) {
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
 
+    yield* loop(
+        lines.get(5).length,
+        i => textBlock(lines.get(5), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
+    )
+
+    view.add(
+        <>
+            <Rect 
+                ref={barRefs[4]}
+                minHeight={0}
+                width={100}
+                fill={"rgba(0, 255, 255, .80)"}
+                x={300}
+            />
+            <Txt 
+                ref={valueRefs[4]}
+                text={""}
+                fill={"white"}
+                x={300}
+            />
+            <Txt 
+                ref={labelRefs[2]}
+                text={""}
+                fill={"white"}
+                x={200}
+            />
+            <Rect 
+                ref={barRefs[5]}
+                minHeight={0}
+                width={100}
+                fill={"rgba(75, 0, 130, .80)"}
+                x={100}
+            />
+            <Txt 
+                ref={valueRefs[5]}
+                text={""}
+                fill={"white"}
+                x={100}
+            />
+        </>
+    )
+
+    yield* all (
+        barRefs[4]().height(defaultBarHeight.opMargin, 1),
+        barRefs[4]().y(defaultBarY.opMargin, 1),
+        valueRefs[4]().y(defaultValueHeight.opMargin, 1),
+        valueRefs[4]().text(printValues.opMargin, 1),
+        labelRefs[2]().y(40, 1),
+        labelRefs[2]().text("Operating Margin", 1),
+        barRefs[5]().height(lastFYBarHeight.opMargin, 1),
+        barRefs[5]().y(lastFYBarY.opMargin, 1),
+        valueRefs[5]().y(lastFYValueHeight.opMargin, 1),
+        valueRefs[5]().text(printLastFYValues.opMargin, 1),
+    ) 
+
+    textSignal(DEFAULT)
+    numberSignal(DEFAULT)
+    
     yield* waitFor(10)
-
-    // yield* loop(
-    //     lines.get(5).length,
-    //     i => textBlock(lines.get(5), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
-    // )
-
-    // textSignal(DEFAULT)
-    // numberSignal(DEFAULT)
 
     // yield* loop(
     //     lines.get(6).length,
