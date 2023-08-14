@@ -24,7 +24,7 @@ export default makeScene2D(function* (view) {
     const textAnimate = {
         textBoxLength: 54,
         textSpeed: 0.07,
-        endDelay: 2
+        endDelay: 4
     }
 
     const printValues = {
@@ -81,9 +81,11 @@ export default makeScene2D(function* (view) {
         createRef<Rect>(),
         createRef<Rect>(),
         createRef<Rect>(),
+        createRef<Rect>(),
     ];
 
     const valueRefs = [
+        createRef<Txt>(),
         createRef<Txt>(),
         createRef<Txt>(),
         createRef<Txt>(),
@@ -372,10 +374,10 @@ export default makeScene2D(function* (view) {
     };
 
     const lastFYValueHeight = {
-        netSales: defaultValueHeight.netSales * (quickRatio((extractValue(dataLastFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
-        operatingIncome: defaultValueHeight.operatingIncome * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
-        netIncome: defaultValueHeight.netIncome * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
-        opMargin: defaultValueHeight.netSales * (quickRatio(extractValue(dataLastFY.get(1).Q1QtrValue) as number, extractValue(dataLastFY.get(0).Q1QtrValue) as number, 2) / 100)
+        netSales: -defaultBarHeight.netSales * (quickRatio((extractValue(dataLastFY.get(0).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100) -40,
+        operatingIncome: -defaultBarHeight.operatingIncome * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100) -40,
+        netIncome: -defaultBarHeight.netIncome * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100) -40,
+        opMargin: -defaultBarHeight.netSales * (quickRatio(extractValue(dataLastFY.get(1).Q1QtrValue) as number, extractValue(dataLastFY.get(0).Q1QtrValue) as number, 2) / 100) -40,
     }
 
     yield* all (
@@ -520,58 +522,70 @@ export default makeScene2D(function* (view) {
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
     
+    yield* loop(
+        lines.get(6).length,
+        i => textBlock(lines.get(6), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
+    )
+
+    view.add(
+        <>
+            <Rect 
+                ref={barRefs[6]}
+                minHeight={0}
+                width={100}
+                fill={"rgba(0, 255, 255, .80)"}
+                x={700}
+            />
+            <Txt 
+                ref={valueRefs[6]}
+                text={""}
+                fill={"white"}
+                x={700}
+            />
+            <Txt 
+                ref={labelRefs[3]}
+                text={""}
+                fill={"white"}
+                x={600}
+            />
+            <Rect 
+                ref={barRefs[7]}
+                minHeight={0}
+                width={100}
+                fill={"rgba(75, 0, 130, .80)"}
+                x={500}
+            />
+            <Txt 
+                ref={valueRefs[7]}
+                text={""}
+                fill={"white"}
+                x={500}
+            />
+        </>
+    )
+
+    yield* all (
+        barRefs[6]().height(defaultBarHeight.netIncome, 1),
+        barRefs[6]().y(defaultBarY.netIncome, 1),
+        valueRefs[6]().y(defaultValueHeight.netIncome, 1),
+        valueRefs[6]().text(printValues.netIncome, 1),
+        labelRefs[3]().y(40, 1),
+        labelRefs[3]().text("Net Income", 1),
+        barRefs[7]().height(lastFYBarHeight.netIncome, 1),
+        barRefs[7]().y(lastFYBarY.netIncome, 1),
+        valueRefs[7]().y(lastFYValueHeight.netIncome, 1),
+        valueRefs[7]().text(printLastFYValues.netIncome, 1),
+    ) 
+
+    textSignal(DEFAULT)
+    numberSignal(DEFAULT)
+    
     yield* waitFor(10)
 
-    // yield* loop(
-    //     lines.get(6).length,
-    //     i => textBlock(lines.get(6), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
-    // )
+    yield* loop(
+        lines.get(7).length,
+        i => textBlock(lines.get(7), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
+    )
 
-    // view.add(
-    //     <>
-    //         <Rect 
-    //             ref={bar3}
-    //             height={0}
-    //             width={100}
-    //             fill={"rgba(0, 255, 255, .80)"}
-    //             x={100}
-    //         />
-    //         <Txt 
-    //             ref={value3}
-    //             text={""}
-    //             fill={"white"}
-    //             x={100}
-    //         />
-    //         <Txt 
-    //             ref={xValue3}
-    //             text={""}
-    //             fill={"white"}
-    //             x={100}
-    //         />
-    //     </>
-    // )
-
-    // yield* all (
-    //     bar3().height(117, 1),
-    //     bar3().y(-57,1),
-    //     value3().y(-157, 1),
-    //     xValue3().y(57, 1),
-    //     value3().text("¥181,019M", 1),
-    //     xValue3().text("Net\nIncome", 1),
-    // ) 
-
-    // yield* ref().x(-650,1)
-    // ref().src(spider)
-    // yield* ref().x(-800,1)
-    // ref().src(avatarA)
-
-    // textSignal(DEFAULT)
-    // numberSignal(DEFAULT)
-
-    // yield* loop(
-    //     lines.get(7).length,
-    //     i => textBlock(lines.get(7), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
-    // )
-
-    // yield* waitFor(2)
+    yield* waitFor(2)
 })
