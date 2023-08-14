@@ -59,14 +59,22 @@ export function* textBlock(text: string, lineLength: number, getSignal: SimpleSi
     }
 }
 
-export function contextYoY(value: number | never[]): string {
-    if (Number.isNaN(value)) {
-        return "ERROR"
-    }
+export function contextYoY(value: number | string | never[]): string {
 
-    return (value as number > 0)
-        ? "increase year-over-year"
-        : "decrease year-over-year"
+    switch (typeof value) {
+        case "string":
+            return (Number(value.slice(0, -1)) > 0)
+                ? "increase year-over-year"
+                : "decrease year-over-year"
+
+        case "number":
+            return (value > 0)
+                ? "increase year-over-year"
+                : "decrease year-over-year"
+    
+        default:
+            return "ERROR"
+    }
 }
 
 export function quarterLabel(value: "1" | "2" | "3" | "4"): string {

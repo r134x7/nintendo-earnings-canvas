@@ -8,7 +8,7 @@ import {
    capcomSales
 } from "../../../data/capcom_fy3_2024";
 
-import { printValuePrimitive, numberType, quickRatio } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/utils/general_earnings_logic";
+import { printValuePrimitive, numberType, quickRatio, quickYoYCalculate } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/utils/general_earnings_logic";
 import { extractValue } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/data/generalTables/sales_per_software_unit_cml"
 
 import spider from "../../newAssets/spider3Final.svg"
@@ -20,40 +20,6 @@ export default makeScene2D(function* (view) {
         textSpeed: 0.07,
         endDelay: 4
     }
-
-
-    // const printValues = {
-    //     netSales: printValuePrimitive(
-    //     extractValue(dataThisFY.get(0).Q1QtrValue) as number,
-    //     numberType("Million"),
-    //     "¥"),
-    //     operatingIncome: printValuePrimitive(
-    //     extractValue(dataThisFY.get(1).Q1QtrValue) as number,
-    //     numberType("Million"),
-    //     "¥"),
-    //     netIncome: printValuePrimitive(
-    //     extractValue(dataThisFY.get(2).Q1QtrValue) as number,
-    //     numberType("Million"),
-    //     "¥"),
-    // }
-
-    // const printLastFYValues = {
-    //     netSales: printValuePrimitive(
-    //     extractValue(dataLastFY.get(0).Q1QtrValue) as number,
-    //     numberType("Million"),
-    //     "¥"),
-    //     operatingIncome: printValuePrimitive(
-    //     extractValue(dataLastFY.get(1).Q1QtrValue) as number,
-    //     numberType("Million"),
-    //     "¥"),
-    //     netIncome: printValuePrimitive(
-    //     extractValue(dataLastFY.get(2).Q1QtrValue) as number,
-    //     numberType("Million"),
-    //     "¥"),
-    //     opMargin: printValuePrimitive(quickRatio(extractValue(dataLastFY.get(1).Q1QtrValue) as number, extractValue(dataLastFY.get(0).Q1QtrValue) as number, 2)
-    //     , numberType("None"), "%"
-    //     ),
-    // }
 
     const getText = createRef<Txt>();
     const textBox = createRef<Txt>();
@@ -115,6 +81,8 @@ export default makeScene2D(function* (view) {
 
     const printLastFYValues = new Map<number, { sales: string, units: string, salesPerSoftwareUnit: string }>();
 
+    const printYoYPercentages = new Map<number, { sales: string, units: string, salesPerSoftwareUnit: string }>();
+
     capcomSales.map((elem, index, array) => {
 
         printValues.set(index,
@@ -134,10 +102,19 @@ export default makeScene2D(function* (view) {
             }
         )
 
+        printYoYPercentages.set(index,
+            {
+                sales: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
+                units: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
+                salesPerSoftwareUnit: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(2).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
+            }
+        )
+
     })
 
 
     lines.set(lines.size, "Sales Per Software Unit")
+    lines.set(lines.size, `Capcom's sales from ${capcomSales[0].dataThisFY.get(0).name} `)
     // lines.set(lines.size, `${header.companyName}'s consolidated net sales for the ${quarterLabel("1")} was ${printValues.netSales} (${printValuePrimitive(
     //         extractValue(percentagesThisFY.get(0).Q1QtrValue) as number,
     //         numberType("None"),
