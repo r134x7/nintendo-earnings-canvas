@@ -114,23 +114,24 @@ export default makeScene2D(function* (view) {
 
 
     lines.set(lines.size, "Sales Per Software Unit")
-    lines.set(lines.size, `Capcom's sales from ${capcomSales[0].dataThisFY.get(0).name} `)
-    // lines.set(lines.size, `${header.companyName}'s consolidated net sales for the ${quarterLabel("1")} was ${printValues.netSales} (${printValuePrimitive(
-    //         extractValue(percentagesThisFY.get(0).Q1QtrValue) as number,
-    //         numberType("None"),
-    //         "+%"
-    //         )} ${contextYoY(extractValue(percentagesThisFY.get(0).Q1QtrValue))})`)
-    // lines.set(lines.size, `${header.companyName}'s consolidated operating income for the ${quarterLabel("1")} was ${printValues.operatingIncome} (${printValuePrimitive(
-    //         extractValue(percentagesThisFY.get(1).Q1QtrValue) as number,
-    //         numberType("None"),
-    //         "+%"
-    //         )} ${contextYoY(extractValue(percentagesThisFY.get(1).Q1QtrValue))})`)
-    // lines.set(lines.size, `${header.companyName}'s operating margin for the ${quarterLabel("1")} was ${extractValue(opMargin.get(0).Q1QtrValue)}%`)
-    // lines.set(lines.size, `${header.companyName}'s consolidated net income for the ${quarterLabel("1")} was ${printValues.netIncome} (${printValuePrimitive(
-    //         extractValue(percentagesThisFY.get(2).Q1QtrValue) as number,
-    //         numberType("None"),
-    //         "+%"
-    //         )} ${contextYoY(extractValue(percentagesThisFY.get(2).Q1QtrValue))})`)
+
+    lines.set(lines.size, `Capcom's sales from ${capcomSales[0].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(0).sales} (${printYoYPercentages.get(0).sales} ${contextYoY(printYoYPercentages.get(0).sales)})`)
+
+    lines.set(lines.size, `Capcom's sales from ${capcomSales[1].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(1).sales} (${printYoYPercentages.get(1).sales} ${contextYoY(printYoYPercentages.get(1).sales)})`)
+
+    lines.set(lines.size, `Capcom's sales from ${capcomSales[2].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(2).sales} (${printYoYPercentages.get(2).sales} ${contextYoY(printYoYPercentages.get(2).sales)})`)
+
+    lines.set(lines.size, `Capcom's software units from ${capcomSales[0].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(0).units} (${printYoYPercentages.get(0).units} ${contextYoY(printYoYPercentages.get(0).units)})`)
+
+    lines.set(lines.size, `Capcom's software units from ${capcomSales[1].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(1).units} (${printYoYPercentages.get(1).units} ${contextYoY(printYoYPercentages.get(1).units)})`)
+
+    lines.set(lines.size, `Capcom's software units from ${capcomSales[2].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(2).units} (${printYoYPercentages.get(2).units} ${contextYoY(printYoYPercentages.get(2).units)})`)
+
+    lines.set(lines.size, `Capcom's sales per software unit from ${capcomSales[0].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(0).salesPerSoftwareUnit} (${printYoYPercentages.get(0).salesPerSoftwareUnit} ${contextYoY(printYoYPercentages.get(0).salesPerSoftwareUnit)})`)
+
+    lines.set(lines.size, `Capcom's sales per software unit from ${capcomSales[1].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(1).salesPerSoftwareUnit} (${printYoYPercentages.get(1).salesPerSoftwareUnit} ${contextYoY(printYoYPercentages.get(1).salesPerSoftwareUnit)})`)
+
+    lines.set(lines.size, `Capcom's sales per software unit from ${capcomSales[2].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(2).salesPerSoftwareUnit} (${printYoYPercentages.get(2).salesPerSoftwareUnit} ${contextYoY(printYoYPercentages.get(2).salesPerSoftwareUnit)})`)
     // lines.set(lines.size, "Capom's operating income and net income broke historical records leading to them having the most profitable first quarter ever.")
 
     yield* slideTransition(Direction.Right);

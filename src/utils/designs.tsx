@@ -63,6 +63,7 @@ export function contextYoY(value: number | string | never[]): string {
 
     switch (typeof value) {
         case "string":
+            // string percentages only
             return (Number(value.slice(0, -1)) > 0)
                 ? "increase year-over-year"
                 : "decrease year-over-year"
