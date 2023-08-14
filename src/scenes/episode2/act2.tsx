@@ -15,7 +15,10 @@ import spider from "../../newAssets/spider3Final.svg"
 
 export default makeScene2D(function* (view) {
 
-    const { dataLastFY, dataThisFY } = capcomSales
+    // const { dataLastFY, dataThisFY } = capcomSales
+    console.log(capcomSales);
+    
+    
 
     const textAnimate = {
         textBoxLength: 54,
@@ -23,38 +26,38 @@ export default makeScene2D(function* (view) {
         endDelay: 4
     }
 
-    const printValues = {
-        netSales: printValuePrimitive(
-        extractValue(dataThisFY.get(0).Q1QtrValue) as number,
-        numberType("Million"),
-        "¥"),
-        operatingIncome: printValuePrimitive(
-        extractValue(dataThisFY.get(1).Q1QtrValue) as number,
-        numberType("Million"),
-        "¥"),
-        netIncome: printValuePrimitive(
-        extractValue(dataThisFY.get(2).Q1QtrValue) as number,
-        numberType("Million"),
-        "¥"),
-    }
+    // const printValues = {
+    //     netSales: printValuePrimitive(
+    //     extractValue(dataThisFY.get(0).Q1QtrValue) as number,
+    //     numberType("Million"),
+    //     "¥"),
+    //     operatingIncome: printValuePrimitive(
+    //     extractValue(dataThisFY.get(1).Q1QtrValue) as number,
+    //     numberType("Million"),
+    //     "¥"),
+    //     netIncome: printValuePrimitive(
+    //     extractValue(dataThisFY.get(2).Q1QtrValue) as number,
+    //     numberType("Million"),
+    //     "¥"),
+    // }
 
-    const printLastFYValues = {
-        netSales: printValuePrimitive(
-        extractValue(dataLastFY.get(0).Q1QtrValue) as number,
-        numberType("Million"),
-        "¥"),
-        operatingIncome: printValuePrimitive(
-        extractValue(dataLastFY.get(1).Q1QtrValue) as number,
-        numberType("Million"),
-        "¥"),
-        netIncome: printValuePrimitive(
-        extractValue(dataLastFY.get(2).Q1QtrValue) as number,
-        numberType("Million"),
-        "¥"),
-        opMargin: printValuePrimitive(quickRatio(extractValue(dataLastFY.get(1).Q1QtrValue) as number, extractValue(dataLastFY.get(0).Q1QtrValue) as number, 2)
-        , numberType("None"), "%"
-        ),
-    }
+    // const printLastFYValues = {
+    //     netSales: printValuePrimitive(
+    //     extractValue(dataLastFY.get(0).Q1QtrValue) as number,
+    //     numberType("Million"),
+    //     "¥"),
+    //     operatingIncome: printValuePrimitive(
+    //     extractValue(dataLastFY.get(1).Q1QtrValue) as number,
+    //     numberType("Million"),
+    //     "¥"),
+    //     netIncome: printValuePrimitive(
+    //     extractValue(dataLastFY.get(2).Q1QtrValue) as number,
+    //     numberType("Million"),
+    //     "¥"),
+    //     opMargin: printValuePrimitive(quickRatio(extractValue(dataLastFY.get(1).Q1QtrValue) as number, extractValue(dataLastFY.get(0).Q1QtrValue) as number, 2)
+    //     , numberType("None"), "%"
+    //     ),
+    // }
 
     const getText = createRef<Txt>();
     const textBox = createRef<Txt>();
@@ -169,12 +172,6 @@ export default makeScene2D(function* (view) {
         imageRefs[1]().y(300, 1),
         webLine().y(-800, 1),
         webLine().points([Vector2.zero, Vector2.up.scale(1000)], 1)
-    )
-
-    yield* all(
-        imageRefs[0]().x(0, 0.5).to(500, 0.5),
-        imageRefs[0]().y(0, 0.5).to(800, 0.5),
-        imageRefs[0]().rotation(1080, 1).to(-1080, 1),
     )
 
     yield* waitFor(2)
