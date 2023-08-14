@@ -100,14 +100,13 @@ export function quarterLabel(value: "1" | "2" | "3" | "4"): string {
 
 export function* dataLoop(linesLength: number, text: string, textBoxLength: number, textSpeed: number, endDelay: number, textSignal: SimpleSignal<string, void>, numberSignal: SimpleSignal<number, void>,) {
 
+    textSignal(DEFAULT)
+    numberSignal(DEFAULT)
+
     yield* loop(
         linesLength,
         i => textBlock(text, textBoxLength, textSignal, numberSignal, textSpeed, endDelay)
     )
-
-    textSignal(DEFAULT)
-    numberSignal(DEFAULT)
-
 
 }
 
