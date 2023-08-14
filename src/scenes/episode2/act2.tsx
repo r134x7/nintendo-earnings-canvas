@@ -15,15 +15,12 @@ import spider from "../../newAssets/spider3Final.svg"
 
 export default makeScene2D(function* (view) {
 
-    // console.log(capcomSales[0].dataThisFY.get(0).);
-    
-    
-
     const textAnimate = {
         textBoxLength: 54,
         textSpeed: 0.07,
         endDelay: 4
     }
+
 
     // const printValues = {
     //     netSales: printValuePrimitive(
@@ -113,6 +110,32 @@ export default makeScene2D(function* (view) {
     const numberSignal = createSignal(0);
 
     const lines = new Map<number, string>();
+
+    const printValues = new Map<number, { sales: string, units: string, salesPerSoftwareUnit: string }>();
+
+    const printLastFYValues = new Map<number, { sales: string, units: string, salesPerSoftwareUnit: string }>();
+
+    capcomSales.map((elem, index, array) => {
+
+        printValues.set(index,
+            {
+                sales: printValuePrimitive(extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number, numberType("Million"), "¥"),
+                units: printValuePrimitive(extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number, numberType("Million"), "None"),
+                salesPerSoftwareUnit: printValuePrimitive(extractValue(elem.dataThisFY.get(2).Q1QtrValue) as number, numberType("None"), "¥"),
+            }
+        )
+         
+
+        printLastFYValues.set(index,
+            {
+                sales: printValuePrimitive(extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number, numberType("Million"), "¥"),
+                units: printValuePrimitive(extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number, numberType("Million"), "None"),
+                salesPerSoftwareUnit: printValuePrimitive(extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number, numberType("None"), "¥"),
+            }
+        )
+
+    })
+
 
     lines.set(lines.size, "Sales Per Software Unit")
     // lines.set(lines.size, `${header.companyName}'s consolidated net sales for the ${quarterLabel("1")} was ${printValues.netSales} (${printValuePrimitive(
