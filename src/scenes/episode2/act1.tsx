@@ -138,7 +138,7 @@ export default makeScene2D(function* (view) {
             extractValue(percentagesThisFY.get(2).Q1QtrValue) as number,
             numberType("None"),
             "+%"
-            )} ${contextYoY(extractValue(percentagesThisFY.get(1).Q1QtrValue))} ${contextYoY(extractValue(percentagesThisFY.get(2).Q1QtrValue))})`)
+            )} ${contextYoY(extractValue(percentagesThisFY.get(2).Q1QtrValue))})`)
     lines.set(lines.size, "Capom's operating income and net income broke historical records leading to them having the most profitable first quarter ever.")
 
     view.add(
@@ -580,8 +580,6 @@ export default makeScene2D(function* (view) {
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
     
-    yield* waitFor(10)
-
     yield* loop(
         lines.get(7).length,
         i => textBlock(lines.get(7), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
