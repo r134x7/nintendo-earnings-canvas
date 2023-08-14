@@ -1,7 +1,7 @@
 import { makeScene2D, Img, Circle, Line, Rect, Txt } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2 } from "@motion-canvas/core";
 
-import { textBlock, contextYoY, quarterLabel, dataLoop } from "../../utils/designs";
+import { textBlock, contextYoY, quarterLabel, dataLoop, setBar } from "../../utils/designs";
 import {
    date,
    header,
@@ -75,6 +75,10 @@ export default makeScene2D(function* (view) {
     const textSignal = createSignal("");
     const numberSignal = createSignal(0);
 
+    const defaultY = -150;
+    const defaultHeight = 300;
+    const defaultValueHeight = -40;
+
     const lines = new Map<number, string>();
 
     const printValues = new Map<number, { sales: string, units: string, salesPerSoftwareUnit: string }>();
@@ -82,6 +86,10 @@ export default makeScene2D(function* (view) {
     const printLastFYValues = new Map<number, { sales: string, units: string, salesPerSoftwareUnit: string }>();
 
     const printYoYPercentages = new Map<number, { sales: string, units: string, salesPerSoftwareUnit: string }>();
+
+    const thisFYQuickRatio = new Map<number, number>();
+
+    const lastFYQuickRatio = new Map<number, number>();
 
     capcomSales.map((elem, index, array) => {
 
@@ -108,6 +116,14 @@ export default makeScene2D(function* (view) {
                 units: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
                 salesPerSoftwareUnit: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(2).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
             }
+        )
+
+        thisFYQuickRatio.set(index,
+           (quickRatio((extractValue(elem.dataThisFY.get(index).Q1QtrValue) as number), (extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number), 2) / 100), 
+        )
+
+        lastFYQuickRatio.set(index,
+           (quickRatio((extractValue(elem.dataLastFY.get(index).Q1QtrValue) as number), (extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number), 2) / 100), 
         )
 
     })
@@ -218,6 +234,15 @@ export default makeScene2D(function* (view) {
     // numberSignal(DEFAULT)
 
     yield* dataLoop(lines.get(0).length, lines.get(0), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,)
+
+    yield* dataLoop(lines.get(1).length, lines.get(1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,)
+
+    yield* all(
+        setBar(view, createRef<Rect>(), createRef<Txt>(), -500, defaultY, 100, defaultHeight * thisFYQuickRatio.get(0), "rgba(0, 255, 255, .80)", -500, -340, printValues.get(0).sales, 1),
+        setBar(view, createRef<Rect>(), createRef<Txt>(), -700, defaultY * lastFYQuickRatio.get(0), 100, defaultHeight * lastFYQuickRatio.get(0), "rgba(75, 0, 130, .80)", -700, -defaultHeight * lastFYQuickRatio.get(0) - 40, printLastFYValues.get(0).sales, 1),
+        setBar(view, createRef<Rect>(), createRef<Txt>(), -600, -500, 80, 40, "rgba(0, 255, 255, .80)", -300, -500, "1st Quarter FY3/2024", 1),
+        setBar(view, createRef<Rect>(), createRef<Txt>(), 100, -500, 80, 40, "rgba(75, 0, 130, .80)", 400, -500, "1st Quarter FY3/2023", 1),
+    )
 
     // yield* loop(
     //     lines.get(1).length,

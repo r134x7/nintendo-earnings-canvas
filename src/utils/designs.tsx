@@ -111,7 +111,7 @@ export function* dataLoop(linesLength: number, text: string, textBoxLength: numb
 
 }
 
-export function* setBar(view: View2D, bar: Reference<Rect>, value: Reference<Txt>, xPosition: number, yBarPosition: number, barWidth: number, barHeight: number, barColour: string, yTextPosition: number, textValue: string, timing: number) {
+export function* setBar(view: View2D, bar: Reference<Rect>, value: Reference<Txt>, xBarPosition: number, yBarPosition: number, barWidth: number, barHeight: number, barColour: string, xTextPosition: number, yTextPosition: number, textValue: string, timing: number) {
 
     view.add(
         <>
@@ -119,13 +119,13 @@ export function* setBar(view: View2D, bar: Reference<Rect>, value: Reference<Txt
                 ref={bar}
                 width={barWidth}
                 fill={barColour}
-                x={xPosition}
+                x={xBarPosition}
             />
             <Txt 
                 ref={value}
                 text={""}
                 fill={"white"}
-                x={xPosition}
+                x={xTextPosition}
             />
         </>
     )
