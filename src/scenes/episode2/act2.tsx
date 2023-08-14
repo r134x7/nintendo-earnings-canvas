@@ -1,7 +1,7 @@
 import { makeScene2D, Img, Circle, Line, Rect, Txt } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2 } from "@motion-canvas/core";
 
-import { textBlock, contextYoY, quarterLabel } from "../../utils/designs";
+import { textBlock, contextYoY, quarterLabel, dataLoop } from "../../utils/designs";
 import {
    date,
    header,
@@ -15,8 +15,7 @@ import spider from "../../newAssets/spider3Final.svg"
 
 export default makeScene2D(function* (view) {
 
-    // const { dataLastFY, dataThisFY } = capcomSales
-    console.log(capcomSales);
+    // console.log(capcomSales[0].dataThisFY.get(0).);
     
     
 
@@ -115,9 +114,7 @@ export default makeScene2D(function* (view) {
 
     const lines = new Map<number, string>();
 
-    lines.set(lines.size, "Note: M = Million (or rather 10^6). The following are linked in the description: Data sources, Motion Canvas, soundtracks, Install Base Forum, ggx2ac + archives (webpage).")
-    lines.set(lines.size, `The following data comes from my webpage and may contain errors. This video covers the 1st Quarter (Apr-Jun) earnings release of ${header.companyName} for the fiscal year ending March 2024 (${header.fiscalYear}) and, the Capcom Platinum Titles ${date}.`)
-    lines.set(lines.size, `${header.title}`)
+    lines.set(lines.size, "Sales Per Software Unit")
     // lines.set(lines.size, `${header.companyName}'s consolidated net sales for the ${quarterLabel("1")} was ${printValues.netSales} (${printValuePrimitive(
     //         extractValue(percentagesThisFY.get(0).Q1QtrValue) as number,
     //         numberType("None"),
@@ -209,15 +206,17 @@ export default makeScene2D(function* (view) {
         </Rect>
     )
 
-    yield* loop(
-        lines.get(0).length,
-        i => textBlock(lines.get(0), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
-    )
+    // yield* loop(
+    //     lines.get(0).length,
+    //     i => textBlock(lines.get(0), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
+    // )
 
     yield* imageRefs[1]().rotation(0, 1).to(720, 1)
 
-    textSignal(DEFAULT)
-    numberSignal(DEFAULT)
+    // textSignal(DEFAULT)
+    // numberSignal(DEFAULT)
+
+    yield* dataLoop(lines.get(0).length, lines.get(0), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,)
 
     // yield* loop(
     //     lines.get(1).length,
@@ -246,7 +245,7 @@ export default makeScene2D(function* (view) {
 
     // view.add(
     //     <>
-    //         <Rect 
+            // <Rect 
     //             ref={barRefs[0]}
     //             minHeight={0}
     //             width={100}

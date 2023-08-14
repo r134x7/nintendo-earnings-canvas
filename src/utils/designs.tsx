@@ -1,4 +1,5 @@
-import { waitFor, ThreadGenerator, SimpleSignal } from "@motion-canvas/core";
+import { waitFor, ThreadGenerator, SimpleSignal, loop, DEFAULT, Direction, all, createRef, createSignal, slideTransition, Vector2, Reference } from "@motion-canvas/core";
+import { type View2D, Rect, Txt } from "@motion-canvas/2d";
 
 export function* textBlock(text: string, lineLength: number, getSignal: SimpleSignal<string, void>, getIndex: SimpleSignal<number, void>, delay: number, endDelay: number): ThreadGenerator {
 
@@ -86,4 +87,44 @@ export function quarterLabel(value: "1" | "2" | "3" | "4"): string {
         default:
             return "ERROR";
     }
+}
+
+export function* dataLoop(linesLength: number, text: string, textBoxLength: number, textSpeed: number, endDelay: number, textSignal: SimpleSignal<string, void>, numberSignal: SimpleSignal<number, void>,) {
+
+    yield* loop(
+        linesLength,
+        i => textBlock(text, textBoxLength, textSignal, numberSignal, textSpeed, endDelay)
+    )
+
+    textSignal(DEFAULT)
+    numberSignal(DEFAULT)
+
+
+}
+
+export function* setBar(view: View2D, bar: Reference<Rect>, value: Reference<Txt>, xPosition: number, yBarPosition: number, barWidth: number, barHeight: number, barColour: string, yTextPosition: number, textValue: string, timing: number) {
+
+    view.add(
+        <>
+            <Rect 
+                ref={bar}
+                width={barWidth}
+                fill={barColour}
+                x={xPosition}
+            />
+            <Txt 
+                ref={value}
+                text={""}
+                fill={"white"}
+                x={xPosition}
+            />
+        </>
+    )
+
+    yield* all (
+        bar().height(barHeight, timing),
+        bar().y(yBarPosition, timing),
+        value().y(yTextPosition, timing),
+        value().text(textValue, timing),
+    ) 
 }
