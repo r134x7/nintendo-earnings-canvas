@@ -1,7 +1,7 @@
 import { makeScene2D, Img, Circle, Line, Rect, Txt } from "@motion-canvas/2d";
-import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2, chain } from "@motion-canvas/core";
+import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2, chain, Reference, Logger } from "@motion-canvas/core";
 
-import { textBlock, contextYoY, quarterLabel, dataLoop, setBar, setLabel } from "../../utils/designs";
+import { textBlock, contextYoY, quarterLabel, dataLoop, setBar, setLabel, moveNodes, removeChildrenInLoop } from "../../utils/designs";
 import {
    date,
    header,
@@ -25,32 +25,19 @@ export default makeScene2D(function* (view) {
     const textBox = createRef<Txt>();
     const webLine = createRef<Line>();
 
+    const bars = new Map<number, Reference<Rect>[]>();
+    const barValues = new Map<number, Reference<Txt>[]>();
+
+    for (let index = 0; index < capcomSales.length; index++) {
+
+            bars.set(bars.size, Array(6).fill(createRef<Rect>()))
+            barValues.set(barValues.size, Array(6).fill(createRef<Txt>()))
+    }
+
     const imageRefs = [
         createRef<Img>(),
         createRef<Img>(),
     ];
-
-    const barRefs = [
-        createRef<Rect>(),
-        createRef<Rect>(),
-        createRef<Rect>(),
-        createRef<Rect>(),
-        createRef<Rect>(),
-        createRef<Rect>(),
-        createRef<Rect>(),
-        createRef<Rect>(),
-    ];
-
-    const valueRefs = [
-        createRef<Txt>(),
-        createRef<Txt>(),
-        createRef<Txt>(),
-        createRef<Txt>(),
-        createRef<Txt>(),
-        createRef<Txt>(),
-        createRef<Txt>(),
-        createRef<Txt>(),
-    ]
 
     const labelRefs = [
         createRef<Txt>(),
@@ -133,17 +120,17 @@ export default makeScene2D(function* (view) {
                 salesPerSoftwareUnit: (quickRatio((extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number), (extractValue(array[1].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
             }
         )
-
+            
     })
 
 
     lines.set(lines.size, "Sales Per Software Unit")
 
-    lines.set(lines.size, `Capcom's sales from ${capcomSales[0].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(0).sales} (${printYoYPercentages.get(0).sales} ${contextYoY(printYoYPercentages.get(0).sales)})`)
+    lines.set(lines.size, `Capcom's software sales from ${capcomSales[0].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(0).sales} (${printYoYPercentages.get(0).sales} ${contextYoY(printYoYPercentages.get(0).sales)})`)
 
-    lines.set(lines.size, `Capcom's sales from ${capcomSales[1].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(1).sales} (${printYoYPercentages.get(1).sales} ${contextYoY(printYoYPercentages.get(1).sales)})`)
+    lines.set(lines.size, `Capcom's software sales from ${capcomSales[1].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(1).sales} (${printYoYPercentages.get(1).sales} ${contextYoY(printYoYPercentages.get(1).sales)})`)
 
-    lines.set(lines.size, `Capcom's sales from ${capcomSales[2].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(2).sales} (${printYoYPercentages.get(2).sales} ${contextYoY(printYoYPercentages.get(2).sales)})`)
+    lines.set(lines.size, `Capcom's software sales from ${capcomSales[2].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(2).sales} (${printYoYPercentages.get(2).sales} ${contextYoY(printYoYPercentages.get(2).sales)})`)
 
     lines.set(lines.size, `Capcom's software units from ${capcomSales[0].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(0).units} (${printYoYPercentages.get(0).units} ${contextYoY(printYoYPercentages.get(0).units)})`)
 
@@ -241,7 +228,8 @@ export default makeScene2D(function* (view) {
     // textSignal(DEFAULT)
     // numberSignal(DEFAULT)
 
-    yield* dataLoop(lines.get(0).length, lines.get(0), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,)
+    yield* dataLoop(lines.get(0).length, lines.get(0), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal)
+
 
     yield* loop(
         capcomSales.length,
@@ -249,19 +237,23 @@ export default makeScene2D(function* (view) {
              dataLoop(lines.get(1).length, lines.get(1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
              all(
-                setBar(view, createRef<Rect>(), createRef<Txt>(), -500, defaultY, 100, defaultHeight * thisFYQuickRatio.get(0).sales, "rgba(0, 255, 255, .80)", -500, -340, printValues.get(0).sales, 1),
-                setBar(view, createRef<Rect>(), createRef<Txt>(), -700, defaultY * lastFYQuickRatio.get(0).sales, 100, defaultHeight * lastFYQuickRatio.get(0).sales, "rgba(75, 0, 130, .80)", -700, -defaultHeight * lastFYQuickRatio.get(0).sales - 40, printLastFYValues.get(0).sales, 1),
+                setBar(view, bars.get(i)[0], barValues.get(i)[0], -500, defaultY, 100, defaultHeight * thisFYQuickRatio.get(0).sales, "rgba(0, 255, 255, .80)", -500, -340, printValues.get(0).sales, 1),
+
+                setBar(view, bars.get(i)[1], barValues.get(i)[1], -700, defaultY * lastFYQuickRatio.get(0).sales, 100, defaultHeight * lastFYQuickRatio.get(0).sales, "rgba(75, 0, 130, .80)", -700, -defaultHeight * lastFYQuickRatio.get(0).sales - 40, printLastFYValues.get(0).sales, 1),
+
                 setBar(view, createRef<Rect>(), createRef<Txt>(), -600, -500, 80, 40, "rgba(0, 255, 255, .80)", -300, -500, "1st Quarter FY3/2024", 1),
+
                 setBar(view, createRef<Rect>(), createRef<Txt>(), 100, -500, 80, 40, "rgba(75, 0, 130, .80)", 400, -500, "1st Quarter FY3/2023", 1),
+
                 setLabel(view, createRef<Txt>(), -600, 40, "Package & Digital", 1)
             ),
         
              dataLoop(lines.get(2).length, lines.get(2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
-                setBar(view, createRef<Rect>(), createRef<Txt>(), 100, defaultY * thisFYQuickRatio.get(1).sales, 100, defaultHeight * thisFYQuickRatio.get(1).sales, "rgba(0, 255, 255, .80)", 100, -defaultHeight * thisFYQuickRatio.get(1).sales -40, printValues.get(1).sales, 1),
+                setBar(view, bars.get(i)[2], barValues.get(i)[2], 100, defaultY * thisFYQuickRatio.get(1).sales, 100, defaultHeight * thisFYQuickRatio.get(1).sales, "rgba(0, 255, 255, .80)", 100, -defaultHeight * thisFYQuickRatio.get(1).sales -40, printValues.get(1).sales, 1),
         
-                setBar(view, createRef<Rect>(), createRef<Txt>(), -100, defaultY * lastFYQuickRatio.get(1).sales, 100, defaultHeight * lastFYQuickRatio.get(1).sales, "rgba(75, 0, 130, .80)", -100, -defaultHeight * lastFYQuickRatio.get(1).sales - 40, printLastFYValues.get(1).sales, 1),
+                setBar(view, bars.get(i)[3], barValues.get(i)[3], -100, defaultY * lastFYQuickRatio.get(1).sales, 100, defaultHeight * lastFYQuickRatio.get(1).sales, "rgba(75, 0, 130, .80)", -100, -defaultHeight * lastFYQuickRatio.get(1).sales - 40, printLastFYValues.get(1).sales, 1),
         
                 setLabel(view, createRef<Txt>(), 0, 40, "Package", 1)
             ),
@@ -269,13 +261,31 @@ export default makeScene2D(function* (view) {
              dataLoop(lines.get(3).length, lines.get(3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
-                setBar(view, createRef<Rect>(), createRef<Txt>(), 700, defaultY * thisFYQuickRatio.get(2).sales, 100, defaultHeight * thisFYQuickRatio.get(2).sales, "rgba(0, 255, 255, .80)", 700, -defaultHeight * thisFYQuickRatio.get(2).sales -40, printValues.get(2).sales, 1),
+                setBar(view, bars.get(i)[4], barValues.get(i)[4], 700, defaultY * thisFYQuickRatio.get(2).sales, 100, defaultHeight * thisFYQuickRatio.get(2).sales, "rgba(0, 255, 255, .80)", 700, -defaultHeight * thisFYQuickRatio.get(2).sales -40, printValues.get(2).sales, 1),
         
-                setBar(view, createRef<Rect>(), createRef<Txt>(), 500, defaultY * lastFYQuickRatio.get(2).sales, 100, defaultHeight * lastFYQuickRatio.get(2).sales, "rgba(75, 0, 130, .80)", 500, -defaultHeight * lastFYQuickRatio.get(2).sales - 40, printLastFYValues.get(2).sales, 1),
+                setBar(view, bars.get(i)[5], barValues.get(i)[5], 500, defaultY * lastFYQuickRatio.get(2).sales, 100, defaultHeight * lastFYQuickRatio.get(2).sales, "rgba(75, 0, 130, .80)", 500, -defaultHeight * lastFYQuickRatio.get(2).sales - 40, printLastFYValues.get(2).sales, 1),
         
                 setLabel(view, createRef<Txt>(), 600, 40, "Digital", 1)
             ),
 
+            waitFor(4),
+
+            moveNodes(bars.get(i), view)
+            // removeChildrenInLoop(view)
+
+            // all(
+            //     bars.get(i)[0]().y(-2000, 1),
+            //     bars.get(i)[1]().y(-2000, 1),
+            //     bars.get(i)[2]().y(-2000, 1),
+            //     bars.get(i)[3]().y(-2000, 1),
+            //     bars.get(i)[4]().y(-2000, 1),
+            //     bars.get(i)[5]().y(-2000, 1),
+            // )
+
+            // loop(
+            //     bars.get(i).length,
+            //     j => bars.get(i)[j]().y(-2000, 1)
+            // )
         ),
     )
 

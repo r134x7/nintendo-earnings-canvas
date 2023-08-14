@@ -155,3 +155,17 @@ export function* setLabel(view: View2D, label: Reference<Txt>, xTextPosition: nu
         label().text(textValue, timing),
     ) 
 }
+
+export function* moveNodes(nodes: Reference<Rect>[], view: View2D) {
+    
+
+    yield* loop(
+        nodes.length,
+        i => nodes[i]().y(2000, 1)
+    )
+}
+
+export function* removeChildrenInLoop(view: View2D) {
+
+    view.removeChildren()
+}
