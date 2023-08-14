@@ -123,9 +123,17 @@ export default makeScene2D(function* (view) {
             numberType("None"),
             "+%"
             )} ${contextYoY(extractValue(percentagesThisFY.get(0).Q1QtrValue))})`)
-    lines.set(lines.size, `${header.companyName}'s consolidated operating income for the ${quarterLabel("1")} was ${extractValue(dataThisFY.get(1).Q1QtrValue)} (${extractValue(percentagesThisFY.get(1).Q1QtrValue)} ${contextYoY(extractValue(percentagesThisFY.get(1).Q1QtrValue))})`)
-    lines.set(lines.size, `${header.companyName}'s operating margin for the ${quarterLabel("1")} was ${extractValue(opMargin.get(0).Q1QtrValue)}`)
-    lines.set(lines.size, `${header.companyName}'s consolidated net income for the ${quarterLabel("1")} was ${extractValue(dataThisFY.get(2).Q1QtrValue)} (${extractValue(percentagesThisFY.get(2).Q1QtrValue)} ${contextYoY(extractValue(percentagesThisFY.get(2).Q1QtrValue))})`)
+    lines.set(lines.size, `${header.companyName}'s consolidated operating income for the ${quarterLabel("1")} was ${printValues.operatingIncome} (${printValuePrimitive(
+            extractValue(percentagesThisFY.get(1).Q1QtrValue) as number,
+            numberType("None"),
+            "+%"
+            )} ${contextYoY(extractValue(percentagesThisFY.get(1).Q1QtrValue))})`)
+    lines.set(lines.size, `${header.companyName}'s operating margin for the ${quarterLabel("1")} was ${extractValue(opMargin.get(0).Q1QtrValue)}%`)
+    lines.set(lines.size, `${header.companyName}'s consolidated net income for the ${quarterLabel("1")} was ${printValues.netIncome} (${printValuePrimitive(
+            extractValue(percentagesThisFY.get(2).Q1QtrValue) as number,
+            numberType("None"),
+            "+%"
+            )} ${contextYoY(extractValue(percentagesThisFY.get(1).Q1QtrValue))} ${contextYoY(extractValue(percentagesThisFY.get(2).Q1QtrValue))})`)
     lines.set(lines.size, "Capom's operating income and net income broke historical records leading to them having the most profitable first quarter ever.")
 
     view.add(
@@ -360,13 +368,6 @@ export default makeScene2D(function* (view) {
         operatingIncome: defaultValueHeight.operatingIncome * (quickRatio((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
         netIncome: defaultValueHeight.netIncome * (quickRatio((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
     }
-
-
-    const calculatePercentages = {
-        netSales: (quickYoYCalculate((extractValue(dataThisFY.get(0).Q1QtrValue) as number), (extractValue(dataLastFY.get(0).Q1QtrValue) as number), 2) / 100),
-        operatingIncome: (quickYoYCalculate((extractValue(dataThisFY.get(1).Q1QtrValue) as number), (extractValue(dataLastFY.get(1).Q1QtrValue) as number), 2) / 100),  
-        netIncome: (quickYoYCalculate((extractValue(dataThisFY.get(2).Q1QtrValue) as number), (extractValue(dataLastFY.get(2).Q1QtrValue) as number), 2) / 100),
-    };
 
     yield* all (
         barRefs[0]().height(defaultBarHeight.netSales, 1),
