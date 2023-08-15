@@ -139,7 +139,7 @@ export default makeScene2D(function* (view) {
             numberType("None"),
             "+%"
             )} ${contextYoY(extractValue(percentagesThisFY.get(2).Q1QtrValue))})`)
-    lines.set(lines.size, "Capom's operating income and net income broke historical records leading to them having the most profitable first quarter ever.")
+    lines.set(lines.size, "Capcom's operating income and net income broke historical records leading to them having the most profitable first quarter ever.")
 
     view.add(
         <Img 
