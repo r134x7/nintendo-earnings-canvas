@@ -155,11 +155,13 @@ export default makeScene2D(function* (view) {
     })
 
 
-    lines.set(lines.size, "Fiscal Year Platinum Titles")
+    lines.set(lines.size, `Fiscal Year Platinum Titles, ${date}`)
 
-    lines.set(lines.size, `Capcom's sales per software unit from ${capcomSales[2].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(2).salesPerSoftwareUnit} (${printYoYPercentages.get(2).salesPerSoftwareUnit} ${contextYoY(printYoYPercentages.get(2).salesPerSoftwareUnit)})`)
-
-    lines.set(lines.size, "Note: Sales include Downloadable content purchases in Package & Digital and, Digital.")
+    platinumTitlesProcessed.map((elem, index, array) => {
+        lines.set(lines.size,
+            `${elem.cumulative.title} for ${elem.cumulative.platforms} released on ${elem.cumulative.releaseDate} had shipped units/downloads of ${elem.quarter.value} for the ${quarterLabel("1")}. Cumulative units are at ${elem.cumulative.value}. ${elem.cumulative.miscellaneous ?? ""}`
+            )
+    })
 
     yield* slideTransition(Direction.Right);
 
