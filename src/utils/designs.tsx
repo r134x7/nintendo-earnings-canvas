@@ -156,16 +156,34 @@ export function* setLabel(view: View2D, label: Reference<Txt>, xTextPosition: nu
     ) 
 }
 
-export function* moveNodes(nodes: Reference<Rect>[], view: View2D) {
-    
+export function* setBarV2(bar: Reference<Rect>, value: Reference<Txt>, xBarPosition: number, yBarPosition: number, barWidth: number, barHeight: number, barColour: string, xTextPosition: number, yTextPosition: number, textValue: string, timing: number) {
 
-    yield* loop(
-        nodes.length,
-        i => nodes[i]().y(2000, 1)
-    )
-}
+    // view.add(
+    //     <>
+    //         <Rect 
+    //             ref={bar}
+    //             width={barWidth}
+    //             fill={barColour}
+    //             x={xBarPosition}
+    //         />
+    //         <Txt 
+    //             ref={value}
+    //             text={""}
+    //             fill={"white"}
+    //             x={xTextPosition}
+    //         />
+    //     </>
+    // )
 
-export function* removeChildrenInLoop(view: View2D) {
-
-    view.removeChildren()
+    yield* all (
+        bar().fill(barColour, timing),
+        bar().width(barWidth, timing),
+        bar().height(barHeight, timing),
+        bar().x(xBarPosition, timing),
+        bar().y(yBarPosition, timing),
+        value().fill("white", 1),
+        value().x(xTextPosition, timing),
+        value().y(yTextPosition, timing),
+        value().text(textValue, timing),
+    ) 
 }
