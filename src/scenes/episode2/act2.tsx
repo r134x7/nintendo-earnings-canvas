@@ -1,7 +1,7 @@
 import { makeScene2D, Img, Circle, Line, Rect, Txt } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2, chain, Reference, Logger, createRefMap, createRefArray, range } from "@motion-canvas/core";
 
-import { textBlock, contextYoY, quarterLabel, dataLoop, setBar, setLabel, setBarV2, delayedClear } from "../../utils/designs";
+import { textBlock, contextYoY, quarterLabel, dataLoop, setBar, setLabel, moveBar} from "../../utils/designs";
 import {
    date,
    header,
@@ -25,74 +25,24 @@ export default makeScene2D(function* (view) {
     const textBox = createRef<Txt>();
     const webLine = createRef<Line>();
 
-    const bars = new Map<number, Reference<Rect>[]>();
-    const barValues = new Map<number, Reference<Txt>[]>();
-
-    const bar = createRefArray<Rect>();
-
     const barsMap = createRefMap<Rect>();
+    const valuesMap = createRefMap<Txt>();
 
     view.add(
         <>
         {range(18).map((elem, index) => (
+            <>
             <Rect ref={barsMap[index]} />
+            <Txt ref={valuesMap[index]} />
+            </>
         ))}
         </>
     )
-
-    console.log(barsMap);
-    
-
-    for (let index = 0; index < capcomSales.length; index++) {
-
-            bars.set(bars.size, Array(6).fill(createRef<Rect>()))
-            barValues.set(barValues.size, Array(6).fill(createRef<Txt>()))
-    }
-
-    bars.forEach((value, key) => {
-        value.map(elem => {
-            view.add(
-                <>
-                <Rect ref={elem} />
-                </>
-            )
-        })
-    })
-
-    barValues.forEach((value, key) => {
-        value.map(elem => {
-            view.add(
-                <>
-                <Txt ref={elem} />
-                </>
-            )
-        })
-    })
 
     const imageRefs = [
         createRef<Img>(),
         createRef<Img>(),
     ];
-
-    const labelRefs = [
-        createRef<Txt>(),
-        createRef<Txt>(),
-        createRef<Txt>(),
-        createRef<Txt>(),
-        createRef<Txt>(),
-        createRef<Txt>(),
-        createRef<Txt>(),
-    ]
-
-    const colourRefs = [
-        createRef<Txt>(),
-        createRef<Txt>(),
-    ]
-
-    const colourBoxRefs = [
-        createRef<Rect>(),
-        createRef<Rect>(),
-    ]
 
     const textSignal = createSignal("");
     const numberSignal = createSignal(0);
@@ -272,15 +222,12 @@ export default makeScene2D(function* (view) {
         capcomSales.length,
         i => chain(
 
-            delayedClear(bars.get(i-1), i),
+            dataLoop(lines.get(1).length, lines.get(1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
+            all(
+                moveBar(barsMap[`${i*6}`], valuesMap[`${i*6}`], -500, defaultY, 100, defaultHeight * thisFYQuickRatio.get(0).sales, "rgba(0, 255, 255, .80)", -500, -340, printValues.get(0).sales, 1),
 
-             dataLoop(lines.get(1).length, lines.get(1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
-
-             all(
-                setBar(view, bars.get(i)[0], barValues.get(i)[0], -500, defaultY, 100, defaultHeight * thisFYQuickRatio.get(0).sales, "rgba(0, 255, 255, .80)", -500, -340, printValues.get(0).sales, 1),
-
-                setBar(view, bars.get(i)[1], barValues.get(i)[1], -700, defaultY * lastFYQuickRatio.get(0).sales, 100, defaultHeight * lastFYQuickRatio.get(0).sales, "rgba(75, 0, 130, .80)", -700, -defaultHeight * lastFYQuickRatio.get(0).sales - 40, printLastFYValues.get(0).sales, 1),
+                moveBar(barsMap[`${i*6+1}`], valuesMap[`${i*6+1}`], -700, defaultY * lastFYQuickRatio.get(0).sales, 100, defaultHeight * lastFYQuickRatio.get(0).sales, "rgba(75, 0, 130, .80)", -700, -defaultHeight * lastFYQuickRatio.get(0).sales - 40, printLastFYValues.get(0).sales, 1),
 
                 setBar(view, createRef<Rect>(), createRef<Txt>(), -600, -500, 80, 40, "rgba(0, 255, 255, .80)", -300, -500, "1st Quarter FY3/2024", 1),
 
@@ -291,52 +238,41 @@ export default makeScene2D(function* (view) {
         
              dataLoop(lines.get(2).length, lines.get(2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
-            //  all(
-            //     setBarV2(bars.get(i)[2], barValues.get(i)[2], 100, defaultY * thisFYQuickRatio.get(1).sales, 100, defaultHeight * thisFYQuickRatio.get(1).sales, "rgba(0, 255, 255, .80)", 100, -defaultHeight * thisFYQuickRatio.get(1).sales -40, printValues.get(1).sales, 1),
+             all(
+                moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], 100, defaultY * thisFYQuickRatio.get(1).sales, 100, defaultHeight * thisFYQuickRatio.get(1).sales, "rgba(0, 255, 255, .80)", 100, -defaultHeight * thisFYQuickRatio.get(1).sales -40, printValues.get(1).sales, 1),
         
-            //     setBarV2(bars.get(i)[3], barValues.get(i)[3], -100, defaultY * lastFYQuickRatio.get(1).sales, 100, defaultHeight * lastFYQuickRatio.get(1).sales, "rgba(75, 0, 130, .80)", -100, -defaultHeight * lastFYQuickRatio.get(1).sales - 40, printLastFYValues.get(1).sales, 1),
+                moveBar(barsMap[`${i*6+3}`], valuesMap[`${i*6+3}`], -100, defaultY * lastFYQuickRatio.get(1).sales, 100, defaultHeight * lastFYQuickRatio.get(1).sales, "rgba(75, 0, 130, .80)", -100, -defaultHeight * lastFYQuickRatio.get(1).sales - 40, printLastFYValues.get(1).sales, 1),
         
-            //     setLabel(view, createRef<Txt>(), 0, 40, "Package", 1)
-            // ),
+                setLabel(view, createRef<Txt>(), 0, 40, "Package", 1)
+            ),
         
-            //  dataLoop(lines.get(3).length, lines.get(3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
+             dataLoop(lines.get(3).length, lines.get(3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
-            //  all(
-            //     setBarV2(bars.get(i)[4], barValues.get(i)[4], 700, defaultY * thisFYQuickRatio.get(2).sales, 100, defaultHeight * thisFYQuickRatio.get(2).sales, "rgba(0, 255, 255, .80)", 700, -defaultHeight * thisFYQuickRatio.get(2).sales -40, printValues.get(2).sales, 1),
+             all(
+                moveBar(barsMap[`${i*6+4}`], valuesMap[`${i*6+4}`], 700, defaultY * thisFYQuickRatio.get(2).sales, 100, defaultHeight * thisFYQuickRatio.get(2).sales, "rgba(0, 255, 255, .80)", 700, -defaultHeight * thisFYQuickRatio.get(2).sales -40, printValues.get(2).sales, 1),
         
-            //     setBarV2(bars.get(i)[5], barValues.get(i)[5], 500, defaultY * lastFYQuickRatio.get(2).sales, 100, defaultHeight * lastFYQuickRatio.get(2).sales, "rgba(75, 0, 130, .80)", 500, -defaultHeight * lastFYQuickRatio.get(2).sales - 40, printLastFYValues.get(2).sales, 1),
+                moveBar(barsMap[`${i*6+5}`], valuesMap[`${i*6+5}`], 500, defaultY * lastFYQuickRatio.get(2).sales, 100, defaultHeight * lastFYQuickRatio.get(2).sales, "rgba(75, 0, 130, .80)", 500, -defaultHeight * lastFYQuickRatio.get(2).sales - 40, printLastFYValues.get(2).sales, 1),
         
-            //     setLabel(view, createRef<Txt>(), 600, 40, "Digital", 1)
-            // ),
+                setLabel(view, createRef<Txt>(), 600, 40, "Digital", 1)
+            ),
 
-            // all(
-            //     bars.get(i)[0]().y(-2000, 1), 
-            //     bars.get(i)[1]().y(-2000, 1), 
-            //     bars.get(i)[2]().y(-2000, 1), 
-            //     bars.get(i)[3]().y(-2000, 1), 
-            //     bars.get(i)[4]().y(-2000, 1), 
-            //     bars.get(i)[5]().y(-2000, 1), 
-            // ),
-
-            
             waitFor(4),
 
+            // all( ...barsMap.mapRefs(elem => elem.y(-2000, 1))),
+            all (
+                ...barsMap.mapRefs((value, index) => {
+                    if (index < (i*6+6)) {
+                        return value.y(-2000, 1)
+                    }
+                }),
+                ...valuesMap.mapRefs((value, index) => {
+                    if (index < (i*6+6)) {
+                        return value.y(-2000, 1)
+                    }
+                })
+            )
+            
 
-
-            // all( ...barsMap.mapRefs(elem => elem.y(2000, 1)))
-            // all(
-            //     barsMap.a.y(-2000, 1),
-            //     bars.get(i)[1]().y(-2000, 1),
-            //     bars.get(i)[2]().y(-2000, 1),
-            //     bars.get(i)[3]().y(-2000, 1),
-            //     bars.get(i)[4]().y(-2000, 1),
-            //     bars.get(i)[5]().y(-2000, 1),
-            // )
-
-            // loop(
-            //     bars.get(i).length,
-            //     j => bars.get(i)[j]().y(-2000, 1)
-            // )
         ),
     )
 

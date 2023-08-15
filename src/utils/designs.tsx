@@ -156,24 +156,7 @@ export function* setLabel(view: View2D, label: Reference<Txt>, xTextPosition: nu
     ) 
 }
 
-export function* setBarV2(bar: Reference<Rect>, value: Reference<Txt>, xBarPosition: number, yBarPosition: number, barWidth: number, barHeight: number, barColour: string, xTextPosition: number, yTextPosition: number, textValue: string, timing: number) {
-
-    // view.add(
-    //     <>
-    //         <Rect 
-    //             ref={bar}
-    //             width={barWidth}
-    //             fill={barColour}
-    //             x={xBarPosition}
-    //         />
-    //         <Txt 
-    //             ref={value}
-    //             text={""}
-    //             fill={"white"}
-    //             x={xTextPosition}
-    //         />
-    //     </>
-    // )
+export function* moveBar(bar: Reference<Rect>, value: Reference<Txt>, xBarPosition: number, yBarPosition: number, barWidth: number, barHeight: number, barColour: string, xTextPosition: number, yTextPosition: number, textValue: string, timing: number) {
 
     yield* all (
         bar().fill(barColour, timing),
@@ -186,17 +169,4 @@ export function* setBarV2(bar: Reference<Rect>, value: Reference<Txt>, xBarPosit
         value().y(yTextPosition, timing),
         value().text(textValue, timing),
     ) 
-}
-
-export function* delayedClear(nodes: Reference<Rect>[], i: number) {
-
-    if (i > 0) {
-
-        yield* all(
-            ...nodes.map(elem => elem().y(-2000, 1))
-        )
-
-        yield* nodes[0]().y(-2000, 1)
-    }
-
 }
