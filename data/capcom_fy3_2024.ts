@@ -15,6 +15,10 @@ import {
 } from "../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/data/capcom/software_sales_Capcom"
 
 import {
+    fyPlatinumTitlesListForAnimation
+} from "../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/data/capcom/platinum_titles_Capcom"
+
+import {
     salesPerSoftwareValuesForAnimation,
 } from "../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/utils/segment_data_logic"
 
@@ -48,3 +52,12 @@ for (let index = 0; index < collectionV2.get(0).data.length; index+= 2) {
     ))
 
 }
+
+export const platinumTitlesProcessed =  fyPlatinumTitlesListForAnimation[0].quarters.flatMap((elem, index, array) => {
+    return [
+        {
+            quarter: elem[0],
+            cumulative: fyPlatinumTitlesListForAnimation[0].cumulative[index][0]
+        }
+    ]
+});

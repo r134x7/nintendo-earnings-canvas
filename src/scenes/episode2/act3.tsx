@@ -5,7 +5,8 @@ import { textBlock, contextYoY, quarterLabel, dataLoop, setBar, setLabel, moveBa
 import {
    date,
    header,
-   capcomSales
+   capcomSales,
+   platinumTitlesProcessed
 } from "../../../data/capcom_fy3_2024";
 
 import { printValuePrimitive, numberType, quickRatio, quickYoYCalculate } from "../../../../../nintendo-earnings-data-and-other-video-game-companies/webpage_v2/src/utils/general_earnings_logic";
@@ -14,6 +15,10 @@ import { extractValue } from "../../../../../nintendo-earnings-data-and-other-vi
 import spider from "../../newAssets/spider3Final.svg"
 
 export default makeScene2D(function* (view) {
+
+    console.log(platinumTitlesProcessed);
+    
+    
 
     const textAnimate = {
         textBoxLength: 54,
@@ -146,7 +151,7 @@ export default makeScene2D(function* (view) {
     })
 
 
-    lines.set(lines.size, "Sales Per Software Unit")
+    lines.set(lines.size, "Fiscal Year Platinum Titles")
 
     lines.set(lines.size, `Capcom's software sales from ${capcomSales[0].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(0).sales} (${printYoYPercentages.get(0).sales} ${contextYoY(printYoYPercentages.get(0).sales)})`)
 
