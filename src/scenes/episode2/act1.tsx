@@ -1,7 +1,7 @@
 import { makeScene2D, Img, Circle, Line, Rect, Txt } from "@motion-canvas/2d";
-import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2 } from "@motion-canvas/core";
+import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2, chain } from "@motion-canvas/core";
 
-import { textBlock, contextYoY, quarterLabel } from "../../utils/designs";
+import { textBlock, contextYoY, quarterLabel, dataLoop } from "../../utils/designs";
 import {
    date,
    dataLastFY,
@@ -68,6 +68,10 @@ export default makeScene2D(function* (view) {
     const textBox = createRef<Txt>();
     const webLine = createRef<Line>();
 
+    const getAudio = createRef<Txt>();
+    const audioBox = createRef<Rect>();
+    const audioText = "Song: Super Street Fighter II:\n The New Challengers \"Cammy's London Drizzle\"\nArtist: MkVaff\nSource: https://ocremix.org/"
+
     const imageRefs = [
         createRef<Img>(),
         createRef<Img>(),
@@ -120,7 +124,7 @@ export default makeScene2D(function* (view) {
 
     const lines = new Map<number, string>();
 
-    lines.set(lines.size, "Note: M = Million (or rather 10^6). The following are linked in the video description: Data sources, Motion Canvas, soundtracks, Install Base Forum, ggx2ac + archives (webpage).")
+    lines.set(lines.size, "Note: M = Million (or rather 10^6). The following are linked in the video description: Data sources, Motion Canvas, OCRemix soundtracks, Install Base Forum, ggx2ac + archives (webpage).")
     lines.set(lines.size, `The following data comes from my webpage and may contain errors. This video covers the 1st Quarter (Apr-Jun) earnings release of ${header.companyName} for the fiscal year ending March 2024 (${header.fiscalYear}) and, the Capcom Platinum Titles ${date}.`)
     lines.set(lines.size, `${header.title}`)
     lines.set(lines.size, `${header.companyName}'s consolidated net sales for the ${quarterLabel("1")} was ${printValues.netSales} (${printValuePrimitive(
@@ -242,6 +246,36 @@ export default makeScene2D(function* (view) {
             />
             </Rect>
         </Rect>
+    )
+
+    view.add(
+        <Rect 
+            ref={audioBox}
+            padding={10}
+            radius={15}
+            fill={"white"}
+            layout
+            y={-350}
+            x={1500}
+        >
+            <Rect fill={"black"}>
+            <Txt
+                fontFamily={"Consolas"}
+                ref={getAudio}
+                text={audioText}
+                textWrap={"pre"}
+                fill={"white"}
+                marginLeft={16}
+                marginRight={16}
+            />
+            </Rect>
+        </Rect>
+    )
+
+    yield* chain(
+        audioBox().x(0, 3),
+        waitFor(3),
+        audioBox().x(2000, 2),
     )
 
     yield* loop(
