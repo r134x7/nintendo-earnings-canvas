@@ -15,14 +15,14 @@ import spider from "../../newAssets/spider3Final.svg"
 
 export default makeScene2D(function* (view) {
 
-    console.log(platinumTitlesProcessed);
+    // console.log(platinumTitlesProcessed);
 
     const textAnimate = {
         textBoxLength: 54,
         textSpeed: 0.07,
         endDelay: 4
     }
-
+    
     const getText = createRef<Txt>();
     const textBox = createRef<Txt>();
     const webLine = createRef<Line>();
@@ -98,8 +98,10 @@ export default makeScene2D(function* (view) {
     const textSignal = createSignal("");
     const numberSignal = createSignal(0);
 
-    const defaultY = [-150, -150, -100];
-    const defaultHeight = [300, 300, 200];
+    const defaultY = -150; 
+    const defaultHeight = 300;
+    // const defaultY = [-150, -150, -100];
+    // const defaultHeight = [300, 300, 200];
     const defaultValueHeight = -40;
 
     const lines = new Map<number, string>();
@@ -155,7 +157,7 @@ export default makeScene2D(function* (view) {
     })
 
 
-    lines.set(lines.size, `Fiscal Year Platinum Titles, ${date}`)
+    lines.set(lines.size, `Fiscal Year Platinum Titles, ${date}. There are ${platinumTitlesProcessed.length} titles listed.`)
 
     platinumTitlesProcessed.map((elem, index, array) => {
         lines.set(lines.size,
@@ -248,9 +250,9 @@ export default makeScene2D(function* (view) {
             dataLoop(lines.get(i*3+1).length, lines.get(i*3+1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
             all(
-                moveBar(barsMap[`${i*6}`], valuesMap[`${i*6}`], polygonXpos[0], defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[0], -defaultHeight[i] -40, printValues.get(i*3).cumulative, 1),
+                moveBar(barsMap[`${i*6}`], valuesMap[`${i*6}`], polygonXpos[0], defaultY, 100, defaultHeight * thisFYQuickRatio.get(i*3).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[0], -defaultHeight -40, printValues.get(i*3).cumulative, 1),
 
-                moveBar(barsMap[`${i*6+1}`], valuesMap[`${i*6+1}`], polygonXpos[1], defaultY[i] * thisFYQuickRatio.get(i*3).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3).quarter, "rgba(75, 0, 130, .80)", polygonXpos[1], -defaultHeight[i] * thisFYQuickRatio.get(i*3).quarter - 40, printValues.get(i*3).quarter, 1),
+                moveBar(barsMap[`${i*6+1}`], valuesMap[`${i*6+1}`], polygonXpos[1], defaultY * thisFYQuickRatio.get(i*3).quarter, 100, defaultHeight * thisFYQuickRatio.get(i*3).quarter, "rgba(75, 0, 130, .80)", polygonXpos[1], -defaultHeight * thisFYQuickRatio.get(i*3).quarter - 40, printValues.get(i*3).quarter, 1),
 
                 moveBar(colourMap["0"], colourLabels["0"], -600, -500, 80, 40, "rgba(0, 255, 255, .80)", -300, -500, "Life-To-Date", 1),
 
@@ -262,19 +264,19 @@ export default makeScene2D(function* (view) {
              dataLoop(lines.get(i*3+2).length, lines.get(i*3+2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
-                moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], polygonXpos[2], defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[2], -defaultHeight[i] -40, printValues.get(i*3+1).cumulative, 1),
+                moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], polygonXpos[2], defaultY, 100, defaultHeight * thisFYQuickRatio.get(i*3+1).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[2], -defaultHeight -40, printValues.get(i*3+1).cumulative, 1),
 
-                moveBar(barsMap[`${i*6+3}`], valuesMap[`${i*6+3}`], polygonXpos[3], defaultY[i] * thisFYQuickRatio.get(i*3+1).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter, "rgba(75, 0, 130, .80)", polygonXpos[3], -defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter - 40, printValues.get(i*3+1).quarter, 1),
+                moveBar(barsMap[`${i*6+3}`], valuesMap[`${i*6+3}`], polygonXpos[3], defaultY * thisFYQuickRatio.get(i*3+1).quarter, 100, defaultHeight * thisFYQuickRatio.get(i*3+1).quarter, "rgba(75, 0, 130, .80)", polygonXpos[3], -defaultHeight * thisFYQuickRatio.get(i*3+1).quarter - 40, printValues.get(i*3+1).quarter, 1),
         
-                moveLabel(labelsMap[i*3+1], 0, 60, `${platinumTitlesProcessed[i*3+1].cumulative.title}\n${platinumTitlesProcessed[i*3+1].cumulative.platforms}`, 0.7, 1)
+                moveLabel(labelsMap[i*3+1], 0, 60, `${platinumTitlesProcessed[i*3+1].cumulative.title}\n${platinumTitlesProcessed[i*3+1].cumulative.platforms}`, (platinumTitlesProcessed[i*3+1].cumulative.title === "Monster Hunter: World + Monster Hunter: World Iceborne Master Edition" ? 0.5 : 0.7) , 1)
             ),
         
              dataLoop(lines.get(i*3+3).length, lines.get(i*3+3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
-                moveBar(barsMap[`${i*6+4}`], valuesMap[`${i*6+4}`], polygonXpos[4], defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+2).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[4], -defaultHeight[i] -40, printValues.get(i*3+2).cumulative, 1),
+                moveBar(barsMap[`${i*6+4}`], valuesMap[`${i*6+4}`], polygonXpos[4], defaultY, 100, defaultHeight * thisFYQuickRatio.get(i*3+2).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[4], -defaultHeight -40, printValues.get(i*3+2).cumulative, 1),
 
-                moveBar(barsMap[`${i*6+5}`], valuesMap[`${i*6+5}`], polygonXpos[5], defaultY[i] * thisFYQuickRatio.get(i*3+2).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+2).quarter, "rgba(75, 0, 130, .80)", polygonXpos[5], -defaultHeight[i] * thisFYQuickRatio.get(i*3+2).quarter - 40, printValues.get(i*3+2).quarter, 1),
+                moveBar(barsMap[`${i*6+5}`], valuesMap[`${i*6+5}`], polygonXpos[5], defaultY * thisFYQuickRatio.get(i*3+2).quarter, 100, defaultHeight * thisFYQuickRatio.get(i*3+2).quarter, "rgba(75, 0, 130, .80)", polygonXpos[5], -defaultHeight * thisFYQuickRatio.get(i*3+2).quarter - 40, printValues.get(i*3+2).quarter, 1),
         
                 moveLabel(labelsMap[i*3+2], 600, 60, `${platinumTitlesProcessed[i*3+2].cumulative.title}\n${platinumTitlesProcessed[i*3+2].cumulative.platforms}`, 0.7, 1)
             ),
@@ -300,5 +302,5 @@ export default makeScene2D(function* (view) {
 
     // yield* dataLoop(lines.get(10).length, lines.get(10), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
-    yield* waitFor(4)
+    yield* waitFor(6)
 })
