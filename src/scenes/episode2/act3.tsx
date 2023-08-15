@@ -15,7 +15,33 @@ import spider from "../../newAssets/spider3Final.svg"
 
 export default makeScene2D(function* (view) {
 
-    // console.log(platinumTitlesProcessed);
+    const getAudio = createRef<Txt>();
+    const audioBox = createRef<Rect>();
+    const audioText = "Song: Mega Man 3 \"Intro Jazz\" \nArtist: Zoltan Vegvari\nSource: https://ocremix.org/"
+
+    view.add(
+        <Rect 
+            ref={audioBox}
+            padding={10}
+            radius={15}
+            fill={"white"}
+            layout
+            y={-350}
+            x={2000}
+        >
+            <Rect fill={"black"}>
+            <Txt
+                fontFamily={"Consolas"}
+                ref={getAudio}
+                text={audioText}
+                textWrap={"pre"}
+                fill={"white"}
+                marginLeft={16}
+                marginRight={16}
+            />
+            </Rect>
+        </Rect>
+    )
 
     const textAnimate = {
         textBoxLength: 54,
@@ -260,8 +286,27 @@ export default makeScene2D(function* (view) {
 
                 moveLabel(labelsMap[i*3], -600, 60, `${platinumTitlesProcessed[i*3].cumulative.title}\n${platinumTitlesProcessed[i*3].cumulative.platforms}`, 0.7, 1)
             ),
+
+            (i === 6
+                ? chain(
+                    getAudio().text("Song: Breath of Fire \"Flames of Valor\"\nArtist: Vampire Hunter Dan\nSource: https://ocremix.org/", 1),
+                    audioBox().x(200, 3),
+                    waitFor(3),
+                    audioBox().x(2000, 2),
+                )
+                : all()     
+            ),
         
              dataLoop(lines.get(i*3+2).length, lines.get(i*3+2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
+
+            (i === 2
+                ? chain(
+                    audioBox().x(200, 3),
+                    waitFor(3),
+                    audioBox().x(2000, 2),
+                )
+                : all()     
+            ),
         
              all(
                 moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], polygonXpos[2], defaultY, 100, defaultHeight * thisFYQuickRatio.get(i*3+1).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[2], -defaultHeight -40, printValues.get(i*3+1).cumulative, 1),
@@ -281,13 +326,6 @@ export default makeScene2D(function* (view) {
                 moveLabel(labelsMap[i*3+2], 600, 60, `${platinumTitlesProcessed[i*3+2].cumulative.title}\n${platinumTitlesProcessed[i*3+2].cumulative.platforms}`, 0.7, 1)
             ),
 
-            // (i === 2
-            //     ? all( 
-            //     ...barsMap.mapRefs(elem => elem.maxHeight(400, 1)),
-            //     ...valuesMap.mapRefs(elem => elem.maxHeight(400, 1)))
-            //     : all()
-            // ),
-
             waitFor(4),
 
             all( 
@@ -299,8 +337,6 @@ export default makeScene2D(function* (view) {
 
         ),
     )
-
-    // yield* dataLoop(lines.get(10).length, lines.get(10), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
     yield* waitFor(6)
 })
