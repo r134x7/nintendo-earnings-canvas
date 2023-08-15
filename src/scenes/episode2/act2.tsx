@@ -15,6 +15,10 @@ import spider from "../../newAssets/spider3Final.svg"
 
 export default makeScene2D(function* (view) {
 
+    const getAudio = createRef<Txt>();
+    const audioBox = createRef<Rect>();
+    const audioText = "Song: Okami \"Celestial Winds from the East\"\nArtist: MkVaff\nSource: https://ocremix.org/"
+
     const textAnimate = {
         textBoxLength: 54,
         textSpeed: 0.07,
@@ -74,6 +78,30 @@ export default makeScene2D(function* (view) {
             </>
         ))}
         </>
+    )
+
+    view.add(
+        <Rect 
+            ref={audioBox}
+            padding={10}
+            radius={15}
+            fill={"white"}
+            layout
+            y={-350}
+            x={2000}
+        >
+            <Rect fill={"black"}>
+            <Txt
+                fontFamily={"Consolas"}
+                ref={getAudio}
+                text={audioText}
+                textWrap={"pre"}
+                fill={"white"}
+                marginLeft={16}
+                marginRight={16}
+            />
+            </Rect>
+        </Rect>
     )
 
     const imageRefs = [
@@ -313,6 +341,15 @@ export default makeScene2D(function* (view) {
                 ...valuesMap.mapRefs(elem => elem.y(-2000, 2.9)),
                 ...polygons.mapRefs(elem => elem.y(40, 0).to(-2000, 3)),
             ),
+
+            (i === 1
+                ? chain(
+                    audioBox().x(0, 3),
+                    waitFor(3),
+                    audioBox().x(2000, 2),
+                )
+                : all()     
+            )
 
         ),
     )
