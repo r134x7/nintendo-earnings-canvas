@@ -28,12 +28,27 @@ export default makeScene2D(function* (view) {
     const barsMap = createRefMap<Rect>();
     const valuesMap = createRefMap<Txt>();
 
+    const colourMap = createRefMap<Rect>();
+    const colourLabels = createRefMap<Txt>();
+
+    // for some reason I couldn't have these run together.
     view.add(
         <>
         {range(18).map((elem, index) => (
             <>
             <Rect ref={barsMap[index]} />
             <Txt ref={valuesMap[index]} />
+            </>
+        ))}
+        </>
+    )
+
+    view.add(
+        <>
+        {range(2).map((elem, index) => (
+            <>
+            <Rect ref={colourMap[index]} />
+            <Txt ref={colourLabels[index]} />
             </>
         ))}
         </>
@@ -93,16 +108,16 @@ export default makeScene2D(function* (view) {
         thisFYQuickRatio.set(index,
             {
                 sales: (quickRatio((extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
-                units: (quickRatio((extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number), (extractValue(array[1].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
-                salesPerSoftwareUnit: (quickRatio((extractValue(elem.dataThisFY.get(2).Q1QtrValue) as number), (extractValue(array[1].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+                units: (quickRatio((extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(1).Q1QtrValue) as number), 2) / 100),
+                salesPerSoftwareUnit: (quickRatio((extractValue(elem.dataThisFY.get(2).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(2).Q1QtrValue) as number), 2) / 100),
             }
         )
 
         lastFYQuickRatio.set(index,
             {
                 sales: (quickRatio((extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
-                units: (quickRatio((extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number), (extractValue(array[1].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
-                salesPerSoftwareUnit: (quickRatio((extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number), (extractValue(array[1].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+                units: (quickRatio((extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(1).Q1QtrValue) as number), 2) / 100),
+                salesPerSoftwareUnit: (quickRatio((extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(2).Q1QtrValue) as number), 2) / 100),
             }
         )
             
@@ -215,62 +230,80 @@ export default makeScene2D(function* (view) {
 
     yield* dataLoop(lines.get(0).length, lines.get(0), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal)
 
-    const testMap = createRef<Rect>();
-    view.add(<Rect ref={testMap} />)
+    function keyPick(i: number) {
+        switch (i) {
+            case 0:
+               return "sales" 
+
+            case 1:
+                return "units"
+
+            case 2:
+                return "salesPerSoftwareUnit"
+        
+            default:
+                return "sales"
+        }
+    }
 
     yield* loop(
         capcomSales.length,
         i => chain(
 
-            dataLoop(lines.get(1).length, lines.get(1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
+            dataLoop(lines.get(i*3+1).length, lines.get(i*3+1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
             all(
-                moveBar(barsMap[`${i*6}`], valuesMap[`${i*6}`], -500, defaultY, 100, defaultHeight * thisFYQuickRatio.get(0).sales, "rgba(0, 255, 255, .80)", -500, -340, printValues.get(0).sales, 1),
+                moveBar(barsMap[`${i*6}`], valuesMap[`${i*6}`], -500, defaultY, 100, defaultHeight * thisFYQuickRatio.get(0)[`${keyPick(i)}`], "rgba(0, 255, 255, .80)", -500, -340, printValues.get(0)[`${keyPick(i)}`], 1),
 
-                moveBar(barsMap[`${i*6+1}`], valuesMap[`${i*6+1}`], -700, defaultY * lastFYQuickRatio.get(0).sales, 100, defaultHeight * lastFYQuickRatio.get(0).sales, "rgba(75, 0, 130, .80)", -700, -defaultHeight * lastFYQuickRatio.get(0).sales - 40, printLastFYValues.get(0).sales, 1),
+                moveBar(barsMap[`${i*6+1}`], valuesMap[`${i*6+1}`], -700, defaultY * lastFYQuickRatio.get(0)[`${keyPick(i)}`], 100, defaultHeight * lastFYQuickRatio.get(0)[`${keyPick(i)}`], "rgba(75, 0, 130, .80)", -700, -defaultHeight * lastFYQuickRatio.get(0)[`${keyPick(i)}`] - 40, printLastFYValues.get(0)[`${keyPick(i)}`], 1),
 
-                setBar(view, createRef<Rect>(), createRef<Txt>(), -600, -500, 80, 40, "rgba(0, 255, 255, .80)", -300, -500, "1st Quarter FY3/2024", 1),
+                moveBar(colourMap["0"], colourLabels["0"], -600, -500, 80, 40, "rgba(0, 255, 255, .80)", -300, -500, "1st Quarter FY3/2024", 1),
 
-                setBar(view, createRef<Rect>(), createRef<Txt>(), 100, -500, 80, 40, "rgba(75, 0, 130, .80)", 400, -500, "1st Quarter FY3/2023", 1),
+                moveBar(colourMap["1"], colourLabels["1"], 100, -500, 80, 40, "rgba(75, 0, 130, .80)", 400, -500, "1st Quarter FY3/2023", 1),
 
                 setLabel(view, createRef<Txt>(), -600, 40, "Package & Digital", 1)
             ),
         
-             dataLoop(lines.get(2).length, lines.get(2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
+             dataLoop(lines.get(i*3+2).length, lines.get(i*3+2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
-                moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], 100, defaultY * thisFYQuickRatio.get(1).sales, 100, defaultHeight * thisFYQuickRatio.get(1).sales, "rgba(0, 255, 255, .80)", 100, -defaultHeight * thisFYQuickRatio.get(1).sales -40, printValues.get(1).sales, 1),
+                moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], 100, defaultY * thisFYQuickRatio.get(1)[`${keyPick(i)}`], 100, defaultHeight * thisFYQuickRatio.get(1)[`${keyPick(i)}`], "rgba(0, 255, 255, .80)", 100, -defaultHeight * thisFYQuickRatio.get(1)[`${keyPick(i)}`] -40, printValues.get(1)[`${keyPick(i)}`], 1),
         
-                moveBar(barsMap[`${i*6+3}`], valuesMap[`${i*6+3}`], -100, defaultY * lastFYQuickRatio.get(1).sales, 100, defaultHeight * lastFYQuickRatio.get(1).sales, "rgba(75, 0, 130, .80)", -100, -defaultHeight * lastFYQuickRatio.get(1).sales - 40, printLastFYValues.get(1).sales, 1),
+                moveBar(barsMap[`${i*6+3}`], valuesMap[`${i*6+3}`], -100, defaultY * lastFYQuickRatio.get(1)[`${keyPick(i)}`], 100, defaultHeight * lastFYQuickRatio.get(1)[`${keyPick(i)}`], "rgba(75, 0, 130, .80)", -100, -defaultHeight * lastFYQuickRatio.get(1)[`${keyPick(i)}`] - 40, printLastFYValues.get(1)[`${keyPick(i)}`], 1),
         
                 setLabel(view, createRef<Txt>(), 0, 40, "Package", 1)
             ),
         
-             dataLoop(lines.get(3).length, lines.get(3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
+             dataLoop(lines.get(i*3+3).length, lines.get(i*3+3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
-                moveBar(barsMap[`${i*6+4}`], valuesMap[`${i*6+4}`], 700, defaultY * thisFYQuickRatio.get(2).sales, 100, defaultHeight * thisFYQuickRatio.get(2).sales, "rgba(0, 255, 255, .80)", 700, -defaultHeight * thisFYQuickRatio.get(2).sales -40, printValues.get(2).sales, 1),
+                moveBar(barsMap[`${i*6+4}`], valuesMap[`${i*6+4}`], 700, defaultY * thisFYQuickRatio.get(2)[`${keyPick(i)}`], 100, defaultHeight * thisFYQuickRatio.get(2)[`${keyPick(i)}`], "rgba(0, 255, 255, .80)", 700, -defaultHeight * thisFYQuickRatio.get(2)[`${keyPick(i)}`] -40, printValues.get(2)[`${keyPick(i)}`], 1),
         
-                moveBar(barsMap[`${i*6+5}`], valuesMap[`${i*6+5}`], 500, defaultY * lastFYQuickRatio.get(2).sales, 100, defaultHeight * lastFYQuickRatio.get(2).sales, "rgba(75, 0, 130, .80)", 500, -defaultHeight * lastFYQuickRatio.get(2).sales - 40, printLastFYValues.get(2).sales, 1),
+                moveBar(barsMap[`${i*6+5}`], valuesMap[`${i*6+5}`], 500, defaultY * lastFYQuickRatio.get(2)[`${keyPick(i)}`], 100, defaultHeight * lastFYQuickRatio.get(2)[`${keyPick(i)}`], "rgba(75, 0, 130, .80)", 500, -defaultHeight * lastFYQuickRatio.get(2)[`${keyPick(i)}`] - 40, printLastFYValues.get(2)[`${keyPick(i)}`], 1),
         
                 setLabel(view, createRef<Txt>(), 600, 40, "Digital", 1)
             ),
 
             waitFor(4),
 
-            // all( ...barsMap.mapRefs(elem => elem.y(-2000, 1))),
-            all (
-                ...barsMap.mapRefs((value, index) => {
-                    if (index < (i*6+6)) {
-                        return value.y(-2000, 1)
-                    }
-                }),
-                ...valuesMap.mapRefs((value, index) => {
-                    if (index < (i*6+6)) {
-                        return value.y(-2000, 1)
-                    }
-                })
-            )
+            all( 
+                ...barsMap.mapRefs(elem => elem.y(-2000, 1)),
+                ...valuesMap.mapRefs(elem => elem.y(-2000, 1)),
+            ),
+
+            // it seems to not run concurrently due to the if condition
+            // all (
+            //     ...barsMap.mapRefs((value, index) => {
+            //         if (index < (i*6+6)) {
+            //             return value.y(-2000, 1)
+            //         }
+            //     }),
+            //     ...valuesMap.mapRefs((value, index) => {
+            //         if (index < (i*6+6)) {
+            //             return value.y(-2000, 1)
+            //         }
+            //     })
+            // )
             
 
         ),
