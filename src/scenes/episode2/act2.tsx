@@ -1,4 +1,4 @@
-import { makeScene2D, Img, Circle, Line, Rect, Txt } from "@motion-canvas/2d";
+import { makeScene2D, Img, Circle, Line, Rect, Txt, Polygon } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2, chain, Reference, Logger, createRefMap, createRefArray, range } from "@motion-canvas/core";
 
 import { textBlock, contextYoY, quarterLabel, dataLoop, setBar, setLabel, moveBar} from "../../utils/designs";
@@ -31,6 +31,10 @@ export default makeScene2D(function* (view) {
     const colourMap = createRefMap<Rect>();
     const colourLabels = createRefMap<Txt>();
 
+    const polygons = createRefMap<Polygon>();
+
+    const polygonXpos = [700, 500, -100, 100, -500, -700]
+
     // for some reason I couldn't have these run together.
     view.add(
         <>
@@ -49,6 +53,24 @@ export default makeScene2D(function* (view) {
             <>
             <Rect ref={colourMap[index]} />
             <Txt ref={colourLabels[index]} />
+            </>
+        ))}
+        </>
+    )
+
+    view.add(
+        <>
+        {range(6).map((elem, index) => (
+            <>
+            <Polygon 
+                ref={polygons[index]} 
+                rotation={60}
+                x={polygonXpos[index]}
+                sides={3}
+                size={100}
+                fill={"orange"}
+                y={-2000}
+            />
             </>
         ))}
         </>
@@ -294,8 +316,9 @@ export default makeScene2D(function* (view) {
             waitFor(4),
 
             all( 
-                ...barsMap.mapRefs(elem => elem.y(-2000, 1)),
-                ...valuesMap.mapRefs(elem => elem.y(-2000, 1)),
+                ...barsMap.mapRefs(elem => elem.y(-2000, 2.9)),
+                ...valuesMap.mapRefs(elem => elem.y(-2000, 2.9)),
+                ...polygons.mapRefs(elem => elem.y(40, 0).to(-2000, 3)),
             ),
 
             // it seems to not run concurrently due to the if condition
@@ -315,6 +338,8 @@ export default makeScene2D(function* (view) {
 
         ),
     )
+
+    waitFor(4),
 
     // yield* all( ...barsMap.mapRefs(elem => elem.y(-2000, 1)))
 
