@@ -37,7 +37,7 @@ export default makeScene2D(function* (view) {
 
     const polygons = createRefMap<Polygon>();
 
-    const polygonXpos = [700, 500, -100, 100, -500, -700]
+    const polygonXpos = [-500, -700, 100, -100, 700, 500]
 
     // for some reason I couldn't have these run together.
     view.add(
@@ -159,8 +159,9 @@ export default makeScene2D(function* (view) {
 
     platinumTitlesProcessed.map((elem, index, array) => {
         lines.set(lines.size,
-            `${elem.cumulative.title} for ${elem.cumulative.platforms} released on ${elem.cumulative.releaseDate} had shipped units/downloads of ${elem.quarter.value} for the ${quarterLabel("1")}. Cumulative units are at ${elem.cumulative.value}. ${elem.cumulative.miscellaneous ?? ""}`
+            `${elem.cumulative.title} for ${elem.cumulative.platforms} released on ${elem.cumulative.releaseDate}, had shipped units/downloads of ${printValuePrimitive(elem.quarter.value, numberType("Million"), "None")} units for the ${quarterLabel("1")}. Units life-to-date are at ${printValuePrimitive(elem.cumulative.value, numberType("Million"), "None")}. ${elem.cumulative.miscellaneous ?? ""}`
             )
+
     })
 
     yield* slideTransition(Direction.Right);
@@ -247,13 +248,13 @@ export default makeScene2D(function* (view) {
             dataLoop(lines.get(i*3+1).length, lines.get(i*3+1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
             all(
-                moveBar(barsMap[`${i*6}`], valuesMap[`${i*6}`], -500, defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3).cumulative, "rgba(0, 255, 255, .80)", -500, -defaultHeight[i] -40, printValues.get(i*3).cumulative, 1),
+                moveBar(barsMap[`${i*6}`], valuesMap[`${i*6}`], polygonXpos[0], defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[0], -defaultHeight[i] -40, printValues.get(i*3).cumulative, 1),
 
-                moveBar(barsMap[`${i*6+1}`], valuesMap[`${i*6+1}`], -700, defaultY[i] * thisFYQuickRatio.get(i*3).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3).quarter, "rgba(75, 0, 130, .80)", -700, -defaultHeight[i] * thisFYQuickRatio.get(i*3).quarter - 40, printValues.get(i*3).quarter, 1),
+                moveBar(barsMap[`${i*6+1}`], valuesMap[`${i*6+1}`], polygonXpos[1], defaultY[i] * thisFYQuickRatio.get(i*3).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3).quarter, "rgba(75, 0, 130, .80)", polygonXpos[1], -defaultHeight[i] * thisFYQuickRatio.get(i*3).quarter - 40, printValues.get(i*3).quarter, 1),
 
-                moveBar(colourMap["0"], colourLabels["0"], -600, -500, 80, 40, "rgba(0, 255, 255, .80)", -300, -500, "1st Quarter FY3/2024", 1),
+                moveBar(colourMap["0"], colourLabels["0"], -600, -500, 80, 40, "rgba(0, 255, 255, .80)", -300, -500, "Life-To-Date", 1),
 
-                moveBar(colourMap["1"], colourLabels["1"], 100, -500, 80, 40, "rgba(75, 0, 130, .80)", 400, -500, "1st Quarter FY3/2023", 1),
+                moveBar(colourMap["1"], colourLabels["1"], 100, -500, 80, 40, "rgba(75, 0, 130, .80)", 400, -500, "1st Quarter FY3/2024", 1),
 
                 setLabel(view, createRef<Txt>(), -600, 40, "Package & Digital", 1)
             ),
@@ -261,9 +262,9 @@ export default makeScene2D(function* (view) {
              dataLoop(lines.get(i*3+2).length, lines.get(i*3+2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
-                moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], -500, defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).cumulative, "rgba(0, 255, 255, .80)", -500, -defaultHeight[i] -40, printValues.get(i*3+1).cumulative, 1),
+                moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], polygonXpos[2], defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[2], -defaultHeight[i] -40, printValues.get(i*3+1).cumulative, 1),
 
-                moveBar(barsMap[`${i*6+3}`], valuesMap[`${i*6+3}`], -700, defaultY[i] * thisFYQuickRatio.get(i*3+1).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter, "rgba(75, 0, 130, .80)", -700, -defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter - 40, printValues.get(i*3+1).quarter, 1),
+                moveBar(barsMap[`${i*6+3}`], valuesMap[`${i*6+3}`], polygonXpos[3], defaultY[i] * thisFYQuickRatio.get(i*3+1).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter, "rgba(75, 0, 130, .80)", polygonXpos[3], -defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter - 40, printValues.get(i*3+1).quarter, 1),
         
                 setLabel(view, createRef<Txt>(), 0, 40, "Package", 1)
             ),
@@ -271,9 +272,9 @@ export default makeScene2D(function* (view) {
              dataLoop(lines.get(i*3+3).length, lines.get(i*3+3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
-                moveBar(barsMap[`${i*6+4}`], valuesMap[`${i*6+4}`], -500, defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).cumulative, "rgba(0, 255, 255, .80)", -500, -defaultHeight[i] -40, printValues.get(i*3+1).cumulative, 1),
+                moveBar(barsMap[`${i*6+4}`], valuesMap[`${i*6+4}`], polygonXpos[4], defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+2).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[4], -defaultHeight[i] -40, printValues.get(i*3+2).cumulative, 1),
 
-                moveBar(barsMap[`${i*6+5}`], valuesMap[`${i*6+5}`], -700, defaultY[i] * thisFYQuickRatio.get(i*3+1).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter, "rgba(75, 0, 130, .80)", -700, -defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter - 40, printValues.get(i*3+1).quarter, 1),
+                moveBar(barsMap[`${i*6+5}`], valuesMap[`${i*6+5}`], polygonXpos[5], defaultY[i] * thisFYQuickRatio.get(i*3+2).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+2).quarter, "rgba(75, 0, 130, .80)", polygonXpos[5], -defaultHeight[i] * thisFYQuickRatio.get(i*3+2).quarter - 40, printValues.get(i*3+2).quarter, 1),
         
                 setLabel(view, createRef<Txt>(), 600, 40, "Digital", 1)
             ),
