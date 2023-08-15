@@ -286,6 +286,15 @@ export default makeScene2D(function* (view) {
 
             waitFor(4),
 
+            (i === 2
+                ? all( 
+                ...barsMap.mapRefs(elem => elem.scale(0.5, 1)),
+                ...valuesMap.mapRefs(elem => elem.scale(0.5, 1)))
+                : all()
+            ),
+
+            waitFor(4),
+
             all( 
                 ...barsMap.mapRefs(elem => elem.y(-2000, 1)),
                 ...valuesMap.mapRefs(elem => elem.y(-2000, 1)),
