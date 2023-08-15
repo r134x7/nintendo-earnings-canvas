@@ -1,11 +1,10 @@
 import { makeScene2D, Img, Circle, Line, Rect, Txt, Polygon } from "@motion-canvas/2d";
-import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2, chain, Reference, Logger, createRefMap, createRefArray, range } from "@motion-canvas/core";
+import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2, chain, Reference, Logger, createRefMap, range } from "@motion-canvas/core";
 
-import { textBlock, contextYoY, quarterLabel, dataLoop, setBar, setLabel, moveBar} from "../../utils/designs";
+import { contextYoY, quarterLabel, dataLoop, setBar, setLabel, moveBar} from "../../utils/designs";
 import {
    date,
    header,
-   capcomSales,
    platinumTitlesProcessed
 } from "../../../data/capcom_fy3_2024";
 
@@ -17,8 +16,6 @@ import spider from "../../newAssets/spider3Final.svg"
 export default makeScene2D(function* (view) {
 
     console.log(platinumTitlesProcessed);
-    
-    
 
     const textAnimate = {
         textBoxLength: 54,
@@ -36,6 +33,8 @@ export default makeScene2D(function* (view) {
     const colourMap = createRefMap<Rect>();
     const colourLabels = createRefMap<Txt>();
 
+    const labelsMap = createRefMap<Txt>();
+
     const polygons = createRefMap<Polygon>();
 
     const polygonXpos = [700, 500, -100, 100, -500, -700]
@@ -43,10 +42,20 @@ export default makeScene2D(function* (view) {
     // for some reason I couldn't have these run together.
     view.add(
         <>
-        {range(18).map((elem, index) => (
+        {range(72).map((elem, index) => (
             <>
             <Rect ref={barsMap[index]} />
             <Txt ref={valuesMap[index]} />
+            </>
+        ))}
+        </>
+    )
+
+    view.add(
+        <>
+        {range(36).map((elem, index) => (
+            <>
+            <Txt ref={labelsMap[index]} />
             </>
         ))}
         </>
@@ -95,55 +104,53 @@ export default makeScene2D(function* (view) {
 
     const lines = new Map<number, string>();
 
-    const printValues = new Map<number, { sales: string, units: string, salesPerSoftwareUnit: string }>();
+    const printValues = new Map<number, { quarter: string, cumulative: string }>();
 
-    const printLastFYValues = new Map<number, { sales: string, units: string, salesPerSoftwareUnit: string }>();
+    const printLastFYValues = new Map<number, { quarter: string, cumulative: string }>();
 
-    const printYoYPercentages = new Map<number, { sales: string, units: string, salesPerSoftwareUnit: string }>();
+    const printYoYPercentages = new Map<number, { quarter: string, cumulative: string }>();
 
-    const thisFYQuickRatio = new Map<number, { sales: number, units: number, salesPerSoftwareUnit: number }>();
+    const thisFYQuickRatio = new Map<number, { quarter: number, cumulative: number }>();
 
-    const lastFYQuickRatio = new Map<number, { sales: number, units: number, salesPerSoftwareUnit: number }>();
+    const lastFYQuickRatio = new Map<number, { quarter: number, cumulative: number }>();
 
-    capcomSales.map((elem, index, array) => {
+    platinumTitlesProcessed.map((elem, index, array) => {
 
         printValues.set(index,
             {
-                sales: printValuePrimitive(extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number, numberType("Million"), "¥"),
-                units: printValuePrimitive(extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number, numberType("Million"), "None"),
-                salesPerSoftwareUnit: printValuePrimitive(extractValue(elem.dataThisFY.get(2).Q1QtrValue) as number, numberType("None"), "¥"),
+                quarter: printValuePrimitive(extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number, numberType("Million"), "None"),
+                cumulative: printValuePrimitive(extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number, numberType("Million"), "None"),
             }
         )
          
 
         printLastFYValues.set(index,
             {
-                sales: printValuePrimitive(extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number, numberType("Million"), "¥"),
-                units: printValuePrimitive(extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number, numberType("Million"), "None"),
-                salesPerSoftwareUnit: printValuePrimitive(extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number, numberType("None"), "¥"),
+                quarter: printValuePrimitive(extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number, numberType("Million"), "¥"),
+                cumulative: printValuePrimitive(extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number, numberType("Million"), "None"),
             }
         )
 
         printYoYPercentages.set(index,
             {
-                sales: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
-                units: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
+                quarter: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
+                cumulative: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
                 salesPerSoftwareUnit: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(2).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
             }
         )
 
         thisFYQuickRatio.set(index,
             {
-                sales: (quickRatio((extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
-                units: (quickRatio((extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(1).Q1QtrValue) as number), 2) / 100),
+                quarter: (quickRatio((extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+                cumulative: (quickRatio((extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(1).Q1QtrValue) as number), 2) / 100),
                 salesPerSoftwareUnit: (quickRatio((extractValue(elem.dataThisFY.get(2).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(2).Q1QtrValue) as number), 2) / 100),
             }
         )
 
         lastFYQuickRatio.set(index,
             {
-                sales: (quickRatio((extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
-                units: (quickRatio((extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(1).Q1QtrValue) as number), 2) / 100),
+                quarter: (quickRatio((extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+                cumulative: (quickRatio((extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(1).Q1QtrValue) as number), 2) / 100),
                 salesPerSoftwareUnit: (quickRatio((extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(2).Q1QtrValue) as number), 2) / 100),
             }
         )
@@ -152,22 +159,6 @@ export default makeScene2D(function* (view) {
 
 
     lines.set(lines.size, "Fiscal Year Platinum Titles")
-
-    lines.set(lines.size, `Capcom's software sales from ${capcomSales[0].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(0).sales} (${printYoYPercentages.get(0).sales} ${contextYoY(printYoYPercentages.get(0).sales)})`)
-
-    lines.set(lines.size, `Capcom's software sales from ${capcomSales[1].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(1).sales} (${printYoYPercentages.get(1).sales} ${contextYoY(printYoYPercentages.get(1).sales)})`)
-
-    lines.set(lines.size, `Capcom's software sales from ${capcomSales[2].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(2).sales} (${printYoYPercentages.get(2).sales} ${contextYoY(printYoYPercentages.get(2).sales)})`)
-
-    lines.set(lines.size, `Capcom's software units from ${capcomSales[0].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(0).units} (${printYoYPercentages.get(0).units} ${contextYoY(printYoYPercentages.get(0).units)})`)
-
-    lines.set(lines.size, `Capcom's software units from ${capcomSales[1].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(1).units} (${printYoYPercentages.get(1).units} ${contextYoY(printYoYPercentages.get(1).units)})`)
-
-    lines.set(lines.size, `Capcom's software units from ${capcomSales[2].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(2).units} (${printYoYPercentages.get(2).units} ${contextYoY(printYoYPercentages.get(2).units)})`)
-
-    lines.set(lines.size, `Capcom's sales per software unit from ${capcomSales[0].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(0).salesPerSoftwareUnit} (${printYoYPercentages.get(0).salesPerSoftwareUnit} ${contextYoY(printYoYPercentages.get(0).salesPerSoftwareUnit)})`)
-
-    lines.set(lines.size, `Capcom's sales per software unit from ${capcomSales[1].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(1).salesPerSoftwareUnit} (${printYoYPercentages.get(1).salesPerSoftwareUnit} ${contextYoY(printYoYPercentages.get(1).salesPerSoftwareUnit)})`)
 
     lines.set(lines.size, `Capcom's sales per software unit from ${capcomSales[2].dataThisFY.get(0).name} for the ${quarterLabel("1")} was ${printValues.get(2).salesPerSoftwareUnit} (${printYoYPercentages.get(2).salesPerSoftwareUnit} ${contextYoY(printYoYPercentages.get(2).salesPerSoftwareUnit)})`)
 
@@ -267,7 +258,7 @@ export default makeScene2D(function* (view) {
     }
 
     yield* loop(
-        capcomSales.length,
+        platinumTitlesProcessed.length / 3,
         i => chain(
 
             dataLoop(lines.get(i*3+1).length, lines.get(i*3+1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
@@ -322,7 +313,7 @@ export default makeScene2D(function* (view) {
         ),
     )
 
-    yield* dataLoop(lines.get(10).length, lines.get(10), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
+    // yield* dataLoop(lines.get(10).length, lines.get(10), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
-    yield* waitFor(2)
+    yield* waitFor(4)
 })
