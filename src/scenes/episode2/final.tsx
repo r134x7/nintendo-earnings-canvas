@@ -37,7 +37,7 @@ export default makeScene2D(function* (view) {
 
     const polygons = createRefMap<Polygon>();
 
-    const polygonXpos = [-500, -700, 100, -100, 700, 500]
+    const polygonXpos = [-300, -100, 100, 300, 500, 700]
 
     // for some reason I couldn't have these run together.
     view.add(
@@ -189,8 +189,33 @@ export default makeScene2D(function* (view) {
 
     yield* dataLoop(lines.get(1).length, lines.get(1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal)
 
+    yield* waitFor(2)
 
-    // yield* dataLoop(lines.get(10).length, lines.get(10), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
+    yield* all(
+        textBox().y(-2000, 3),
+        ...polygons.mapRefs(elem => elem.y(430, 0).to(-2000, 3)),
+    )
 
-    yield* waitFor(6)
+    yield* all(
+        imageRefs[1]().rotation(600, 1),
+        imageRefs[1]().x(-200, 1)
+    )
+
+    yield* waitFor(1)
+
+    yield* all(
+        ...polygons.mapRefs(elem => elem.x(-200, 0)),
+        ...polygons.mapRefs(elem => elem.y(430, 0).to(-2000, 3)),
+        imageRefs[1]().y(-2000, 3),
+    )
+
+    yield* waitFor(1)
+
+    yield* all(
+        ...polygons.mapRefs(elem => elem.x(800, 1)),
+        ...polygons.mapRefs(elem => elem.y(-420, 1)),
+        ...polygons.mapRefs(elem => elem.sides(5, 0).to(1, 3))
+    )
+
+    yield* waitFor(2)
 })
