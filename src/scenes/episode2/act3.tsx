@@ -240,22 +240,6 @@ export default makeScene2D(function* (view) {
 
     yield* dataLoop(lines.get(0).length, lines.get(0), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal)
 
-    function keyPick(i: number) {
-        switch (i) {
-            case 0:
-               return "sales" 
-
-            case 1:
-                return "units"
-
-            case 2:
-                return "salesPerSoftwareUnit"
-        
-            default:
-                return "sales"
-        }
-    }
-
     yield* loop(
         platinumTitlesProcessed.length / 3,
         i => chain(
@@ -263,9 +247,9 @@ export default makeScene2D(function* (view) {
             dataLoop(lines.get(i*3+1).length, lines.get(i*3+1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
             all(
-                moveBar(barsMap[`${i*6}`], valuesMap[`${i*6}`], -500, defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(0)[`${keyPick(i)}`], "rgba(0, 255, 255, .80)", -500, -defaultHeight[i] -40, printValues.get(0)[`${keyPick(i)}`], 1),
+                moveBar(barsMap[`${i*6}`], valuesMap[`${i*6}`], -500, defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3).cumulative, "rgba(0, 255, 255, .80)", -500, -defaultHeight[i] -40, printValues.get(i*3).cumulative, 1),
 
-                moveBar(barsMap[`${i*6+1}`], valuesMap[`${i*6+1}`], -700, defaultY[i] * lastFYQuickRatio.get(0)[`${keyPick(i)}`], 100, defaultHeight[i] * lastFYQuickRatio.get(0)[`${keyPick(i)}`], "rgba(75, 0, 130, .80)", -700, -defaultHeight[i] * lastFYQuickRatio.get(0)[`${keyPick(i)}`] - 40, printLastFYValues.get(0)[`${keyPick(i)}`], 1),
+                moveBar(barsMap[`${i*6+1}`], valuesMap[`${i*6+1}`], -700, defaultY[i] * thisFYQuickRatio.get(i*3).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3).quarter, "rgba(75, 0, 130, .80)", -700, -defaultHeight[i] * thisFYQuickRatio.get(i*3).quarter - 40, printValues.get(i*3).quarter, 1),
 
                 moveBar(colourMap["0"], colourLabels["0"], -600, -500, 80, 40, "rgba(0, 255, 255, .80)", -300, -500, "1st Quarter FY3/2024", 1),
 
@@ -277,9 +261,9 @@ export default makeScene2D(function* (view) {
              dataLoop(lines.get(i*3+2).length, lines.get(i*3+2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
-                moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], 100, defaultY[i] * thisFYQuickRatio.get(1)[`${keyPick(i)}`], 100, defaultHeight[i] * thisFYQuickRatio.get(1)[`${keyPick(i)}`], "rgba(0, 255, 255, .80)", 100, -defaultHeight[i] * thisFYQuickRatio.get(1)[`${keyPick(i)}`] -40, printValues.get(1)[`${keyPick(i)}`], 1),
-        
-                moveBar(barsMap[`${i*6+3}`], valuesMap[`${i*6+3}`], -100, defaultY[i] * lastFYQuickRatio.get(1)[`${keyPick(i)}`], 100, defaultHeight[i] * lastFYQuickRatio.get(1)[`${keyPick(i)}`], "rgba(75, 0, 130, .80)", -100, -defaultHeight[i] * lastFYQuickRatio.get(1)[`${keyPick(i)}`] - 40, printLastFYValues.get(1)[`${keyPick(i)}`], 1),
+                moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], -500, defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).cumulative, "rgba(0, 255, 255, .80)", -500, -defaultHeight[i] -40, printValues.get(i*3+1).cumulative, 1),
+
+                moveBar(barsMap[`${i*6+3}`], valuesMap[`${i*6+3}`], -700, defaultY[i] * thisFYQuickRatio.get(i*3+1).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter, "rgba(75, 0, 130, .80)", -700, -defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter - 40, printValues.get(i*3+1).quarter, 1),
         
                 setLabel(view, createRef<Txt>(), 0, 40, "Package", 1)
             ),
@@ -287,9 +271,9 @@ export default makeScene2D(function* (view) {
              dataLoop(lines.get(i*3+3).length, lines.get(i*3+3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
-                moveBar(barsMap[`${i*6+4}`], valuesMap[`${i*6+4}`], 700, defaultY[i] * thisFYQuickRatio.get(2)[`${keyPick(i)}`], 100, defaultHeight[i] * thisFYQuickRatio.get(2)[`${keyPick(i)}`], "rgba(0, 255, 255, .80)", 700, -defaultHeight[i] * thisFYQuickRatio.get(2)[`${keyPick(i)}`] -40, printValues.get(2)[`${keyPick(i)}`], 1),
-        
-                moveBar(barsMap[`${i*6+5}`], valuesMap[`${i*6+5}`], 500, defaultY[i] * lastFYQuickRatio.get(2)[`${keyPick(i)}`], 100, defaultHeight[i] * lastFYQuickRatio.get(2)[`${keyPick(i)}`], "rgba(75, 0, 130, .80)", 500, -defaultHeight[i] * lastFYQuickRatio.get(2)[`${keyPick(i)}`] - 40, printLastFYValues.get(2)[`${keyPick(i)}`], 1),
+                moveBar(barsMap[`${i*6+4}`], valuesMap[`${i*6+4}`], -500, defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).cumulative, "rgba(0, 255, 255, .80)", -500, -defaultHeight[i] -40, printValues.get(i*3+1).cumulative, 1),
+
+                moveBar(barsMap[`${i*6+5}`], valuesMap[`${i*6+5}`], -700, defaultY[i] * thisFYQuickRatio.get(i*3+1).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter, "rgba(75, 0, 130, .80)", -700, -defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter - 40, printValues.get(i*3+1).quarter, 1),
         
                 setLabel(view, createRef<Txt>(), 600, 40, "Digital", 1)
             ),
