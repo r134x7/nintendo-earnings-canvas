@@ -106,54 +106,51 @@ export default makeScene2D(function* (view) {
 
     const printValues = new Map<number, { quarter: string, cumulative: string }>();
 
-    const printLastFYValues = new Map<number, { quarter: string, cumulative: string }>();
+    // const printLastFYValues = new Map<number, { quarter: string, cumulative: string }>();
 
-    const printYoYPercentages = new Map<number, { quarter: string, cumulative: string }>();
+    // const printYoYPercentages = new Map<number, { quarter: string, cumulative: string }>();
 
     const thisFYQuickRatio = new Map<number, { quarter: number, cumulative: number }>();
 
-    const lastFYQuickRatio = new Map<number, { quarter: number, cumulative: number }>();
+    // const lastFYQuickRatio = new Map<number, { quarter: number, cumulative: number }>();
 
     platinumTitlesProcessed.map((elem, index, array) => {
 
         printValues.set(index,
             {
-                quarter: printValuePrimitive(extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number, numberType("Million"), "None"),
-                cumulative: printValuePrimitive(extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number, numberType("Million"), "None"),
+                quarter: printValuePrimitive(elem.quarter.value, numberType("Million"), "None"),
+                cumulative: printValuePrimitive(elem.cumulative.value, numberType("Million"), "None"),
             }
         )
          
+        // printLastFYValues.set(index,
+        //     {
+        //         quarter: printValuePrimitive(extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number, numberType("Million"), "¥"),
+        //         cumulative: printValuePrimitive(extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number, numberType("Million"), "None"),
+        //     }
+        // )
 
-        printLastFYValues.set(index,
-            {
-                quarter: printValuePrimitive(extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number, numberType("Million"), "¥"),
-                cumulative: printValuePrimitive(extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number, numberType("Million"), "None"),
-            }
-        )
-
-        printYoYPercentages.set(index,
-            {
-                quarter: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
-                cumulative: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
-                salesPerSoftwareUnit: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(2).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
-            }
-        )
+        // printYoYPercentages.set(index,
+        //     {
+        //         quarter: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
+        //         cumulative: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
+        //         salesPerSoftwareUnit: printValuePrimitive((quickYoYCalculate(extractValue(elem.dataThisFY.get(2).Q1QtrValue) as number, extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number, 2)), numberType("None"), "+%"),
+        //     }
+        // )
 
         thisFYQuickRatio.set(index,
             {
-                quarter: (quickRatio((extractValue(elem.dataThisFY.get(0).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
-                cumulative: (quickRatio((extractValue(elem.dataThisFY.get(1).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(1).Q1QtrValue) as number), 2) / 100),
-                salesPerSoftwareUnit: (quickRatio((extractValue(elem.dataThisFY.get(2).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(2).Q1QtrValue) as number), 2) / 100),
+                quarter: (quickRatio(elem.quarter.value, elem.cumulative.value, 2) / 100),
+                cumulative: (quickRatio(elem.cumulative.value, elem.cumulative.value, 2) / 100),
             }
         )
 
-        lastFYQuickRatio.set(index,
-            {
-                quarter: (quickRatio((extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
-                cumulative: (quickRatio((extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(1).Q1QtrValue) as number), 2) / 100),
-                salesPerSoftwareUnit: (quickRatio((extractValue(elem.dataLastFY.get(2).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(2).Q1QtrValue) as number), 2) / 100),
-            }
-        )
+        // lastFYQuickRatio.set(index,
+        //     {
+        //         quarter: (quickRatio((extractValue(elem.dataLastFY.get(0).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(0).Q1QtrValue) as number), 2) / 100),
+        //         cumulative: (quickRatio((extractValue(elem.dataLastFY.get(1).Q1QtrValue) as number), (extractValue(array[0].dataThisFY.get(1).Q1QtrValue) as number), 2) / 100),
+        //     }
+        // )
             
     })
 
