@@ -187,3 +187,16 @@ export function* setBarV2(bar: Reference<Rect>, value: Reference<Txt>, xBarPosit
         value().text(textValue, timing),
     ) 
 }
+
+export function* delayedClear(nodes: Reference<Rect>[], i: number) {
+
+    if (i > 0) {
+
+        yield* all(
+            ...nodes.map(elem => elem().y(-2000, 1))
+        )
+
+        yield* nodes[0]().y(-2000, 1)
+    }
+
+}
