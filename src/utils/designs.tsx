@@ -156,6 +156,17 @@ export function* setLabel(view: View2D, label: Reference<Txt>, xTextPosition: nu
     ) 
 }
 
+export function* moveLabel(label: Reference<Txt>, xTextPosition: number, yTextPosition: number, textValue: string, scale: number, timing: number) {
+
+    yield* all (
+        label().scale(scale, 1),
+        label().fill("white", timing),
+        label().x(xTextPosition, timing),
+        label().y(yTextPosition, timing),
+        label().text(textValue, timing),
+    ) 
+}
+
 export function* moveBar(bar: Reference<Rect>, value: Reference<Txt>, xBarPosition: number, yBarPosition: number, barWidth: number, barHeight: number, barColour: string, xTextPosition: number, yTextPosition: number, textValue: string, timing: number) {
 
     yield* all (

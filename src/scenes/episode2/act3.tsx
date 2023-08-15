@@ -1,7 +1,7 @@
 import { makeScene2D, Img, Circle, Line, Rect, Txt, Polygon } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2, chain, Reference, Logger, createRefMap, range } from "@motion-canvas/core";
 
-import { contextYoY, quarterLabel, dataLoop, setBar, setLabel, moveBar} from "../../utils/designs";
+import { contextYoY, quarterLabel, dataLoop, setBar, setLabel, moveBar, moveLabel} from "../../utils/designs";
 import {
    date,
    header,
@@ -256,7 +256,7 @@ export default makeScene2D(function* (view) {
 
                 moveBar(colourMap["1"], colourLabels["1"], 100, -500, 80, 40, "rgba(75, 0, 130, .80)", 400, -500, "1st Quarter FY3/2024", 1),
 
-                setLabel(view, createRef<Txt>(), -600, 40, "Package & Digital", 1)
+                moveLabel(labelsMap[i*3], -600, 60, `${platinumTitlesProcessed[i*3].cumulative.title}\n${platinumTitlesProcessed[i*3].cumulative.platforms}`, 0.7, 1)
             ),
         
              dataLoop(lines.get(i*3+2).length, lines.get(i*3+2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
@@ -266,7 +266,7 @@ export default makeScene2D(function* (view) {
 
                 moveBar(barsMap[`${i*6+3}`], valuesMap[`${i*6+3}`], polygonXpos[3], defaultY[i] * thisFYQuickRatio.get(i*3+1).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter, "rgba(75, 0, 130, .80)", polygonXpos[3], -defaultHeight[i] * thisFYQuickRatio.get(i*3+1).quarter - 40, printValues.get(i*3+1).quarter, 1),
         
-                setLabel(view, createRef<Txt>(), 0, 40, "Package", 1)
+                moveLabel(labelsMap[i*3+1], 0, 60, `${platinumTitlesProcessed[i*3+1].cumulative.title}\n${platinumTitlesProcessed[i*3+1].cumulative.platforms}`, 0.7, 1)
             ),
         
              dataLoop(lines.get(i*3+3).length, lines.get(i*3+3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
@@ -276,7 +276,7 @@ export default makeScene2D(function* (view) {
 
                 moveBar(barsMap[`${i*6+5}`], valuesMap[`${i*6+5}`], polygonXpos[5], defaultY[i] * thisFYQuickRatio.get(i*3+2).quarter, 100, defaultHeight[i] * thisFYQuickRatio.get(i*3+2).quarter, "rgba(75, 0, 130, .80)", polygonXpos[5], -defaultHeight[i] * thisFYQuickRatio.get(i*3+2).quarter - 40, printValues.get(i*3+2).quarter, 1),
         
-                setLabel(view, createRef<Txt>(), 600, 40, "Digital", 1)
+                moveLabel(labelsMap[i*3+2], 600, 60, `${platinumTitlesProcessed[i*3+2].cumulative.title}\n${platinumTitlesProcessed[i*3+2].cumulative.platforms}`, 0.7, 1)
             ),
 
             // (i === 2
@@ -292,6 +292,7 @@ export default makeScene2D(function* (view) {
                 ...barsMap.mapRefs(elem => elem.y(-2000, 2.9)),
                 ...valuesMap.mapRefs(elem => elem.y(-2000, 2.9)),
                 ...polygons.mapRefs(elem => elem.y(40, 0).to(-2000, 3)),
+                ...labelsMap.mapRefs(elem => elem.y(2000, 1.5)),
             ),
 
         ),
