@@ -1,7 +1,7 @@
 import { makeScene2D, Img, Circle, Line, Rect, Txt } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2, chain } from "@motion-canvas/core";
 
-import { textBlock, contextYoY, quarterLabel, dataLoop } from "../../utils/designs";
+import { textBlock, contextYoY, quarterLabel, dataLoop, moveLabel } from "../../utils/designs";
 import {
    date,
    dataLastFY,
@@ -26,6 +26,14 @@ export default makeScene2D(function* (view) {
         textSpeed: 0.03,
         endDelay: 1
     }
+
+    const titleLabel = createRef<Txt>();
+
+    view.add(
+        <>
+            <Txt ref={titleLabel} />
+        </>
+    )
 
     const printValues = {
         netSales: printValuePrimitive(
@@ -125,7 +133,7 @@ export default makeScene2D(function* (view) {
     const lines = new Map<number, string>();
 
     lines.set(lines.size, "Note: M = Million (or rather 10^6). The following are linked in the video description: Data sources, Motion Canvas, OCRemix soundtracks, Install Base Forum, ggx2ac + archives (webpage).")
-    lines.set(lines.size, `The following data comes from my webpage and may contain errors. This video covers the 1st Quarter (Apr-Jun) earnings release of ${header.companyName} for the fiscal year ending March 2024 (${header.fiscalYear}) and, the Capcom Platinum Titles ${date}.`)
+    lines.set(lines.size, `The following data comes from my webpage and may contain errors. This video covers the 1st Quarter (Apr-Jun) earnings release of ${header.companyName} for the fiscal year ending March 2024 (${header.fiscalYear}).`)
     lines.set(lines.size, `${header.title}`)
     lines.set(lines.size, `${header.companyName}'s consolidated net sales for the ${quarterLabel("1")} was ${printValues.netSales} (${printValuePrimitive(
             extractValue(percentagesThisFY.get(0).Q1QtrValue) as number,
@@ -306,10 +314,6 @@ export default makeScene2D(function* (view) {
 
     yield* imageRefs[1]().rotation(0, 1)
 
-    yield* loop(
-        lines.get(3).length,
-        i => textBlock(lines.get(3), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
-    )
 
     // const scale = 100;
 
@@ -435,15 +439,17 @@ export default makeScene2D(function* (view) {
         colourRefs[0]().y(-500, 1),
         colourRefs[1]().x(400, 1),
         colourRefs[1]().y(-500, 1),
+        moveLabel(titleLabel, 0, -440, `Consolidated Financial Results`, 1, 1),
     ) 
+
+    yield* loop(
+        lines.get(3).length,
+        i => textBlock(lines.get(3), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
+    )
 
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
 
-    yield* loop(
-        lines.get(4).length,
-        i => textBlock(lines.get(4), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
-    )
 
     view.add(
         <>
@@ -495,13 +501,14 @@ export default makeScene2D(function* (view) {
         valueRefs[3]().text(printLastFYValues.operatingIncome, 1),
     ) 
 
+    yield* loop(
+        lines.get(4).length,
+        i => textBlock(lines.get(4), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
+    )
+
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
 
-    yield* loop(
-        lines.get(5).length,
-        i => textBlock(lines.get(5), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
-    )
 
     view.add(
         <>
@@ -553,13 +560,14 @@ export default makeScene2D(function* (view) {
         valueRefs[5]().text(printLastFYValues.opMargin, 1),
     ) 
 
+    yield* loop(
+        lines.get(5).length,
+        i => textBlock(lines.get(5), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
+    )
+
     textSignal(DEFAULT)
     numberSignal(DEFAULT)
     
-    yield* loop(
-        lines.get(6).length,
-        i => textBlock(lines.get(6), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
-    )
 
     view.add(
         <>
@@ -610,6 +618,11 @@ export default makeScene2D(function* (view) {
         valueRefs[7]().y(lastFYValueHeight.netIncome, 1),
         valueRefs[7]().text(printLastFYValues.netIncome, 1),
     ) 
+
+    yield* loop(
+        lines.get(6).length,
+        i => textBlock(lines.get(6), textAnimate.textBoxLength, textSignal, numberSignal, textAnimate.textSpeed, textAnimate.endDelay)
+    )
 
     textSignal(DEFAULT)
     numberSignal(DEFAULT)

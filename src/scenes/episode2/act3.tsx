@@ -273,7 +273,6 @@ export default makeScene2D(function* (view) {
         platinumTitlesProcessed.length / 3,
         i => chain(
 
-            dataLoop(lines.get(i*3+1).length, lines.get(i*3+1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
             all(
                 moveBar(barsMap[`${i*6}`], valuesMap[`${i*6}`], polygonXpos[0], defaultY, 100, defaultHeight * thisFYQuickRatio.get(i*3).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[0], -defaultHeight -40, printValues.get(i*3).cumulative, 1),
@@ -287,26 +286,27 @@ export default makeScene2D(function* (view) {
                 moveLabel(labelsMap[i*3], -600, 60, `${platinumTitlesProcessed[i*3].cumulative.title}\n${platinumTitlesProcessed[i*3].cumulative.platforms}`, 0.7, 1)
             ),
 
-            (i === 6
-                ? chain(
-                    getAudio().text("Song: Breath of Fire \"Flames of Valor\"\nArtist: Vampire Hunter Dan\nSource: https://ocremix.org/", 1),
-                    audioBox().x(200, 3),
-                    waitFor(3),
-                    audioBox().x(2000, 2),
-                )
-                : all()     
-            ),
-        
-             dataLoop(lines.get(i*3+2).length, lines.get(i*3+2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
+            dataLoop(lines.get(i*3+1).length, lines.get(i*3+1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
-            (i === 2
-                ? chain(
-                    audioBox().x(200, 3),
-                    waitFor(3),
-                    audioBox().x(2000, 2),
-                )
-                : all()     
-            ),
+            // (i === 6
+            //     ? chain(
+            //         getAudio().text("Song: Breath of Fire \"Flames of Valor\"\nArtist: Vampire Hunter Dan\nSource: https://ocremix.org/", 1),
+            //         audioBox().x(200, 3),
+            //         waitFor(3),
+            //         audioBox().x(2000, 2),
+            //     )
+            //     : all()     
+            // ),
+        
+
+            // (i === 2
+            //     ? chain(
+            //         audioBox().x(200, 3),
+            //         waitFor(3),
+            //         audioBox().x(2000, 2),
+            //     )
+            //     : all()     
+            // ),
         
              all(
                 moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], polygonXpos[2], defaultY, 100, defaultHeight * thisFYQuickRatio.get(i*3+1).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[2], -defaultHeight -40, printValues.get(i*3+1).cumulative, 1),
@@ -315,8 +315,9 @@ export default makeScene2D(function* (view) {
         
                 moveLabel(labelsMap[i*3+1], 0, 60, `${platinumTitlesProcessed[i*3+1].cumulative.title}\n${platinumTitlesProcessed[i*3+1].cumulative.platforms}`, (platinumTitlesProcessed[i*3+1].cumulative.title === "Monster Hunter: World + Monster Hunter: World Iceborne Master Edition" ? 0.5 : 0.7) , 1)
             ),
+
+             dataLoop(lines.get(i*3+2).length, lines.get(i*3+2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
-             dataLoop(lines.get(i*3+3).length, lines.get(i*3+3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
                 moveBar(barsMap[`${i*6+4}`], valuesMap[`${i*6+4}`], polygonXpos[4], defaultY, 100, defaultHeight * thisFYQuickRatio.get(i*3+2).cumulative, "rgba(0, 255, 255, .80)", polygonXpos[4], -defaultHeight -40, printValues.get(i*3+2).cumulative, 1),
@@ -326,7 +327,9 @@ export default makeScene2D(function* (view) {
                 moveLabel(labelsMap[i*3+2], 600, 60, `${platinumTitlesProcessed[i*3+2].cumulative.title}\n${platinumTitlesProcessed[i*3+2].cumulative.platforms}`, 0.7, 1)
             ),
 
-            waitFor(4),
+             dataLoop(lines.get(i*3+3).length, lines.get(i*3+3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
+
+            waitFor(2),
 
             all( 
                 ...barsMap.mapRefs(elem => elem.y(-2000, 2.9)),

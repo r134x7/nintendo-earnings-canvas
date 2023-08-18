@@ -1,7 +1,7 @@
 import { makeScene2D, Img, Circle, Line, Rect, Txt, Polygon } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2, chain, Reference, Logger, createRefMap, createRefArray, range } from "@motion-canvas/core";
 
-import { textBlock, contextYoY, quarterLabel, dataLoop, setBar, setLabel, moveBar} from "../../utils/designs";
+import { textBlock, contextYoY, quarterLabel, dataLoop, setBar, setLabel, moveBar, moveLabel} from "../../utils/designs";
 import {
    date,
    header,
@@ -35,6 +35,8 @@ export default makeScene2D(function* (view) {
     const colourMap = createRefMap<Rect>();
     const colourLabels = createRefMap<Txt>();
 
+    const titleLabel = createRef<Txt>();
+
     const polygons = createRefMap<Polygon>();
 
     const polygonXpos = [700, 500, -100, 100, -500, -700]
@@ -48,6 +50,12 @@ export default makeScene2D(function* (view) {
             <Txt ref={valuesMap[index]} />
             </>
         ))}
+        </>
+    )
+
+    view.add(
+        <>
+            <Txt ref={titleLabel} />
         </>
     )
 
@@ -293,7 +301,6 @@ export default makeScene2D(function* (view) {
         capcomSales.length,
         i => chain(
 
-            dataLoop(lines.get(i*3+1).length, lines.get(i*3+1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
 
             all(
                 moveBar(barsMap[`${i*6}`], valuesMap[`${i*6}`], -500, defaultY[i], 100, defaultHeight[i] * thisFYQuickRatio.get(0)[`${keyPick(i)}`], "rgba(0, 255, 255, .80)", -500, -defaultHeight[i] -40, printValues.get(0)[`${keyPick(i)}`], 1),
@@ -304,10 +311,17 @@ export default makeScene2D(function* (view) {
 
                 moveBar(colourMap["1"], colourLabels["1"], 100, -500, 80, 40, "rgba(75, 0, 130, .80)", 400, -500, "1st Quarter FY3/2023", 1),
 
-                setLabel(view, createRef<Txt>(), -600, 40, "Package & Digital", 1)
+                setLabel(view, createRef<Txt>(), -600, 40, "Package & Digital", 1),
+
+                moveLabel(titleLabel, 0, -440, `${i === 0 
+                    ? "Software Sales" 
+                    : (i === 1)
+                    ? "Software Units"
+                    : "Sales Per Software Unit"}`, 1, 1),
             ),
+
+            dataLoop(lines.get(i*3+1).length, lines.get(i*3+1), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal),
         
-             dataLoop(lines.get(i*3+2).length, lines.get(i*3+2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
                 moveBar(barsMap[`${i*6+2}`], valuesMap[`${i*6+2}`], 100, defaultY[i] * thisFYQuickRatio.get(1)[`${keyPick(i)}`], 100, defaultHeight[i] * thisFYQuickRatio.get(1)[`${keyPick(i)}`], "rgba(0, 255, 255, .80)", 100, -defaultHeight[i] * thisFYQuickRatio.get(1)[`${keyPick(i)}`] -40, printValues.get(1)[`${keyPick(i)}`], 1),
@@ -316,8 +330,9 @@ export default makeScene2D(function* (view) {
         
                 setLabel(view, createRef<Txt>(), 0, 40, "Package", 1)
             ),
+
+             dataLoop(lines.get(i*3+2).length, lines.get(i*3+2), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
-             dataLoop(lines.get(i*3+3).length, lines.get(i*3+3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
         
              all(
                 moveBar(barsMap[`${i*6+4}`], valuesMap[`${i*6+4}`], 700, defaultY[i] * thisFYQuickRatio.get(2)[`${keyPick(i)}`], 100, defaultHeight[i] * thisFYQuickRatio.get(2)[`${keyPick(i)}`], "rgba(0, 255, 255, .80)", 700, -defaultHeight[i] * thisFYQuickRatio.get(2)[`${keyPick(i)}`] -40, printValues.get(2)[`${keyPick(i)}`], 1),
@@ -326,6 +341,8 @@ export default makeScene2D(function* (view) {
         
                 setLabel(view, createRef<Txt>(), 600, 40, "Digital", 1)
             ),
+            
+             dataLoop(lines.get(i*3+3).length, lines.get(i*3+3), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal,),
 
             // (i === 2
             //     ? all( 
@@ -334,7 +351,7 @@ export default makeScene2D(function* (view) {
             //     : all()
             // ),
 
-            waitFor(4),
+            waitFor(2),
 
             all( 
                 ...barsMap.mapRefs(elem => elem.y(-2000, 2.9)),
@@ -342,14 +359,14 @@ export default makeScene2D(function* (view) {
                 ...polygons.mapRefs(elem => elem.y(40, 0).to(-2000, 3)),
             ),
 
-            (i === 1
-                ? chain(
-                    audioBox().x(0, 3),
-                    waitFor(3),
-                    audioBox().x(2000, 2),
-                )
-                : all()     
-            )
+            // (i === 1
+            //     ? chain(
+            //         audioBox().x(0, 3),
+            //         waitFor(3),
+            //         audioBox().x(2000, 2),
+            //     )
+            //     : all()     
+            // )
 
         ),
     )
