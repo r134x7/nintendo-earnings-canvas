@@ -8,6 +8,6 @@ import final from '../scenes/episode2/final?scene';
 import capcom2f from "../../audio/capcom2f.wav";
 
 export default makeProject({
-  scenes: [opening, act1, act2, act3, final],
+  scenes: [opening, act1, act2, final],
   audio: capcom2f,
 });

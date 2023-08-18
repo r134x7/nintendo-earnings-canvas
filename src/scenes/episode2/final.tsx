@@ -19,8 +19,8 @@ export default makeScene2D(function* (view) {
 
     const textAnimate = {
         textBoxLength: 54,
-        textSpeed: 0.07,
-        endDelay: 4
+        textSpeed: 0.03,
+        endDelay: 1
     }
     
     const getText = createRef<Txt>();
