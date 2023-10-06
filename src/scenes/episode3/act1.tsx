@@ -1,6 +1,8 @@
 import { makeScene2D, Img, Circle, Line, Rect, Txt, Polygon } from "@motion-canvas/2d";
 import { Direction, all, createRef, createSignal, slideTransition, waitFor, loop, DEFAULT, Vector2, chain, Reference, Logger, createRefMap, createRefArray, range } from "@motion-canvas/core";
 
+import { textBlock, contextYoY, quarterLabel, dataLoop, setBar, setLabel, moveBar, moveLabel} from "../../utils/designs";
+
 export default makeScene2D(function* (view) {
 
     const getAudio = createRef<Txt>();
@@ -10,12 +12,11 @@ export default makeScene2D(function* (view) {
     const textAnimate = {
         textBoxLength: 54,
         textSpeed: 0.03,
-        endDelay: 1
+        endDelay: 1.5
     }
 
     const getText = createRef<Txt>();
     const textBox = createRef<Txt>();
-    const webLine = createRef<Line>();
 
     const barsMap = createRefMap<Rect>();
     const valuesMap = createRefMap<Txt>();
@@ -100,11 +101,6 @@ export default makeScene2D(function* (view) {
         </Rect>
     )
 
-    const imageRefs = [
-        createRef<Img>(),
-        createRef<Img>(),
-    ];
-
     const textSignal = createSignal("");
     const numberSignal = createSignal(0);
 
@@ -114,11 +110,13 @@ export default makeScene2D(function* (view) {
 
     const lines = new Map<number, string>();
 
-    lines.set(lines.size, "Inflation");
+    lines.set(lines.size, "Note: M = Million (or rather 10^6). The following are linked in the video description: Data sources, Motion Canvas, OCRemix soundtracks, Install Base Forum, ggx2ac + archives (webpage).")
+
+    lines.set(lines.size, `The following data comes from my webpage and may contain errors.`)
 
     lines.set(lines.size, `Every year, Sega Sammy releases their Integrated Report. The Integrated Report 2023 (Japanese version) which contains sales data up to the Fiscal Year Ending March 2023 (FY3/2023) has just been released.`);
 
-    lines.set(lines.size, `Within a few weeks the English version of the Integrated Report will release and you might see on your favourite gaming news aggregate put up the following headline: “Sonic the Hedgehog series reaches 1.66 Billion units!”`);
+    lines.set(lines.size, `Within a few weeks the English version of the Integrated Report will release and you might see your favourite gaming news aggregate put up the following headline: “Sonic the Hedgehog series reaches 1.66 Billion units!”`);
 
     lines.set(lines.size, `The problem is that the gaming news outlet you read from might not go into detail for how that number was reached and especially, how much of that number consists of sales from the Sonic the Hedgehog series on video game consoles/PC.`);
 
@@ -126,7 +124,7 @@ export default makeScene2D(function* (view) {
 
     lines.set(lines.size, `The numbers I reference will have links in the video description containing the source.`);
 
-    lines.set(lines.size, `Sega Sammy's Integrated Report 2013, mentions that the Sonic the Hedgehog series has surpassed 70 million units worldwide, no further breakdown.`);
+    lines.set(lines.size, `Sega Sammy's Integrated Report 2013, mentions that the Sonic the Hedgehog series has surpassed 70 million units worldwide, no further breakdown given.`);
  
     lines.set(lines.size, `In Sega Sammy's Integrated Report 2014, they created an IP section to show off the strength of their IP and the numbers they give are not just for games.`);
 
@@ -134,9 +132,9 @@ export default makeScene2D(function* (view) {
 
     lines.set(lines.size, `From the Fiscal Year Ending March 2014 (FY3/2014), the Sonic the Hedgehog IP has been used in the following five platforms: Pachislot and Pachinko Machines, Digital Games, Packaged Games, Amusement Arcade Machines, and Toys. The cumulative units and downloads in FY3/2014 for the Sonic the Hedgehog IP is 80M. Life-To-Date is 150M.`);
 
-    lines.set(lines.size, `The Life-To-Date number more than doubled once they expanded out the number of platforms the Sonic the Hedgehog IP is used in. Note: Packaged Games = Home Video Game Software, Digital Games refers to online/smartphone games. You will find this reading through the Integrated Report 2014. That means the Sonic the Hedgehog IP numbers the previous FY came from the Packaged Games platform and then in FY3/2014 they expanded it to the rest.`);
+    lines.set(lines.size, `Note: Packaged Games = Home Video Game Software, Digital Games refers to online/smartphone games. You will find this reading through the Integrated Report 2014. It is not clear if the Sonic the Hedgehog IP numbers from the previous FY came from only the Packaged Games platform.`);
 
-    lines.set(lines.size, `The platform names will change over time as I put up the numbers but the Sonic the Hedgehog IP has been used in all of them. Amusement Arcade Machines will change to Amusement Machines. Packaged Games and Digital Games will be combined to form Consumer Games and will then be renamed to Video Games. Toys will be renamed to Toys, etc. Movies will be added as a platform in the Integrated Report 2022.`);
+    lines.set(lines.size, `The platform names will change over time as I put up the numbers. Amusement Arcade Machines will change to Amusement Machines. Packaged Games and Digital Games will be combined to form Consumer Games and will then be renamed to Video Games. Toys will be renamed to Toys, etc. Movies will be added as a platform in the Integrated Report 2022.`);
 
     lines.set(lines.size, `Integrated Report 2015: The Sonic the Hedgehog IP had cumulative units and downloads of 185M for FY3/2015. Life-To-Date: 335M. Platforms: Pachislot and Pachinko Machines, Digital Games, Packaged Games, Amusement Machines, Toys.`);
 
@@ -144,7 +142,7 @@ export default makeScene2D(function* (view) {
 
     lines.set(lines.size, `Integrated Report 2017: The Sonic the Hedgehog IP had cumulative units and downloads of 10M for FY3/2017. Life-To-Date: 360M. Platforms: Pachislot and Pachinko Machines, Digital Games, Packaged Games, Amusement Machines, Toys, etc.`);
 
-    lines.set(lines.size, `Integrated Report 2018: A significant change occurred. Sega Sammy included downloads of free-to-play titles to their IP where applicable. In my opinion, downloading a title for free doesn’t clearly show if the IP is strong. To know the value of the IP it would be helpful to know the sales numbers and downloads from the free-to-play titles to then calculate a sales per free-to-play download figure.`);
+    lines.set(lines.size, `Integrated Report 2018: A significant change occurred. Sega Sammy included downloads of free-to-play titles to their IP where applicable. In my opinion, downloading a title for free doesn’t clearly show that the IP is strong. To know the value of the IP it would be helpful to know the sales numbers and downloads from the free-to-play titles to then calculate a sales per free-to-play download figure.`);
 
     lines.set(lines.size, `The free-to-play downloads now end up being combined with the other units and downloads of the Sonic the Hedgehog IP. Cumulative units and downloads* (*including downloads of free-to-play titles) of 440M for FY3/2018. Life-To-Date: 800M. Platforms: Pachislot and Pachinko Machines, Digital Games, Packaged Games, Amusement Machines, Toys, etc.`);
 
@@ -159,4 +157,38 @@ export default makeScene2D(function* (view) {
     lines.set(lines.size, `Integrated Report 2023: The Sonic the Hedgehog IP had cumulative units and downloads* (*including downloads of free-to-play titles) of 150M for FY3/2023. Life-To-Date: 1660M. Platforms: Pachislot and Pachinko Machines, Video Games, Movies, Amusement Machines, Toys, etc.`);
 
     // lines.set(lines.size, ``);
+
+    yield* slideTransition(Direction.Right);
+
+    view.add(
+        <Rect 
+            ref={textBox}
+            padding={10}
+            radius={15}
+            fill={"white"}
+            layout
+            y={250}
+            x={200}
+        >
+            <Rect fill={"black"}>
+            <Txt
+                fontFamily={"Consolas"}
+                ref={getText}
+                text={() => `${textSignal()}`}
+                textWrap={"pre"}
+                fill={"white"}
+                marginLeft={16}
+                marginRight={16}
+            />
+            </Rect>
+        </Rect>
+    )
+
+    yield* loop(
+        8,
+        i => dataLoop(lines.get(i).length, lines.get(i), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal)
+    );
+
+
+
 })
