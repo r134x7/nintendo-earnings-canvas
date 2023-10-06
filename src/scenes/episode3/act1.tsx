@@ -120,10 +120,26 @@ export default makeScene2D(function* (view) {
 
     lines.set(lines.size, `Within a few weeks the English version of the Integrated Report will release and you might see on your favourite gaming news aggregate put up the following headline: “Sonic the Hedgehog series reaches 1.66 Billion units!”`);
 
-    // lines.set(lines.size, ``);
     lines.set(lines.size, `The problem is that the gaming news outlet you read from might not go into detail for how that number was reached and especially, how much of that number consists of sales from the Sonic the Hedgehog series on video game consoles/PC.`);
 
     lines.set(lines.size, `This gives the impression that Sonic the Hedgehog is the biggest video game IP ever, bigger than every Nintendo IP combined. It's not.`);
 
+    lines.set(lines.size, `The numbers I reference will have links in the video description containing the source.`);
+
+    lines.set(lines.size, `Sega Sammy's Integrated Report 2013, mentions that the Sonic the Hedgehog series has surpassed 70 million units worldwide, no further breakdown.`);
+ 
+    lines.set(lines.size, `In Sega Sammy's Integrated Report 2014, they created an IP section to show off the strength of their IP and the numbers they give are not just for games.`);
+
+    lines.set(lines.size, `What they refer to as a Multifaceted Rollout in the report to show which areas their IP are used in, I will be referring to it as platforms.`);
+
     // lines.set(lines.size, ``);
+    lines.set(lines.size, `From the Fiscal Year Ending March 2014 (FY3/2014), the Sonic the Hedgehog IP has been used in the following five platforms: Pachislot and Pachinko Machines, Digital Games, Packaged Games, Amusement Arcade Machines, and Toys. The cumulative units and downloads in FY3/2014 for the Sonic the Hedgehog IP is 80M. Life-To-Date is 150M.`);
+
+    lines.set(lines.size, `The Life-To-Date number more than doubled once they expanded out the number of platforms the Sonic the Hedgehog IP is used in. Note: Packaged Games = Home Video Game Software, Digital Games refers to online/smartphone games. You will find this reading through the Integrated Report 2014. That means the Sonic the Hedgehog IP numbers the previous FY came from the Packaged Games platform and then in FY3/2014 they expanded it to the rest.`);
+
+    lines.set(lines.size, `The platform names will change over time as I put up the numbers but the Sonic the Hedgehog IP has been used in all of them. Amusement Arcade Machines will change to Amusement Machines. Packaged Games and Digital Games will be combined to form Consumer Games and will then be renamed to Video Games. Toys will be renamed to Toys, etc. Movies will be added as a platform in the Integrated Report 2022.`);
+
+    lines.set(lines.size, ``);
+
+
 })
