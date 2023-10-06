@@ -185,7 +185,7 @@ export default makeScene2D(function* (view) {
     )
 
     yield* loop(
-        8,
+        7,
         i => dataLoop(lines.get(i).length, lines.get(i), textAnimate.textBoxLength, textAnimate.textSpeed, textAnimate.endDelay, textSignal, numberSignal)
     );
 
