@@ -7,9 +7,9 @@ export default defineConfig({
     motionCanvas({
       project: [
         "./src/projectsIndex/project.ts",
-        "./src/projectsIndex/videoShort.ts",
+        "./src/projectsIndex/videoshort.ts",
         "./src/projectsIndex/episode2.ts",
-        "./src/projectsIndex/episode3.ts"
+        "./src/projectsIndex/episode3.ts",
       ]
     }),
     ffmpeg(),
